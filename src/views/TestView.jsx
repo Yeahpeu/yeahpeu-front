@@ -7,6 +7,7 @@ const TestView = () => {
   return (
     <div>
       Test View
+      {/* //NOTE - 뷰 아래 페이지(컴포넌트)들이 갈아 끼워짐 */}
       <BrowserRouter>
         <Routes>
           <Route path="/test" element={<TestPage />} />
