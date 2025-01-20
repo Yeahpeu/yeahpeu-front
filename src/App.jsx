@@ -1,9 +1,11 @@
+import { BrowserRouter, Link } from "react-router-dom";
 import "./App.css";
+import TestView from "./views/testView";
 
 function App() {
   return (
     <>
-      <p>오류가 안나용</p>
+      <TestView />
     </>
   );
 }
