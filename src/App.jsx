@@ -1,10 +1,9 @@
 import "./App.css";
-import { Button } from "./components/ui/button";
 
 function App() {
   return (
     <>
-      <Button className={"w-[10px] bg-red-100"}>다음</Button>
+      <p>오류가 안나용</p>
     </>
   );
 }
