@@ -12,7 +12,6 @@ const TestPage = () => {
   return (
     <div className="w-full h-[200px] bg-slate-100">
       <p>test page</p>
-      {/* //NOTE - handleNavigate라는 함수를 생성해서 props방식으로 하위 버튼들로 전달 */}
       <BtnGroup onClick={handleNavigate} width={"20"} />
     </div>
   );
