@@ -8,9 +8,9 @@ const MyConfirm = ({
   optionRight,
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-4 w-96 border">
+    <div className="flex-col justify-center bg-white rounded-lg shadow-lg p-4 w-full border">
       <p className="text-center mb-4 mt-4 font-bold text-lg">{message}</p>
-      <div className="flex justify-center space-x-8">
+      <div className="flex justify-center w-[80%] mx-auto space-x-8">
         <MyButton
           value={optionLeft}
           color="abled"
