@@ -13,6 +13,17 @@ function App() {
   const progressPercent = 25;
   const [selectedRole, setSelectedRole] = useState(null);
 
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleComplete = () => {
+    setIsCompleted((prev) => !prev);
+  };
+
+  const toggleAccordion = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
     <>
       <HomeProgressMolecule marriagePercent={marriagePercent} />
