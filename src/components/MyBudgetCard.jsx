@@ -1,6 +1,9 @@
-const MyBudgetCard = ({ total, expend, balance }) => {
+const MyBudgetCard = ({ total, expend, balance, onClick }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 w-96 border space-y-4">
+    <div
+      className="bg-white rounded-lg shadow-lg p-6 w-96 border space-y-4"
+      onClick={onClick}
+    >
       <div className="flex justify-between font-bold text-lg">
         <span>총 예산</span>
         <span>{total.toLocaleString()} 원</span>

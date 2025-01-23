@@ -1,7 +1,7 @@
 import { useState } from "react";
 import moment from "moment";
 
-const Calendar = ({ events = [] }) => {
+const MyCalendar = ({ events = [] }) => {
   const [currentMonth, setCurrentMonth] = useState(moment());
   const [selectedDate, setSelectedDate] = useState(moment());
 
@@ -76,4 +76,4 @@ const Calendar = ({ events = [] }) => {
   );
 };
 
-export default Calendar;
+export default MyCalendar;
