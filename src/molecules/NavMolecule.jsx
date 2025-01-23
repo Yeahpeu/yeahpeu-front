@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import HomeIcon from "./NavButtons/HomeIcon";
-import CalendarIcon from "./NavButtons/CalendarIcon";
-import ChatIcon from "./NavButtons/ChatIcon";
-import ShopIcon from "./NavButtons/ShopIcon";
+import HomeIcon from "../components/Buttons/NavButtons/HomeIcon";
+import CalendarIcon from "../components/Buttons/NavButtons/CalendarIcon";
+import ChatIcon from "../components/Buttons/NavButtons/ChatIcon";
+import ShopIcon from "../components/Buttons/NavButtons/ShopIcon";
 
 const MyNav = () => {
   const [activeIndex, setActiveIndex] = useState(0);

@@ -1,6 +1,6 @@
-import MyButton from "./MyButton";
-import MyInputW from "./MyInput-white";
-import MySelect from "./MySelect";
+import MyButton from "../common/MyButton";
+import MyInputW from "../common/MyInput-white";
+import MySelect from "../common/MySelect";
 
 const MyCreateChat = ({ onCancel, onConfirm }) => {
   const memberOptions = [

@@ -1,4 +1,4 @@
-import MyCompleteButton from "./MyCompleteButton";
+import MyCompleteButton from "../common/MyCompleteButton";
 
 const MyScheduleCard = ({
   title,
