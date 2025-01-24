@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useTabStore } from "../../stores/commonStore";
+import { Link, useLocation } from "react-router-dom";
 
 const MyTab = ({ leftValue, rightValue, leftTo, rightTo }) => {
-  const [activeTab, setActiveTab] = useState(`${leftValue}`);
+  // const [activeTab, setActiveTab] = useState(`${leftValue}`);
+  const { activeTab, setActiveTab } = useTabStore();
 
   return (
     <div className="flex items-center justify-center bg-gray-100 p-2 rounded-lg shadow-inner shadow-slate-300 my-4">

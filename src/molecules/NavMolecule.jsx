@@ -1,18 +1,25 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import HomeIcon from "../components/Buttons/NavButtons/HomeIcon";
 import CalendarIcon from "../components/Buttons/NavButtons/CalendarIcon";
 import ChatIcon from "../components/Buttons/NavButtons/ChatIcon";
 import ShopIcon from "../components/Buttons/NavButtons/ShopIcon";
+import { useTabStore } from "../stores/commonStore";
 
 const MyNav = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { setActiveTab } = useTabStore();
 
   const navItems = [
-    { id: 0, label: "home", icon: <HomeIcon /> },
-    { id: 1, label: "schedule/calendar", icon: <CalendarIcon /> },
-    { id: 2, label: "chat", icon: <ChatIcon /> },
-    { id: 3, label: "shop", icon: <ShopIcon /> },
+    { id: 0, tab: "홈", label: "home", icon: <HomeIcon /> },
+    {
+      id: 1,
+      tab: "캘린더",
+      label: "schedule/calendar",
+      icon: <CalendarIcon />,
+    },
+    { id: 2, tab: "채팅", label: "chat", icon: <ChatIcon /> },
+    { id: 3, tab: "쇼핑", label: "shop", icon: <ShopIcon /> },
   ];
 
   return (
@@ -25,7 +32,10 @@ const MyNav = () => {
             className={`flex flex-col items-center ${
               activeIndex === item.id ? "text-red-200" : "text-gray-500"
             }`}
-            onClick={() => setActiveIndex(item.id)}
+            onClick={() => {
+              setActiveIndex(item.id);
+              setActiveTab(item.tab);
+            }}
           >
             <div className="w-6 h-10">{item.icon}</div>
           </Link>
