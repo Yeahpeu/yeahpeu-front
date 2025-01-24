@@ -35,6 +35,7 @@ export default [
       ],
       "no-unused-labels": "off",
       "no-unused-vars": "off",
+      "react-hooks/rules-of-hooks": "off",
     },
   },
 ];

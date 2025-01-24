@@ -1,6 +1,12 @@
 import MyScheduleCard from "../components/Cards/MyScheduleCard";
+import axios from "axios";
 
 const CalendarMolecule = () => {
+  const fetchEvents = async () => {
+    const response = await axios.get("get요청주소");
+    return response.data;
+  };
+
   const events = [
     {
       id: 1,
