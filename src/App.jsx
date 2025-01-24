@@ -1,9 +1,12 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NavMolecule from "./molecules/NavMolecule";
 import HomePage from "./pages/HomePage";
-import CalendarPage from "./pages/CalendarPage";
+import SchedulePage from "./pages/SchedulePage";
 import ChatRoomPage from "./pages/ChatRoomPage";
 import PrepareMainPage from "./pages/PrepareMainPage";
+import CalendarMolecule from "./molecules/CalendarMolecule";
+import TodosMolecule from "./molecules/TodosMolecule";
 
 function App() {
   return (
@@ -11,10 +14,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/home" element={<HomePage />} />
-          <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/chat" element={<ChatRoomPage />} />
+          <Route path="/schedule" element={<SchedulePage />}>
+            <Route path="calendar" element={<CalendarMolecule />} />
+            <Route path="todos" element={<TodosMolecule />} />
+          </Route>
+          <Route path="/chat/*" element={<ChatRoomPage />} />
           <Route path="/shop" element={<PrepareMainPage />} />
         </Routes>
+        <NavMolecule />
       </BrowserRouter>
     </>
   );

@@ -10,7 +10,7 @@ const MyNav = () => {
 
   const navItems = [
     { id: 0, label: "home", icon: <HomeIcon /> },
-    { id: 1, label: "calendar", icon: <CalendarIcon /> },
+    { id: 1, label: "schedule/calendar", icon: <CalendarIcon /> },
     { id: 2, label: "chat", icon: <ChatIcon /> },
     { id: 3, label: "shop", icon: <ShopIcon /> },
   ];

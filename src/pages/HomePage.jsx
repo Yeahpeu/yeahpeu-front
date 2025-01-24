@@ -6,7 +6,6 @@ import MyChatCard from "../components/Cards/MyChatCard";
 const HomePage = () => {
   return (
     <>
-      <div>홈!</div>
       <MyTab leftValue={"캘린더"} rightValue={"남은 일정"} />
       <MyChatBox
         owner={"others"}
