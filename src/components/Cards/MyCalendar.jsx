@@ -1,9 +1,8 @@
 import { useState } from "react";
 import moment from "moment";
 
-const MyCalendar = ({ events = [] }) => {
+const MyCalendar = ({ events = [], setSelectedDate }) => {
   const [currentMonth, setCurrentMonth] = useState(moment());
-  const [selectedDate, setSelectedDate] = useState(moment());
 
   const eventSet = new Set(events);
 
@@ -56,10 +55,9 @@ const MyCalendar = ({ events = [] }) => {
             <div
               key={index}
               className={`relative p-2 text-gray-800 rounded-lg w-10 h-10 flex items-center justify-center  
-              ${day.isSame(selectedDate, "day") ? "bg-red-100 text-white" : ""} 
-              ${!isCurrentMonth ? "text-gray-400 opacity-50 pointer-events-none" : "cursor-pointer hover:bg-red-100"}`}
-              onClick={
-                isCurrentMonth ? () => setSelectedDate(day.clone()) : undefined
+              ${!isCurrentMonth ? "text-gray-400 opacity-50 pointer-events-none" : "cursor-pointer active:bg-red-200 hover:bg-red-100"}`}
+              onClick={() =>
+                isCurrentMonth && setSelectedDate(day.format("YYYY-MM-DD"))
               }
             >
               <div className="relative">
