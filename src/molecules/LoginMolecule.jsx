@@ -67,12 +67,14 @@ const LoginMolecule = () => {
         </p>
       )}
 
-      <MyButton
-        disabled={!isEmailValid || !isPasswordValid}
-        color={isEmailValid && isPasswordValid ? "abled" : "disabled"}
-        onClick={handleLogin}
-        value="로그인"
-      />
+      <div className="mb-4">
+        <MyButton
+          disabled={!isEmailValid || !isPasswordValid}
+          color={isEmailValid && isPasswordValid ? "abled" : "disabled"}
+          onClick={handleLogin}
+          value="로그인"
+        />
+      </div>
     </div>
   );
 };
