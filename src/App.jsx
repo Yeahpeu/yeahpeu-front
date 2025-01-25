@@ -8,6 +8,7 @@ import PrepareMainPage from "./pages/PrepareMainPage";
 import CalendarMolecule from "./molecules/CalendarMolecule";
 import TodosMolecule from "./molecules/TodosMolecule";
 import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/schedule" element={<SchedulePage />}>
             <Route path="calendar" element={<CalendarMolecule />} />

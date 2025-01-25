@@ -9,7 +9,7 @@ const LoginPage = () => {
       <SocialMoleCule />
       <div>
         계정이 없으신가요{" "}
-        <a href="" className="text-blue-500 ml-1">
+        <a href="/signup" className="text-blue-500 ml-3">
           회원가입
         </a>
       </div>
