@@ -7,12 +7,14 @@ import ChatRoomPage from "./pages/ChatRoomPage";
 import PrepareMainPage from "./pages/PrepareMainPage";
 import CalendarMolecule from "./molecules/CalendarMolecule";
 import TodosMolecule from "./molecules/TodosMolecule";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/schedule" element={<SchedulePage />}>
             <Route path="calendar" element={<CalendarMolecule />} />
