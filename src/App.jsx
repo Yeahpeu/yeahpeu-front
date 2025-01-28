@@ -10,6 +10,8 @@ import TodosMolecule from "./molecules/TodosMolecule";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import OnboardingPage from "./pages/OnboardingPage";
+import PrepareSearchPage from "./pages/PrepareSearchPage";
+import WishPage from "./pages/WishPage";
 
 function App() {
   return (
@@ -25,7 +27,10 @@ function App() {
             <Route path="todos" element={<TodosMolecule />} />
           </Route>
           <Route path="/chat/*" element={<ChatRoomPage />} />
-          <Route path="/shop" element={<PrepareMainPage />} />
+          <Route path="/shop" element={<PrepareMainPage />}>
+            <Route path="search" element={<PrepareSearchPage />} />
+          </Route>
+          <Route path="/shop/mywish" element={<WishPage />} />
         </Routes>
         <NavMolecule />
       </BrowserRouter>
