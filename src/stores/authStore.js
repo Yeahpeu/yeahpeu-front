@@ -6,7 +6,7 @@ const useAuthStore = create((set) => ({
   password: "",
   confirmPassword: "",
   isEmailValid: false,
-  isPasswordValid: false,
+  isPasswordValid: true,
   isPasswordMatch: true,
   isVerified: false,
   isLoggedIn: false,
@@ -23,73 +23,75 @@ const useAuthStore = create((set) => ({
   setPassword: (password) =>
     set({
       password,
-      isPasswordValid: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(
-        password
-      ),
+      //NOTE - 나중에 원래대로 돌려놓기
+      // isPasswordValid: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(
+      //   password
+      // ),
     }),
   setConfirmPassword: (confirmPassword, password) =>
     set({ confirmPassword, isPasswordMatch: confirmPassword === password }),
   setTimer: (timer) => set({ timer }),
   setVerified: (isVerified) => set({ isVerified }),
+  setLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
 
-  sendVerificationCode: async (email) => {
-    if (!email) return alert("이메일을 입력하세요.");
+  // sendVerificationCode: async (email) => {
+  //   if (!email) return alert("이메일을 입력하세요.");
 
-    try {
-      const response = await fetch("/auth/email-verification/request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ emailAddress: email }),
-      });
+  //   try {
+  //     const response = await fetch("/auth/email-verification/request", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ emailAddress: email }),
+  //     });
 
-      if (!response.ok) throw new Error("인증번호 전송 실패");
+  //     if (!response.ok) throw new Error("인증번호 전송 실패");
 
-      alert("인증번호가 전송되었습니다.");
-      set({ timer: 180 });
-    } catch (error) {
-      alert(error.message);
-    }
-  },
+  //     alert("인증번호가 전송되었습니다.");
+  //     set({ timer: 180 });
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // },
 
-  verifyCode: async (email, code) => {
-    try {
-      const response = await fetch("/auth/email-verification/confirm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ emailAddress: email, verificationCode: code }),
-      });
+  // verifyCode: async (email, code) => {
+  //   try {
+  //     const response = await fetch("/auth/email-verification/confirm", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ emailAddress: email, verificationCode: code }),
+  //     });
 
-      if (!response.ok) throw new Error("인증번호가 올바르지 않습니다.");
+  //     if (!response.ok) throw new Error("인증번호가 올바르지 않습니다.");
 
-      alert("이메일 인증 완료!");
-      set({ isVerified: true, timer: 0 });
-    } catch (error) {
-      alert(error.message);
-    }
-  },
+  //     alert("이메일 인증 완료!");
+  //     set({ isVerified: true, timer: 0 });
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // },
 
-  login: async (email, password) => {
-    if (!email || !password) {
-      alert("이메일과 비밀번호를 입력하세요.");
-      return;
-    }
+  // login: async (email, password) => {
+  //   if (!email || !password) {
+  //     alert("이메일과 비밀번호를 입력하세요.");
+  //     return;
+  //   }
 
-    try {
-      const response = await fetch("/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  //   try {
+  //     const response = await fetch("/auth/login", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ email, password }),
+  //     });
 
-      if (!response.ok)
-        throw new Error("로그인 실패: 이메일 또는 비밀번호를 확인하세요.");
+  //     if (!response.ok)
+  //       throw new Error("로그인 실패: 이메일 또는 비밀번호를 확인하세요.");
 
-      alert("로그인 성공!");
-      set({ isLoggedIn: true });
-    } catch (error) {
-      alert(error.message);
-    }
-  },
+  //     alert("로그인 성공!");
+  //     set({ isLoggedIn: true });
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // },
 }));
 
 export default useAuthStore;

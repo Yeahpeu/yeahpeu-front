@@ -1,8 +1,10 @@
 import useAuthStore from "../stores/authStore";
 import MyInputWhite from "../components/common/MyInput-white";
 import MyButton from "../components/common/MyButton";
+import { useLoginMutation } from "../api/authAPI";
 
 const LoginMolecule = () => {
+  const loginMutation = useLoginMutation();
   const {
     email,
     password,
@@ -10,8 +12,11 @@ const LoginMolecule = () => {
     isPasswordValid,
     setEmail,
     setPassword,
-    login,
   } = useAuthStore();
+  const handleLogin = () => {
+    const user = { email, password };
+    loginMutation.mutate(user);
+  };
 
   return (
     <div className="flex flex-col gap-3 p-4 rounded-lg w-full max-w-sm mx-auto">
@@ -48,7 +53,7 @@ const LoginMolecule = () => {
         <MyButton
           disabled={!isEmailValid || !isPasswordValid}
           color={isEmailValid && isPasswordValid ? "abled" : "disabled"}
-          onClick={() => login(email, password)}
+          onClick={handleLogin}
           value="로그인"
         />
       </div>
