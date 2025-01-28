@@ -9,6 +9,7 @@ import CalendarMolecule from "./molecules/CalendarMolecule";
 import TodosMolecule from "./molecules/TodosMolecule";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import OnboardingPage from "./pages/OnboardingPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/schedule" element={<SchedulePage />}>
             <Route path="calendar" element={<CalendarMolecule />} />

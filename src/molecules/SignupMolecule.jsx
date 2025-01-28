@@ -54,27 +54,31 @@ const SignupMolecule = () => {
 
       <div className="text-left">
         <p className="mb-1 p-1">이메일</p>
-        <div className="flex space-x-2 mb-2">
-          <MyInputPink
-            placeholder="이메일 주소"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <MyButton
-            value={timer > 0 ? `재전송 (${timer}s)` : "인증번호 전송"}
-            color="abled"
-            disabled={timer > 0}
-            onClick={() => sendVerificationCode(email)}
-          />
-          {!isEmailValid && email.length > 0 && (
-            <p className="text-red-500 text-sm">
-              올바른 이메일 형식이 아닙니다.
-            </p>
-          )}
+        <div className="flex-col mb-2 gap-2">
+          <div className="mb-1">
+            <MyInputPink
+              placeholder="이메일 주소"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <MyButton
+              value={timer > 0 ? `재전송 (${timer}s)` : "인증번호 전송"}
+              color="abled"
+              disabled={timer > 0}
+              onClick={() => sendVerificationCode(email)}
+            />
+            {!isEmailValid && email.length > 0 && (
+              <p className="text-red-500 text-sm">
+                올바른 이메일 형식이 아닙니다.
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className="flex space-x-2">
+        <div className="flex gap-2">
           <MyInputPink
             placeholder="인증번호"
             type="text"
@@ -82,19 +86,21 @@ const SignupMolecule = () => {
             onChange={(e) => setVerificationCode(e.target.value)}
             disabled={timer === 0 || isVerified}
           />
-          <MyButton
-            value="인증"
-            color="abled"
-            disabled={timer === 0 || isVerified}
-            onClick={() => verifyCode(email, verificationCode)}
-          />
+          <div className="w-1/2">
+            <MyButton
+              value="인증"
+              color="abled"
+              disabled={timer === 0 || isVerified}
+              onClick={() => verifyCode(email, verificationCode)}
+            />
+          </div>
         </div>
       </div>
 
       <div className="text-left">
         <p className="mb-1 p-1">비밀번호</p>
         <MyInputPink
-          placeholder="영문 대소문자 + 특수기호 포함 8글자 이상"
+          placeholder="대소문자 + 특수기호 포함 8글자 이상"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

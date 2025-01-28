@@ -1,20 +1,16 @@
-import MyProgressBar from "../components/MyProgressBar";
+import React from "react";
+import MyProgressBar from "../components/Cards/MyProgressBar";
+import { STEP_DATA } from "../components/onboardingSteps";
 
-const OnboardProgressMolecule = ({ subject, progressPercent }) => {
-  const pp = progressPercent;
-  const sub = {
-    weddingHall: "결혼식을 위한 일정들을 선택해주세요",
-    styling: "스드메 탭 설명",
-  };
-
+const OnboardingProgressMolecule = ({ subject, progressPercent }) => {
   return (
     <div>
       <div className="text-red-300 font-bold">
-        <p>{sub[subject]}</p>
+        <p>{STEP_DATA[subject]?.subject || ""}</p>
       </div>
-      <MyProgressBar progressPercent={pp} />
+      <MyProgressBar progressPercent={progressPercent} />
     </div>
   );
 };
 
-export default OnboardProgressMolecule;
+export default OnboardingProgressMolecule;
