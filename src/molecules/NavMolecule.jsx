@@ -9,6 +9,19 @@ import { useTabStore } from "../stores/commonStore";
 const MyNav = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { setActiveTab } = useTabStore();
+  const location = useLocation();
+
+  const hidePath = [
+    "/",
+    "/login",
+    "/signup",
+    "/registrationStatus",
+    "/onboarding",
+  ];
+
+  if (hidePath.includes(location.pathname)) {
+    return null;
+  }
 
   const navItems = [
     { id: 0, tab: "홈", label: "home", icon: <HomeIcon /> },

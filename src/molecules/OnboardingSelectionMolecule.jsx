@@ -31,11 +31,10 @@ const OnboardingSelectionMolecule = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <h2 className="text-lg font-medium">세부 일정</h2>
+      <h2 className=" font-medium">세부 일정</h2>
 
       <div className="flex-1 px-6 overflow-y-auto">
         <div className="bg-white rounded-2xl p-2 shadow-sm space-y-1">
-          {" "}
           {currentStepData.options.map((option, index) => (
             <div
               key={index}

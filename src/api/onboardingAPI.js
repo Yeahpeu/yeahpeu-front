@@ -1,5 +1,15 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
+
+export const useGetOnboarding = () => {
+  const response = useQuery({
+    queryKey: ["category"],
+    queryFn: async () => {
+      await axiosInstance.get("/api/v1/onboarding");
+    },
+  });
+  return response.data;
+};
 
 export const useSubmitOnboardingMutation = () => {
   return useMutation({
@@ -8,7 +18,7 @@ export const useSubmitOnboardingMutation = () => {
       return response.data;
     },
     onSuccess: () => {
-      alert("성공공");
+      alert("성공");
     },
     onError: (error) => {
       alert("실패");
