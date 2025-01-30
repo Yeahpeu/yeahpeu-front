@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import MyCompleteButton from "../common/MyCompleteButton";
 
 const MyScheduleCard = ({ event }) => {
+  const navigate = useNavigate();
   const categoryColors = {
     1: "bg-[#FF85EB]",
     2: "bg-[#AB92FF]",
@@ -39,7 +41,7 @@ const MyScheduleCard = ({ event }) => {
           className={`w-4 h-4 rounded-full ${categoryColors[event.mainCategoryId]}`}
         ></div>
         <div
-          onClick={() => console.log(`이벤트 클릭: ${event.id}`)}
+          onClick={() => navigate(`/schedule/todos/detail/${event.id}`)}
           className="pl-1"
         >
           <div className="font-bold text-lg flex pb-1">{event.title}</div>

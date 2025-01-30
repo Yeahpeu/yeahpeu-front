@@ -14,6 +14,7 @@ import RegistrationStatusPage from "./pages/RegistrationStatusPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import PrepareSearchPage from "./pages/PrepareSearchPage";
 import WishPage from "./pages/WishPage";
+import ScheduleDetailPage from "./pages/ScheduleDetailPage";
 
 function App() {
   return (
@@ -33,6 +34,10 @@ function App() {
             <Route path="calendar" element={<CalendarMolecule />} />
             <Route path="todos" element={<TodosMolecule />} />
           </Route>
+          <Route
+            path="/schedule/todos/detail/*"
+            element={<ScheduleDetailPage />}
+          />
           <Route path="/chat/*" element={<ChatRoomPage />} />
           <Route path="/shop" element={<PrepareMainPage />}>
             <Route path="search" element={<PrepareSearchPage />} />
