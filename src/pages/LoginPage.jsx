@@ -4,7 +4,7 @@ import SocialMoleCule from "../molecules/SocialMolecule";
 
 const LoginPage = () => {
   return (
-    <div className="flex flex-col h-[90vh]">
+    <div className="flex flex-col h-[90vh] animate-fadeIn">
       <HeaderMolecule />
       <div className="flex-grow flex flex-col items-center justify-center">
         <LoginMolecule />

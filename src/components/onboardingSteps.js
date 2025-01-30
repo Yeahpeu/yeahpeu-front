@@ -1,7 +1,7 @@
 export const STEP_DATA = {
   wedding: {
     title: "결혼식",
-    subject: "결혼식을 위한 일정들을 선택해주세요",
+    subject: "결혼까지 막막하시죠?😥 저희가 계획을 준비했어요!",
     options: [
       "상견례 진행",
       "택일 (식 날짜 선택)",
@@ -18,7 +18,7 @@ export const STEP_DATA = {
   },
   styling: {
     title: "스드메",
-    subject: "스드메 관련 일정들을 선택해주세요",
+    subject: "신데렐라의 호박마차를 찾아봐요👰‍♀️",
     options: [
       "스튜디오 방문",
       "드레스 예약",
@@ -31,7 +31,7 @@ export const STEP_DATA = {
   },
   gift: {
     title: "예물 예단",
-    subject: "예물 예단 관련 일정들을 선택해주세요",
+    subject: "빛나는 것은 여러분만이 아닐거에요💍",
     options: [
       "예물 계약",
       "예복 계약",
@@ -43,12 +43,12 @@ export const STEP_DATA = {
   },
   house: {
     title: "신혼집",
-    subject: "신혼집 관련 일정들을 선택해주세요",
+    subject: "함께 살 공간을 채워 볼까요?🛋️",
     options: ["신혼집 마련", "가전 계약", "가구 계약", "신혼집 입주"],
   },
   honeymoon: {
     title: "신혼여행",
-    subject: "신혼여행 관련 일정들을 선택해주세요",
+    subject: "여행계획은 세울 때도 즐겁지 않나요? ✈️",
     options: [
       "신혼여행 계약",
       "신혼여행지 확정",

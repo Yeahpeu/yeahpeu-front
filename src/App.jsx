@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SplashPage from "./pages/SplashPage";
 import NavMolecule from "./molecules/NavMolecule";
 import HomePage from "./pages/HomePage";
 import SchedulePage from "./pages/SchedulePage";
@@ -9,6 +10,7 @@ import CalendarMolecule from "./molecules/CalendarMolecule";
 import TodosMolecule from "./molecules/TodosMolecule";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import RegistrationStatusPage from "./pages/RegistrationStatusPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import PrepareSearchPage from "./pages/PrepareSearchPage";
 import WishPage from "./pages/WishPage";
@@ -18,8 +20,13 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<SplashPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/registrationStatus"
+            element={<RegistrationStatusPage />}
+          />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/schedule" element={<SchedulePage />}>

@@ -1,8 +1,8 @@
-import coupleImg from "../assets/couple.png"; // 이미지 파일을 import
+import coupleImg from "../assets/couple.png";
 
 const HeaderMolecule = () => {
   return (
-    <div className="w-full top-0 left-0 bg-white">
+    <div className="w-full p-5 top-0 left-0 bg-white">
       <img src={coupleImg} alt="Yeahpeu Image" className="mx-auto w-20 h-20" />
     </div>
   );

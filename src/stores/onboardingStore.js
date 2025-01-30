@@ -2,6 +2,9 @@ import { create } from "zustand";
 import { STEP_KEYS } from "../components/onboardingSteps";
 
 const useOnboardingStore = create((set, get) => ({
+  weddingRole: "",
+  weddingDay: "",
+  budget: 0,
   currentStep: 0,
   selections: {
     wedding: [],
@@ -11,7 +14,14 @@ const useOnboardingStore = create((set, get) => ({
     honeymoon: [],
   },
 
-  setCurrentStep: (step) => set({ currentStep: step }),
+  setWeddingRole: (role) => set({ weddingRole: role }),
+  setWeddingDay: (day) => set({ weddingDay: day }),
+  setBudget: (amount) => set({ budget: amount }),
+
+  setCurrentStep: (step) =>
+    set(() => {
+      return { currentStep: step };
+    }),
 
   setSelections: (step, selections) =>
     set((state) => ({
@@ -28,6 +38,9 @@ const useOnboardingStore = create((set, get) => ({
   resetSelections: () =>
     set({
       currentStep: 0,
+      weddingRole: "",
+      weddingDay: "",
+      budget: 0,
       selections: {
         wedding: [],
         styling: [],
@@ -38,8 +51,11 @@ const useOnboardingStore = create((set, get) => ({
     }),
 
   getAllSelections: () => {
-    const { selections } = get();
+    const { weddingRole, weddingDay, budget, selections } = get();
     return {
+      weddingRole,
+      weddingDay,
+      budget,
       selectedTasks: STEP_KEYS.reduce((acc, key) => {
         return [
           ...acc,
