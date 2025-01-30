@@ -4,11 +4,14 @@ import { STEP_DATA } from "../components/onboardingSteps";
 
 const OnboardingProgressMolecule = ({ subject, progressPercent }) => {
   return (
-    <div>
-      <div className="text-red-300 font-bold">
-        <p>{STEP_DATA[subject]?.subject || ""}</p>
+    <div className="flex flex-col gap-2 my-1">
+      <div>
+        <p className="text-sm">{STEP_DATA[subject].title}</p>
+        <MyProgressBar progressPercent={progressPercent} />
       </div>
-      <MyProgressBar progressPercent={progressPercent} />
+      <div className="text-black text-xs">
+        <p>{STEP_DATA[subject]?.subject}</p>
+      </div>
     </div>
   );
 };

@@ -1,22 +1,22 @@
-import brideImg from "../assets/bride.png";
-import groomImg from "../assets/groom.png";
+import brideImg from "../../assets/bride.png";
+import groomImg from "../../assets/groom.png";
 
 const MyRoleButton = ({ selectedRole, onClick }) => {
   return (
-    <div className="flex justify-between items-center p-2 space-x-4 w-[80%] mx-auto">
+    <div className="flex justify-between items-center p-2 space-x-4 w-[80%] mx-auto transition">
       <button
-        onClick={() => onClick("bride")}
+        onClick={() => onClick("BRIDE")}
         className={`p-4 rounded-full ${
-          selectedRole === "bride" ? "bg-pink-100" : "bg-transparent"
+          selectedRole === "BRIDE" ? "bg-red-100" : "bg-transparent"
         }`}
       >
         <img src={brideImg} />
       </button>
 
       <button
-        onClick={() => onClick("groom")}
+        onClick={() => onClick("GROOM")}
         className={`p-4 rounded-full ${
-          selectedRole === "groom" ? "bg-pink-100" : "bg-transparent"
+          selectedRole === "GROOM" ? "bg-red-100" : "bg-transparent"
         }`}
       >
         <img src={groomImg} />

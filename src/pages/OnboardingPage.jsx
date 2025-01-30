@@ -30,7 +30,7 @@ const OnboardingPage = () => {
             </svg>
           </button>
         )}
-        <h1 className="text-xl font-medium text-center w-full">
+        <h1 className="text-xl text-red-300 font-medium text-center w-full">
           일정 수립하기
         </h1>
       </header>
