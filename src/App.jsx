@@ -15,6 +15,8 @@ import OnboardingPage from "./pages/OnboardingPage";
 import PrepareSearchPage from "./pages/PrepareSearchPage";
 import WishPage from "./pages/WishPage";
 import ScheduleDetailPage from "./pages/ScheduleDetailPage";
+import AllchatMolecule from "./molecules/ChatRoomMolecules/AllchatMolecule";
+import MychatMolecule from "./molecules/ChatRoomMolecules/mychatMolecule";
 
 function App() {
   return (
@@ -38,7 +40,10 @@ function App() {
             path="/schedule/todos/detail/*"
             element={<ScheduleDetailPage />}
           />
-          <Route path="/chat/*" element={<ChatRoomPage />} />
+          <Route path="/chat" element={<ChatRoomPage />}>
+            <Route path="allchat" element={<AllchatMolecule />} />
+            <Route path="mychat" element={<MychatMolecule />} />
+          </Route>
           <Route path="/shop" element={<PrepareMainPage />}>
             <Route path="search" element={<PrepareSearchPage />} />
           </Route>
