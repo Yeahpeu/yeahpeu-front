@@ -5,7 +5,7 @@ const MyChatBox = ({ owner, message }) => {
   };
   return (
     <div className={`${colorVariants[owner]}`}>
-      <span>{message}</span>;
+      <span>{message}</span>
     </div>
   );
 };

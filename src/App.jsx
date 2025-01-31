@@ -5,6 +5,7 @@ import NavMolecule from "./molecules/NavMolecule";
 import HomePage from "./pages/HomePage";
 import SchedulePage from "./pages/SchedulePage";
 import ChatRoomPage from "./pages/ChatRoomPage";
+import ChatPage from "./pages/ChatPage";
 import PrepareMainPage from "./pages/PrepareMainPage";
 import CalendarMolecule from "./molecules/CalendarMolecule";
 import TodosMolecule from "./molecules/TodosMolecule";
@@ -40,10 +41,13 @@ function App() {
             path="/schedule/todos/detail/*"
             element={<ScheduleDetailPage />}
           />
-          <Route path="/chat" element={<ChatRoomPage />}>
+
+          <Route path="/chat" element={<ChatPage />}>
             <Route path="allchat" element={<AllchatMolecule />} />
             <Route path="mychat" element={<MychatMolecule />} />
           </Route>
+          <Route path="/chat/mychat/rooms/:roomId" element={<ChatRoomPage />} />
+
           <Route path="/shop" element={<PrepareMainPage />}>
             <Route path="search" element={<PrepareSearchPage />} />
           </Route>
