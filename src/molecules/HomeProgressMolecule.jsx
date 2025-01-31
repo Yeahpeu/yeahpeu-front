@@ -1,4 +1,4 @@
-import MyProgressBar from "../components/MyProgressBar";
+import MyProgressBar from "../components/Cards/MyProgressBar";
 
 const HomeProgressMolecule = ({ marriagePercent }) => {
   return (

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "./axiosInstance";
-import useAuthStore from "../stores/authStore";
+import { useAuthStore } from "../stores/authStore";
 
 export const useLoginMutation = () => {
   const { setLoggedIn, setEmail, setPassword } = useAuthStore();
@@ -23,5 +23,3 @@ export const useLoginMutation = () => {
     },
   });
 };
-
-export const useSignupMutation = () => {};

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const useAuthStore = create((set) => ({
+export const useAuthStore = create((set) => ({
   username: "",
   email: "",
   password: "",
@@ -10,7 +10,6 @@ const useAuthStore = create((set) => ({
   isPasswordMatch: true,
   isVerified: false,
   isLoggedIn: false,
-  timer: 0,
 
   setUsername: (username) => set({ username }),
   setEmail: (email) =>
@@ -31,7 +30,6 @@ const useAuthStore = create((set) => ({
   setConfirmPassword: (confirmPassword, password) =>
     set({ confirmPassword, isPasswordMatch: confirmPassword === password }),
   setTimer: (timer) => set({ timer }),
-  setVerified: (isVerified) => set({ isVerified }),
   setLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
 
   // sendVerificationCode: async (email) => {
@@ -94,4 +92,32 @@ const useAuthStore = create((set) => ({
   // },
 }));
 
-export default useAuthStore;
+export const useSignupStore = create((set) => {
+  return {
+    emailAddress: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+    authCode: "",
+    isEmailValid: false,
+    isPasswordValid: true,
+    isPasswordMatch: true,
+    isVerified: false,
+    isSended: false,
+
+    setEmailAddress: (emailAddress) =>
+      set({
+        emailAddress,
+        isEmailValid: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+          emailAddress
+        ),
+      }),
+    setUsername: (username) => set({ username }),
+    setPassword: (password) => set({ password }),
+    setConfirmPassword: (confirmPassword, password) =>
+      set({ confirmPassword, isPasswordMatch: confirmPassword === password }),
+    setVerified: (isVerified) => set({ isVerified }),
+    setAuthCode: (authCode) => set({ authCode }),
+    setStatus: (isSended) => ({ isSended }),
+  };
+});

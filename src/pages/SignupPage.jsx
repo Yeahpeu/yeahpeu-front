@@ -2,11 +2,11 @@ import SignupMolecule from "../molecules/SignupMolecule";
 
 const SignupPage = () => {
   return (
-    <div>
-      <h2 className="text-xl font-bold text-center text-red-200 mt-2">
+    <div className="animate-fadeIn">
+      <h2 className="text-xl font-bold text-center text-red-200 mt-2 p-8">
         회원가입
       </h2>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center p-8">
         <SignupMolecule />
       </div>
       <div>

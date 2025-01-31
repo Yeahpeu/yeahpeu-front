@@ -27,7 +27,6 @@ const CalendarMolecule = () => {
       Completed: true,
     },
   ];
-
   // 선택한 날짜의 이벤트 필터링
   const filteredEvents = selectedDate
     ? events.filter((event) => {
@@ -54,7 +53,11 @@ const CalendarMolecule = () => {
           )}
         </div>
       )}
-      <div className={"items-center border w-8 rounded-full"}>
+      <div
+        className={
+          "flex items-center justify-center border w-8 h-8 rounded-full"
+        }
+      >
         <MyAddButton />
       </div>
     </div>

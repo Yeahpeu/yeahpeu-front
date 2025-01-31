@@ -56,7 +56,11 @@ const MyCalendar = ({ events = [], setSelectedDate }) => {
               key={index}
               className={`relative p-2 text-gray-800 rounded-lg w-10 h-10 flex items-center justify-center  
 
-              ${!isCurrentMonth ? "text-gray-400 opacity-50 pointer-events-none" : "cursor-pointer active:bg-red-200 hover:bg-red-100"}`}
+              ${
+                !isCurrentMonth
+                  ? "text-gray-400 opacity-50 pointer-events-none"
+                  : "cursor-pointer active:bg-red-200 hover:bg-red-100"
+              }`}
               onClick={() =>
                 isCurrentMonth && setSelectedDate(day.format("YYYY-MM-DD"))
               }

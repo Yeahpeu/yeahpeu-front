@@ -1,43 +1,43 @@
-import { useState } from "react";
-import useAuthStore from "../stores/authStore";
+import { useSignupStore } from "../stores/authStore";
 import MyInputPink from "../components/common/MyInput-pink";
 import MyButton from "../components/common/MyButton";
+import {
+  useConfirmMutation,
+  useSignupMutation,
+  useVerifyMutation,
+} from "../api/signupAPI";
 
 const SignupMolecule = () => {
+  const signupMutation = useSignupMutation();
+  const verifyMutation = useVerifyMutation();
+  const confirmMutation = useConfirmMutation();
   const {
     username,
-    email,
+    emailAddress,
     password,
     confirmPassword,
+    authCode,
     isEmailValid,
     isPasswordValid,
     isPasswordMatch,
     isVerified,
-    timer,
     setUsername,
-    setEmail,
+    setEmailAddress,
     setPassword,
     setConfirmPassword,
-    sendVerificationCode,
-    verifyCode,
-  } = useAuthStore();
-
-  const [verificationCode, setVerificationCode] = useState("");
+    setAuthCode,
+  } = useSignupStore();
 
   const handleSignup = () => {
-    if (!username) {
-      alert("이름을 입력해주세요.");
-      return;
-    }
-    if (!isVerified) {
-      alert("이메일 인증을 완료해주세요.");
-      return;
-    }
-    if (!isPasswordValid || !isPasswordMatch) {
-      alert("비밀번호를 확인해주세요.");
-      return;
-    }
-    alert("회원가입 성공!");
+    const userInfo = { emailAddress, username, password };
+    signupMutation.mutate(userInfo);
+  };
+  const handleVerify = () => {
+    verifyMutation.mutate(emailAddress);
+  };
+  const handleConfirm = () => {
+    const authCodeSet = { emailAddress, authCode };
+    confirmMutation.mutate(authCodeSet);
   };
 
   return (
@@ -59,18 +59,18 @@ const SignupMolecule = () => {
             <MyInputPink
               placeholder="이메일 주소"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={emailAddress}
+              onChange={(e) => setEmailAddress(e.target.value)}
             />
           </div>
           <div>
             <MyButton
-              value={timer > 0 ? `재전송 (${timer}s)` : "인증번호 전송"}
+              value={"인증번호 전송"}
               color="abled"
-              disabled={timer > 0}
-              onClick={() => sendVerificationCode(email)}
+              disabled={isVerified}
+              onClick={handleVerify}
             />
-            {!isEmailValid && email.length > 0 && (
+            {!isEmailValid && emailAddress.length > 0 && (
               <p className="text-red-500 text-sm">
                 올바른 이메일 형식이 아닙니다.
               </p>
@@ -82,16 +82,16 @@ const SignupMolecule = () => {
           <MyInputPink
             placeholder="인증번호"
             type="text"
-            value={verificationCode}
-            onChange={(e) => setVerificationCode(e.target.value)}
-            disabled={timer === 0 || isVerified}
+            value={authCode}
+            onChange={(e) => setAuthCode(e.target.value)}
+            disabled={isVerified}
           />
           <div className="w-1/2">
             <MyButton
               value="인증"
               color="abled"
-              disabled={timer === 0 || isVerified}
-              onClick={() => verifyCode(email, verificationCode)}
+              disabled={isVerified}
+              onClick={handleConfirm}
             />
           </div>
         </div>

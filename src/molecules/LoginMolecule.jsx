@@ -1,4 +1,4 @@
-import useAuthStore from "../stores/authStore";
+import { useAuthStore } from "../stores/authStore";
 import MyInputWhite from "../components/common/MyInput-white";
 import MyButton from "../components/common/MyButton";
 import { useLoginMutation } from "../api/authAPI";

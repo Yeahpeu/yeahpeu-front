@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import OnboardingProgressMolecule from "../molecules/OnboardingProgressMolecule";
 import OnboardingSelectionMolecule from "../molecules/OnboardingSelectionMolecule";

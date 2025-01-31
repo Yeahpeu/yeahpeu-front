@@ -1,7 +1,7 @@
 const MyBudgetCard = ({ total, expend, balance, onClick }) => {
   return (
     <div
-      className="bg-white rounded-lg shadow-lg p-6 w-96 border space-y-4"
+      className="bg-white rounded-lg shadow-lg p-6 w-full border"
       onClick={onClick}
     >
       <div className="flex justify-between font-bold text-lg">
@@ -15,8 +15,11 @@ const MyBudgetCard = ({ total, expend, balance, onClick }) => {
           <span>{expend.toLocaleString()} 원</span>
         </div>
         <div
-          className={`flex justify-between font-bold ${balance >= 0 ? "text-blue-500" : "text-red-500"}`}
+          className={`flex justify-between font-bold ${
+            balance >= 0 ? "text-blue-500" : "text-red-500"
+          }`}
         >
+          {/* //FIXME - 남은 일정 프론트에서 계산하기로 했음!! 이거 고쳐야함~~ */}
           <span>{balance >= 0 ? "남은 금액" : "초과 금액"}</span>
           <span>{balance.toLocaleString()} 원</span>
         </div>
