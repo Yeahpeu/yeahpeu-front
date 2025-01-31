@@ -3,8 +3,8 @@ import { useTabStore } from "../../stores/commonStore";
 import { Link, useLocation } from "react-router-dom";
 
 const MyTab = ({ leftValue, rightValue, leftTo, rightTo }) => {
-  // const [activeTab, setActiveTab] = useState(`${leftValue}`);
-  const { activeTab, setActiveTab } = useTabStore();
+  const [activeTab, setActiveTab] = useState(`${leftValue}`);
+  // const { activeTab, setActiveTab } = useTabStore();
 
   return (
     <div className="flex mx-8 items-center justify-center bg-gray-100 p-2 rounded-lg shadow-inner shadow-slate-300 my-4">
