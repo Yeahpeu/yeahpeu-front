@@ -23,6 +23,11 @@ const MyNav = () => {
     return null;
   }
 
+  // 채팅방에서 nav바를 없애기 위한 코드
+  if (location.pathname.startsWith("/chat/mychat/rooms/")) {
+    return null;
+  }
+
   const navItems = [
     { id: 0, tab: "홈", label: "home", icon: <HomeIcon /> },
     {
@@ -31,10 +36,7 @@ const MyNav = () => {
       label: "schedule/calendar",
       icon: <CalendarIcon />,
     },
-    { id: 2, 
-      tab: "채팅", 
-      label: "chat/allchat", 
-      icon: <ChatIcon /> },
+    { id: 2, tab: "채팅", label: "chat/allchat", icon: <ChatIcon /> },
     { id: 3, tab: "쇼핑", label: "shop", icon: <ShopIcon /> },
   ];
 

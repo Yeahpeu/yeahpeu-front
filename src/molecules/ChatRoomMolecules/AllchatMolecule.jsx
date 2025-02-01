@@ -8,6 +8,7 @@ import emptyImg from "../../assets/emptybox.png";
 
 const AllchatMolecule = () => {
   const navigate = useNavigate();
+  const [isExiting, setIsExiting] = useState(false);
 
   const dummychat = {
     items: [
@@ -59,18 +60,6 @@ const AllchatMolecule = () => {
     ],
   };
 
-  const [selectedDate, setSelectedDate] = useState(
-    moment().format("YYYY-MM-DD")
-  );
-
-  // 선택한 날짜의 이벤트 필터링
-  // const filteredEvents = selectedDate
-  //   ? events.filter((event) => {
-  //       const eventDate = new Date(event.date);
-  //       return eventDate.toISOString().split("T")[0] === selectedDate;
-  //     })
-  //   : [];
-
   const handleChatCardClick = (roomId) => {
     console.log(`채팅방 ID ${roomId} 클릭됨`);
     navigate(`/chat/mychat/rooms/${roomId}`);
@@ -78,42 +67,47 @@ const AllchatMolecule = () => {
 
   return (
     <div>
-      {dummychat.items && dummychat.items.length > 0 ? (
-        dummychat.items.map((item) => (
-          <div key={item.id} onClick={() => handleChatCardClick(item.id)}>
-            <div className="cursor-pointer active:bg-red-100 hover:bg-red-50">
-              <MyChatCard
-                roomTitle={item.title}
-                currentMember="500"
-                maxMember="1000"
-                imgSrc="https://edu.ssafy.com/asset/images/header-logo.jpg" // 필요에 따라 동적으로 변경 가능
-                lastMessageText={item.lastMessage.text}
-                unseenMessageCount={item.unseenMessageCount}
-                onClick={() => handleChatCardClick(item.id)} // 추가적인 클릭 핸들러 로직을 여기에 작성할 수 있습니다.
-              />
+      <div className="">
+        <MySearchBar />
+      </div>
+      <div className="">
+        {dummychat.items && dummychat.items.length > 0 ? (
+          dummychat.items.map((item) => (
+            <div key={item.id} onClick={() => handleChatCardClick(item.id)}>
+              <div className="cursor-pointer active:bg-red-100 hover:bg-red-50">
+                <MyChatCard
+                  roomTitle={item.title}
+                  currentMember="500"
+                  maxMember="1000"
+                  imgSrc="https://edu.ssafy.com/asset/images/header-logo.jpg" // 필요에 따라 동적으로 변경 가능
+                  lastMessageText={item.lastMessage.text}
+                  unseenMessageCount={item.unseenMessageCount}
+                  onClick={() => handleChatCardClick(item.id)} // 추가적인 클릭 핸들러 로직을 여기에 작성할 수 있습니다.
+                />
+              </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <div className="flex flex-col items-center justify-center mt-10">
-          {/* 기본 이미지 표시 */}
-          <img
-            src={emptyImg} // 로컬 이미지 사용 시
-            alt="채팅방 없음"
-            className="w-[70%] mb-4"
-          />
-          {/* 또는 외부 이미지 URL 사용 시 */}
-          {/* <img
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center mt-10">
+            {/* 기본 이미지 표시 */}
+            <img
+              src={emptyImg} // 로컬 이미지 사용 시
+              alt="채팅방 없음"
+              className="w-[70%] mb-4"
+            />
+            {/* 또는 외부 이미지 URL 사용 시 */}
+            {/* <img
             src="https://via.placeholder.com/150?text=No+Chat+Rooms"
             alt="채팅방 없음"
             className="w-32 h-32 mb-4"
           /> */}
-          <p className="text-black-500 text-6xl">텅</p>
-          <p className="text-gray-500 text-lg">
-            현재 이용 가능한 채팅방이 없습니다.
-          </p>
-        </div>
-      )}
+            <p className="text-black-500 text-6xl">텅</p>
+            <p className="text-gray-500 text-lg">
+              현재 이용 가능한 채팅방이 없습니다.
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
