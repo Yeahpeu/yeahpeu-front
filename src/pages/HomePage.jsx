@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import HeaderMolecule from "../molecules/HeaderMolecule";
 import HomeBudgetMolecule from "../molecules/HomeBudgetMolecule";
 import HomeProgressMolecule from "../molecules/HomeProgressMolecule";
@@ -5,6 +6,9 @@ import HomeTodosMolecule from "../molecules/HomeTodosMolecule";
 import QuotesMolecule from "../molecules/QuotesMolecule";
 
 const HomePage = () => {
+  useEffect(() => {
+    console.log(document.cookie);
+  }, []);
   const KST = new Date();
 
   return (

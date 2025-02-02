@@ -14,9 +14,7 @@ export const useLoginMutation = () => {
 
     onSuccess: () => {
       setLoggedIn(true);
-      setEmail("");
-      setPassword("");
-      navigate("/home", { replace: "true" });
+      navigate("/home");
     },
     onError: (error) => {
       alert(error, "로그인 실패");
