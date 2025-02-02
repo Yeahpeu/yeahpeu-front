@@ -1,9 +1,17 @@
-const MyAddButton = ({ isCompleted, onClick }) => {
+import { useNavigate } from 'react-router-dom';
+
+const MyAddButton = ({ isCompleted }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/schedule/todos/input');
+  };
+
   return (
     <div
       role="button"
       aria-checked={isCompleted}
-      onClick={onClick}
+      onClick={handleClick}
       className="cursor-pointer flex items-center justify-center w-8 h-8"
     >
       <svg

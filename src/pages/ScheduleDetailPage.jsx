@@ -1,9 +1,11 @@
-import ScheduleDetailMolecule from "../molecules/ScheduleDetailMolecule";
+import ScheduleDetailMolecule from "../molecules/EventsMolecules/ScheduleDetailMolecule";
 
 const ScheduleDetailPage = () => {
-  <div>
-    <ScheduleDetailMolecule />
-  </div>;
+  return (
+    <div className="p-8">
+      <ScheduleDetailMolecule />
+    </div>
+  );
 };
 
 export default ScheduleDetailPage;

@@ -6,8 +6,8 @@ import HomePage from "./pages/HomePage";
 import SchedulePage from "./pages/SchedulePage";
 import ChatRoomPage from "./pages/ChatRoomPage";
 import PrepareMainPage from "./pages/PrepareMainPage";
-import CalendarMolecule from "./molecules/CalendarMolecule";
-import TodosMolecule from "./molecules/TodosMolecule";
+import CalendarMolecule from "./molecules/EventsMolecules/CalendarMolecule";
+import TodosMolecule from "./molecules/EventsMolecules/TodosMolecule";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import RegistrationStatusPage from "./pages/RegistrationStatusPage";
@@ -17,6 +17,8 @@ import WishPage from "./pages/WishPage";
 import ScheduleDetailPage from "./pages/ScheduleDetailPage";
 import AllchatMolecule from "./molecules/ChatRoomMolecules/AllchatMolecule";
 import MychatMolecule from "./molecules/ChatRoomMolecules/mychatMolecule";
+import ScheduleInputPage from "./pages/ScheduleInputPage";
+import ScheduleEditPage from "./pages/ScheduleEditPage";
 
 function App() {
   return (
@@ -37,9 +39,14 @@ function App() {
             <Route path="todos" element={<TodosMolecule />} />
           </Route>
           <Route
-            path="/schedule/todos/detail/*"
+            path="/schedule/todos/detail/:id"
             element={<ScheduleDetailPage />}
           />
+          <Route
+            path="/schedule/todos/edit/:id"
+            element={<ScheduleEditPage />}
+          />
+          <Route path="/schedule/todos/input" element={<ScheduleInputPage />} />
           <Route path="/chat" element={<ChatRoomPage />}>
             <Route path="allchat" element={<AllchatMolecule />} />
             <Route path="mychat" element={<MychatMolecule />} />

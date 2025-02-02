@@ -14,7 +14,7 @@ const PrepareMainPage = () => {
   };
 
   return (
-    <div>
+    <div className="p-8">
       <MySearchBox value={query} setValue={setQuery} onSearch={handleSearch} />
       <WishInfoMolecule />
       <MyWishSmallCard images={[]} />
