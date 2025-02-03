@@ -1,8 +1,8 @@
 import SignupMolecule from "../molecules/SignupMolecule";
-
+import { Link } from "react-router-dom";
 const SignupPage = () => {
   return (
-    <div className="animate-fadeIn">
+    <div className="">
       <h2 className="text-xl font-bold text-center text-red-200 mt-2 p-8">
         회원가입
       </h2>
@@ -11,9 +11,9 @@ const SignupPage = () => {
       </div>
       <div>
         이미 계정이 있나요?
-        <a href="/login" className="text-blue-500 ml-3 mt-6">
+        <Link to="/login" className="text-blue-500 ml-3 mt-6">
           로그인
-        </a>
+        </Link>
       </div>
     </div>
   );

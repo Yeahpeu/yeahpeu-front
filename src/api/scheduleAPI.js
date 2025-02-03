@@ -75,7 +75,9 @@ export const useCreateScheduleMutation = () => {
     },
     onError: (error) => {
       console.log(
-        `스케줄 추가 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
+        `스케줄 추가 실패: ${
+          error.response?.data?.message || "알 수 없는 오류"
+        }`
       );
       console.error(error);
     },
@@ -101,7 +103,9 @@ export const useUpdateScheduleMutation = () => {
     },
     onError: (error) => {
       console.log(
-        `스케줄 수정 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
+        `스케줄 수정 실패: ${
+          error.response?.data?.message || "알 수 없는 오류"
+        }`
       );
       console.error(error);
     },
