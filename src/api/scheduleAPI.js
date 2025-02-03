@@ -4,16 +4,20 @@ import { useScheduleStore } from "../stores/scheduleStore";
 
 // 스케줄 범위 조회
 export const useSchedules = () => {
-  const today = new Date(); // 오늘
+  const today = new Date();
   const threeYearsLater = new Date();
-  threeYearsLater.setFullYear(today.getFullYear() + 3); // 3년
+  threeYearsLater.setFullYear(today.getFullYear() + 3);
 
-  const formatDate = (date) => date.toISOString().split("T")[0];
-
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ("0" + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  };
   return useQuery({
     queryKey: ["schedules", formatDate(today), formatDate(threeYearsLater)],
     queryFn: async () => {
-      const response = await axiosInstance.get("/api/v1/wedding/schedules", {
+      const response = await axiosInstance.get("/api/v1/wedding/events", {
         params: {
           startDate: formatDate(today),
           endDate: formatDate(threeYearsLater),
@@ -38,7 +42,7 @@ export const useScheduleDetail = (scheduleId) => {
     queryKey: ["schedule", scheduleId],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `/api/v1/wedding/schedules/${scheduleId}`
+        `/api/v1/wedding/events/${scheduleId}`
       );
       return response.data;
     },
@@ -60,7 +64,7 @@ export const useCreateScheduleMutation = () => {
   return useMutation({
     mutationFn: async (newSchedule) => {
       const response = await axiosInstance.post(
-        "/api/v1/wedding/schedules",
+        "/api/v1/wedding/events",
         newSchedule
       );
       return response.data;
@@ -85,7 +89,7 @@ export const useUpdateScheduleMutation = () => {
   return useMutation({
     mutationFn: async ({ id, updatedData }) => {
       const response = await axiosInstance.put(
-        `/api/v1/wedding/schedules/${id}`,
+        `/api/v1/wedding/events/${id}`,
         updatedData
       );
       return response.data;

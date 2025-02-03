@@ -1,11 +1,11 @@
 import { STEP_DATA, STEP_KEYS } from "../stepData"; // STEP_DATA 임포트
 
-export const findCategoryNames = (mainCategoryId, subCategoryId) => {
+export const findCategoryNames = (mainCategoryId, subcategoryId) => {
   for (const key of STEP_KEYS) {
     const category = STEP_DATA[key];
     if (category.id === mainCategoryId) {
       const subCategory = category.options.find(
-        (option) => option.id === subCategoryId
+        (option) => option.id === subcategoryId
       );
       return {
         mainCategoryName: category.title,

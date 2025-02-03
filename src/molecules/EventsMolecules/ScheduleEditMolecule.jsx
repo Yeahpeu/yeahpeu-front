@@ -17,7 +17,7 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
     location: event.location,
     price: event.price,
     mainCategoryId: event.mainCategoryId,
-    subCategoryId: event.subCategoryId,
+    subcategoryId: event.subcategoryId,
   });
 
   const [subCategories, setSubCategories] = useState([]);
@@ -37,7 +37,7 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
     setFormData((prev) => ({
       ...prev,
       [name]: name === "mainCategoryId" ? Number(parsedValue) : parsedValue,
-      ...(name === "mainCategoryId" && { subCategoryId: null }), // 메인 카테고리 변경 시 서브 초기화
+      ...(name === "mainCategoryId" && { subcategoryId: null }), // 메인 카테고리 변경 시 서브 초기화
     }));
   };
 
@@ -143,8 +143,8 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
             </select>
 
             <select
-              name="subCategoryId"
-              value={formData.subCategoryId || ""}
+              name="subcategoryId"
+              value={formData.subcategoryId || ""}
               onChange={handleChange}
               className="border border-gray-300 rounded-md p-2 w-1/2"
               disabled={!formData.mainCategoryId}
