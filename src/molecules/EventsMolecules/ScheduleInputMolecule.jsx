@@ -6,6 +6,7 @@ import {
 } from "../../api/scheduleAPI";
 import { convertUTC } from "../../data/util/timeUtils";
 import { findCategoryNames } from "../../data/util/findCategoryNames";
+import { useNavigate } from "react-router-dom";
 
 const INITIAL_FORM_DATA = {
   title: "",
@@ -20,6 +21,8 @@ const INITIAL_FORM_DATA = {
 const ScheduleInputMolecule = ({ onCancel }) => {
   const { mutate: createSchedule } = useCreateScheduleMutation();
   const { data: customCategories = [] } = useCategories();
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
   const [subCategories, setSubCategories] = useState([]);
@@ -62,6 +65,7 @@ const ScheduleInputMolecule = ({ onCancel }) => {
           `일정 추가 성공: ${categoryNames.mainCategoryName} - ${categoryNames.subCategoryName}`
         );
         if (onCancel) onCancel();
+        navigate(-1);
       },
       onError: (error) => {
         console.log("일정 추가 실패", error);
