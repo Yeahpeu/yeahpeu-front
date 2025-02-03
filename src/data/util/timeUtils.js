@@ -7,13 +7,15 @@ export const convertUTC = (date, time) => {
 // UTC -> KST 변환
 export const convertKST = (utcDateTime) => {
   const date = new Date(utcDateTime);
+
   const kstDate = date
     .toLocaleDateString("ko-KR", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
     })
-    .replace(/\s[오전|오후].*$/, "");
+    .replace(/\.\s?/g, "-")
+    .replace(/-$/, "");
 
   const kstTime = date.toLocaleTimeString("ko-KR", {
     hour: "2-digit",

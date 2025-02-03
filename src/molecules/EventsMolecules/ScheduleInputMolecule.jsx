@@ -18,7 +18,7 @@ const INITIAL_FORM_DATA = {
   subcategoryId: 0,
 };
 
-const ScheduleInputMolecule = ({ onCancel }) => {
+const ScheduleInputMolecule = () => {
   const { mutate: createSchedule } = useCreateScheduleMutation();
   const { data: customCategories = [] } = useCategories();
 
@@ -64,7 +64,6 @@ const ScheduleInputMolecule = ({ onCancel }) => {
         console.log(
           `일정 추가 성공: ${categoryNames.mainCategoryName} - ${categoryNames.subCategoryName}`
         );
-        if (onCancel) onCancel();
         navigate(-1);
       },
       onError: (error) => {
@@ -77,7 +76,7 @@ const ScheduleInputMolecule = ({ onCancel }) => {
     <div className="w-full mx-auto bg-white text-left mb-3">
       <div className="flex items-center justify-between mb-4">
         <button
-          onClick={onCancel}
+          onClick={() => navigate(-1)}
           className="text-gray-600 mr-2 text-base w-12"
         >
           &lt;

@@ -17,15 +17,13 @@ const CalendarMolecule = () => {
 
   const { data: apiSchedules = [] } = useMonthSchedules(startDate, endDate);
 
-  // ✅ 중복 데이터 방지 및 초기화 개선
+  // 중복 데이터 방지 및 초기화 개선
   useEffect(() => {
     if (apiSchedules.length > 0) {
-      // 기존 일정이 없을 때만 초기화
       if (schedules.length === 0) {
         resetSchedules();
       }
 
-      // 스케줄 중복 방지
       apiSchedules.forEach((schedule) => {
         const exists = schedules.some((s) => s.id === schedule.id);
         if (!exists) {
@@ -40,11 +38,11 @@ const CalendarMolecule = () => {
     : [];
 
   return (
-    <div className="w-full p-4 flex flex-col items-center justify-center">
+    <div className="w-full flex flex-col items-center justify-center">
       <MyCalendar setSelectedDate={setSelectedDate} />
 
       {selectedDate && (
-        <div className="mt-8">
+        <div className="mt-8 w-full">
           {filteredEvents.length > 0 ? (
             filteredEvents.map((event) => (
               <MyScheduleCard key={event.id} event={event} />

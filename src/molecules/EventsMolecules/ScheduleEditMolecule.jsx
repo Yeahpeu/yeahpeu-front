@@ -1,46 +1,61 @@
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import MyInputWhite from "../../components/common/MyInput-white";
-import { useCategories } from "../../api/scheduleAPI"; //  카테고리 API 추가
-import { useScheduleStore } from "../../stores/scheduleStore";
+import {
+  useCategories,
+  useScheduleDetail,
+  useUpdateScheduleMutation,
+} from "../../api/scheduleAPI";
 import { convertUTC, convertKST } from "../../data/util/timeUtils";
 
-const ScheduleEditMolecule = ({ event, onCancel }) => {
-  const updateSchedule = useScheduleStore((state) => state.updateSchedule);
-  const { data: customCategories = [] } = useCategories(); //  카테고리 데이터 호출
-
-  const { date: initialDate, time: initialTime } = convertKST(event.date);
+const ScheduleEditMolecule = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { data: event, isLoading, error } = useScheduleDetail(id);
+  const { data: customCategories = [] } = useCategories();
+  const updateScheduleMutation = useUpdateScheduleMutation();
 
   const [formData, setFormData] = useState({
-    title: event.title,
-    date: initialDate,
-    time: initialTime,
-    location: event.location,
-    price: event.price,
-    mainCategoryId: event.mainCategoryId,
-    subcategoryId: event.subcategoryId,
+    title: "",
+    date: "",
+    time: "",
+    location: "",
+    price: 0,
+    mainCategoryId: "",
+    subcategoryId: "",
   });
-
   const [subCategories, setSubCategories] = useState([]);
 
-  // 메인 카테고리 변경 시 서브 카테고리 업데이트
+  // 초기 데이터 설정
   useEffect(() => {
-    const selectedCategory = customCategories.find(
-      (category) => Number(category.id) === Number(formData.mainCategoryId)
-    );
-    setSubCategories(selectedCategory ? selectedCategory.children : []);
+    if (event && !formData.date) {
+      const { date: initialDate, time: initialTime } = event.date
+        ? convertKST(event.date)
+        : { date: "", time: "" };
+
+      setFormData({
+        title: event.title || "",
+        date: initialDate,
+        time: initialTime,
+        location: event.location || "",
+        price: event.price || 0,
+        mainCategoryId: event.mainCategoryId || "",
+        subcategoryId: event.subcategoryId || "",
+      });
+    }
+  }, [event, formData.date]);
+
+  // 서브 카테고리 설정
+  useEffect(() => {
+    if (formData.mainCategoryId && customCategories.length > 0) {
+      const selectedCategory = customCategories.find(
+        (category) => Number(category.id) === Number(formData.mainCategoryId)
+      );
+      setSubCategories(selectedCategory ? selectedCategory.children : []);
+    }
   }, [formData.mainCategoryId, customCategories]);
 
-  const handleChange = (e) => {
-    const { name, value, type } = e.target;
-    const parsedValue = type === "number" ? Number(value) : value;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "mainCategoryId" ? Number(parsedValue) : parsedValue,
-      ...(name === "mainCategoryId" && { subcategoryId: null }), // 메인 카테고리 변경 시 서브 초기화
-    }));
-  };
-
+  // 수정된 데이터 저장
   const handleSubmit = () => {
     const utcDateTime = convertUTC(formData.date, formData.time);
 
@@ -49,15 +64,35 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
       date: utcDateTime,
     };
 
-    updateSchedule(event.id, updatedData);
-    onCancel();
+    updateScheduleMutation.mutate(
+      { id, updatedData },
+      {
+        onSuccess: () => {
+          alert("일정이 성공적으로 수정되었습니다.");
+          navigate(-1);
+        },
+        onError: (err) => {
+          alert(
+            `수정 실패: ${err.response?.data?.message || "알 수 없는 오류"}`
+          );
+        },
+      }
+    );
   };
+
+  if (isLoading) return <div className="text-center">로딩 중...</div>;
+  if (error)
+    return (
+      <div className="text-center text-red-500">
+        ❌ 오류 발생: {error.message}
+      </div>
+    );
 
   return (
     <div className="w-full mx-auto bg-white text-left mb-3">
       <div className="flex items-center justify-between mb-4">
         <button
-          onClick={onCancel}
+          onClick={() => navigate(-1)}
           className="text-gray-600 mr-2 text-base w-12"
         >
           &lt;
@@ -66,7 +101,7 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
           type="text"
           name="title"
           value={formData.title}
-          onChange={handleChange}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           placeholder="제목"
           className="border-gray-300 flex-grow mx-2"
         />
@@ -87,7 +122,7 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
             type="date"
             name="date"
             value={formData.date}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
             className="border border-gray-300 rounded-md p-2 w-full"
           />
         </div>
@@ -98,7 +133,7 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
             type="time"
             name="time"
             value={formData.time}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, time: e.target.value })}
             className="border border-gray-300 rounded-md p-2 w-full"
           />
         </div>
@@ -109,7 +144,9 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
             type="text"
             name="location"
             value={formData.location}
-            onChange={handleChange}
+            onChange={(e) =>
+              setFormData({ ...formData, location: e.target.value })
+            }
             className="border border-gray-300 rounded-md p-2 w-full"
           />
         </div>
@@ -120,7 +157,9 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
             type="number"
             name="price"
             value={formData.price}
-            onChange={handleChange}
+            onChange={(e) =>
+              setFormData({ ...formData, price: Number(e.target.value) })
+            }
             className="border border-gray-300 rounded-md p-2 w-full"
           />
         </div>
@@ -130,8 +169,14 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
           <div className="flex gap-2 w-full">
             <select
               name="mainCategoryId"
-              value={formData.mainCategoryId || ""}
-              onChange={handleChange}
+              value={formData.mainCategoryId}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  mainCategoryId: Number(e.target.value),
+                  subcategoryId: "", // 메인 카테고리 변경 시 서브 초기화
+                })
+              }
               className="border border-gray-300 rounded-md p-2 w-1/2"
             >
               <option value="">메인 카테고리</option>
@@ -144,8 +189,10 @@ const ScheduleEditMolecule = ({ event, onCancel }) => {
 
             <select
               name="subcategoryId"
-              value={formData.subcategoryId || ""}
-              onChange={handleChange}
+              value={formData.subcategoryId}
+              onChange={(e) =>
+                setFormData({ ...formData, subcategoryId: e.target.value })
+              }
               className="border border-gray-300 rounded-md p-2 w-1/2"
               disabled={!formData.mainCategoryId}
             >
