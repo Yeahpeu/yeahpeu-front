@@ -6,6 +6,7 @@ import {
   useSignupMutation,
   useVerifyMutation,
 } from "../api/signupAPI";
+import { useState } from "react";
 
 const SignupMolecule = () => {
   const signupMutation = useSignupMutation();
@@ -27,6 +28,8 @@ const SignupMolecule = () => {
     setConfirmPassword,
     setAuthCode,
   } = useSignupStore();
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [countdown, setCountdown] = useState(30);
 
   const handleSignup = () => {
     const userInfo = { emailAddress, username, password };
@@ -34,6 +37,21 @@ const SignupMolecule = () => {
   };
   const handleVerify = () => {
     verifyMutation.mutate(emailAddress);
+    setIsTimerActive(true);
+    setCountdown(30);
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setIsTimerActive(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
   };
   const handleConfirm = () => {
     const authCodeSet = { emailAddress, authCode };
@@ -65,9 +83,9 @@ const SignupMolecule = () => {
           </div>
           <div>
             <MyButton
-              value={"인증번호 전송"}
-              color="abled"
-              disabled={isVerified}
+              value={isTimerActive ? `재전송 ${countdown}초` : "인증번호 전송"}
+              color={isTimerActive ? "disabled" : "abled"}
+              disabled={isVerified || isTimerActive}
               onClick={handleVerify}
             />
             {!isEmailValid && emailAddress.length > 0 && (
@@ -88,8 +106,8 @@ const SignupMolecule = () => {
           />
           <div className="w-1/2">
             <MyButton
-              value="인증"
-              color="abled"
+              value={isVerified ? "인증완료" : "인증"}
+              color={isVerified ? "disabled" : "abled"}
               disabled={isVerified}
               onClick={handleConfirm}
             />
