@@ -33,6 +33,12 @@ const ChatRoomPage = () => {
     messagesEndRef.current?.scrollIntoView();
   }, [messages]);
 
+  useEffect(() => {
+    if (RoomMessages && RoomMessages.items) {
+      setMessages(RoomMessages.items);
+    }
+  }, [RoomMessages]);
+
   // 컴포넌트가 마운트될 때 웹소켓 연결
   useEffect(() => {
     // SockJS 엔드포인트 (스프링 서버의 엔드포인트 URL에 맞게 수정)
