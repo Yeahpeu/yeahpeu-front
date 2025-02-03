@@ -6,9 +6,7 @@ import HomeTodosMolecule from "../molecules/HomeTodosMolecule";
 import QuotesMolecule from "../molecules/QuotesMolecule";
 
 const HomePage = () => {
-  useEffect(() => {
-    console.log(document.cookie);
-  }, []);
+  useEffect(() => {}, []);
   const KST = new Date();
 
   return (

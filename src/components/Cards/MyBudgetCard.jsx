@@ -1,4 +1,5 @@
-const MyBudgetCard = ({ total, expend, balance, onClick }) => {
+const MyBudgetCard = ({ total, expend, onClick }) => {
+  const balance = total - expend;
   return (
     <div
       className="bg-white rounded-lg shadow-lg p-6 w-full border"
@@ -19,7 +20,6 @@ const MyBudgetCard = ({ total, expend, balance, onClick }) => {
             balance >= 0 ? "text-blue-500" : "text-red-500"
           }`}
         >
-          {/* //FIXME - 남은 일정 프론트에서 계산하기로 했음!! 이거 고쳐야함~~ */}
           <span>{balance >= 0 ? "남은 금액" : "초과 금액"}</span>
           <span>{balance.toLocaleString()} 원</span>
         </div>
