@@ -24,7 +24,7 @@ const MyScheduleCard = ({ event }) => {
   const locationName =
     event.location.length > 10
       ? `${event.location.slice(0, 10)}...`
-      : event.location;
+      : event.location || "없음";
 
   const formattedTime = event.date ? convertToLocalTime(event.date) : "";
 

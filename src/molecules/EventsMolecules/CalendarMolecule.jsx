@@ -1,28 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MyCalendar from "../../components/Cards/MyCalendar";
 import MyScheduleCard from "../../components/Cards/MyScheduleCard";
 import moment from "moment";
 import MyAddButton from "../../components/common/MyAddButton";
-import { useScheduleStore } from "../../stores/scheduleStore"; 
+import { useScheduleStore } from "../../stores/scheduleStore";
+import { useMonthSchedules } from "../../api/scheduleAPI";
 
 const CalendarMolecule = () => {
-  const schedules = useScheduleStore((state) => state.schedules); 
-  const [selectedDate, setSelectedDate] = useState(moment().format("YYYY-MM-DD"));
+  const { addSchedule, schedules, resetSchedules } = useScheduleStore();
+  const [selectedDate, setSelectedDate] = useState(
+    moment().format("YYYY-MM-DD")
+  );
+  const currentMonth = moment(selectedDate);
+  const startDate = currentMonth.startOf("month").format("YYYY-MM-DD");
+  const endDate = currentMonth.endOf("month").format("YYYY-MM-DD");
 
+  const { data: apiSchedules = [] } = useMonthSchedules(startDate, endDate);
+
+  // ✅ 중복 데이터 방지 및 초기화 개선
+  useEffect(() => {
+    if (apiSchedules.length > 0) {
+      // 기존 일정이 없을 때만 초기화
+      if (schedules.length === 0) {
+        resetSchedules();
+      }
+
+      // 스케줄 중복 방지
+      apiSchedules.forEach((schedule) => {
+        const exists = schedules.some((s) => s.id === schedule.id);
+        if (!exists) {
+          addSchedule(schedule);
+        }
+      });
+    }
+  }, [apiSchedules]);
 
   const filteredEvents = selectedDate
-    ? schedules.filter((event) => {
-        const eventDate = new Date(event.date);
-        return eventDate.toISOString().split("T")[0] === selectedDate;
-      })
+    ? schedules.filter((event) => event.date.split("T")[0] === selectedDate)
     : [];
 
   return (
     <div className="w-full p-4 flex flex-col items-center justify-center">
-      <MyCalendar
-        events={schedules.map((e) => e.date?.split("T")[0])} 
-        setSelectedDate={setSelectedDate}
-      />
+      <MyCalendar setSelectedDate={setSelectedDate} />
 
       {selectedDate && (
         <div className="mt-8">
