@@ -28,6 +28,23 @@ export const useSchedules = () => {
   });
 };
 
+//스케줄 월별 조회
+export const useMonthSchedules = (startDate, endDate) => {
+  return useQuery({
+    queryKey: ["monthschedule", startDate, endDate],
+    queryFn: async () => {
+      const response = await axiosInstance.get("/api/v1/wedding/events", {
+        params: {
+          startDate,
+          endDate,
+        },
+      });
+      return response.data;
+    },
+    enabled: !!startDate && !!endDate,
+  });
+};
+
 // 상세 조회
 export const useScheduleDetail = (scheduleId) => {
   const setScheduleDetail = useScheduleStore(
