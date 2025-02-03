@@ -28,7 +28,7 @@ export const useSchedules = () => {
   });
 };
 
-//스케줄 월별 조회
+// 스케줄 월별 조회
 export const useMonthSchedules = (startDate, endDate) => {
   return useQuery({
     queryKey: ["monthschedule", startDate, endDate],
@@ -47,15 +47,7 @@ export const useMonthSchedules = (startDate, endDate) => {
 
 // 상세 조회
 export const useScheduleDetail = (scheduleId) => {
-  const setScheduleDetail = useScheduleStore(
-    (state) => state.setScheduleDetail
-  );
-
-  const {
-    data: event,
-    isLoading,
-    error,
-  } = useQuery({
+  return useQuery({
     queryKey: ["schedule", scheduleId],
     queryFn: async () => {
       const response = await axiosInstance.get(
@@ -64,14 +56,7 @@ export const useScheduleDetail = (scheduleId) => {
       return response.data;
     },
     enabled: !!scheduleId,
-    onSuccess: (data) => {
-      if (data) {
-        setScheduleDetail(scheduleId, data);
-      }
-    },
   });
-
-  return { event, loading: isLoading, error };
 };
 
 // 스케줄 추가

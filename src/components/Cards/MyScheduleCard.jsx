@@ -26,6 +26,11 @@ const MyScheduleCard = ({ event }) => {
       ? `${event.location.slice(0, 10)}...`
       : event.location || "없음";
 
+  const titleName =
+    event.title.length > 10
+      ? `${event.title.slice(0, 10)}...`
+      : event.title || "없음";
+
   const formattedTime = event.date ? convertToLocalTime(event.date) : "";
 
   return (
@@ -45,7 +50,7 @@ const MyScheduleCard = ({ event }) => {
           onClick={() => navigate(`/schedule/todos/detail/${event.id}`)}
           className="pl-1"
         >
-          <div className="font-bold text-lg flex pb-1">{event.title}</div>
+          <div className="font-bold text-lg flex pb-1">{titleName}</div>
           <div className="text-gray-500 text-sm flex justify-between w-44">
             <span>{locationName}</span>
             <span>{formattedTime}</span>

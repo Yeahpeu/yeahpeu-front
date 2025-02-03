@@ -37,4 +37,31 @@ export const useScheduleStore = create((set) => ({
     })),
 
   resetSchedules: () => set({ schedules: [], scheduleDetails: {} }),
+
+  // 체크 리스트 수정 중
+  addChecklist: (newSchedule) =>
+    set((state) => ({
+      schedules: [...state.schedules, newSchedule],
+    })),
+
+  updateChecklist: (id, updatedData) =>
+    set((state) => ({
+      schedules: state.schedules.map((schedule) =>
+        schedule.id === id ? { ...schedule, ...updatedData } : schedule
+      ),
+      scheduleDetails: {
+        ...state.scheduleDetails,
+        [id]: { ...state.scheduleDetails[id], ...updatedData },
+      },
+    })),
+
+  deleteChecklist: (id) =>
+    set((state) => ({
+      schedules: state.schedules.filter((schedule) => schedule.id !== id),
+      scheduleDetails: Object.fromEntries(
+        Object.entries(state.scheduleDetails).filter(([key]) => key !== id)
+      ),
+    })),
+
+  resetChecklist: () => set({ schedules: [], scheduleDetails: {} }),
 }));

@@ -1,108 +1,76 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-// import { getScheduleDetail } from "../api/scheduleAPI";
-import TaskDetailMolecule from "./TaskDetailMolecule";
 import MyEditButton from "../../components/common/MyEditButton";
+import TaskDetailMolecule from "./TaskDetailMolecule";
 import { findCategoryNames } from "../../data/util/findCategoryNames";
 import { convertKST } from "../../data/util/timeUtils";
+import { useScheduleDetail } from "../../api/scheduleAPI";
 
-const ScheduleDetailMolecule = ({ onEdit }) => {
+const ScheduleDetailMolecule = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // URL에서 id 가져오기
+  const { id } = useParams();
+  const { data: scheduleDetail, isLoading, error } = useScheduleDetail(id);
 
-  //   const [event, setEvent] = useState(null);
-  //   const [error, setError] = useState(null);
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
 
-  //   useEffect(() => {
-  //     if (!id) return;
+  if (error || !scheduleDetail) {
+    return <div>스케줄 정보를 불러올 수 없습니다.</div>;
+  }
 
-  //     const fetchEvent = async () => {
-  //       try {
-  //         const data = await getScheduleDetail(id);
-  //         setEvent(data);
-  //       } catch (err) {
-  //         setError(err);
-  //       }
-  //     };
+  const { mainCategoryName, subCategoryName } = scheduleDetail.mainCategoryId
+    ? findCategoryNames(
+        scheduleDetail.mainCategoryId,
+        scheduleDetail.subcategoryId
+      )
+    : { mainCategoryName: "없음", subCategoryName: "없음" };
 
-  //     fetchEvent();
-  //   }, [id]);
-
-  //   if (error) return <div className="text-center text-red-500">❌ {error}</div>;
-
-  const event = {
-    id: 1,
-    title: "부모님 시간",
-    date: "2025-04-05T14:00:00Z",
-    location: "채플앳논현",
-    mainCategoryId: 1,
-    subcategoryId: 6,
-    price: "200000",
-    completed: true,
-    checklists: [
-      {
-        id: 1,
-        name: "check1",
-        completed: false,
-      },
-      {
-        id: 2,
-        name: "check2",
-        completed: false,
-      },
-      {
-        id: 3,
-        name: "check3",
-        completed: true,
-      },
-    ],
-  };
-
-  const { mainCategoryName, subCategoryName } = findCategoryNames(
-    event.mainCategoryId,
-    event.subcategoryId
-  );
-
-  const { date: kstDate, time: kstTime } = convertKST(event.date);
+  const { date: kstDate, time: kstTime } = scheduleDetail.date
+    ? convertKST(scheduleDetail.date)
+    : { date: "없음", time: "없음" };
 
   return (
-    <div className="w-full mx-auto  bg-white text-left mb-5">
-      <div className="flex items-center justify-between mb-2">
-        <button onClick={() => navigate(-1)} className="text-gray-600 p-2">
+    <div className="w-full mx-auto bg-white text-left mb-8">
+      <div className="flex items-center justify-between ">
+        <button onClick={() => navigate(-1)} className="text-gray-600 p-2 mr-4">
           &lt;
         </button>
-        <h1 className="text-xl font-bold">{event.title}</h1>
+        <h1 className="text-xl font-bold mr-4">
+          {scheduleDetail.title || "제목 없음"}
+        </h1>
         <MyEditButton onClick={() => navigate(`/schedule/todos/edit/${id}`)} />
       </div>
-      <hr className="mt-3 mb-5" />
+      <hr className="mt-3 mb-5 my-2" />
 
-      <div className="flex items-center mb-5 gap-14">
-        <span className="font-semibold  text-black">일 자</span>
+      <div className="flex items-center my-8 gap-14 ml-8">
+        <span className="font-semibold text-black">일 자</span>
         <span>{kstDate}</span>
       </div>
 
-      <div className="flex items-center mb-5 gap-14">
+      <div className="flex items-center my-8 gap-14 ml-8">
         <span className="font-semibold text-black">시 간</span>
         <span>{kstTime}</span>
       </div>
 
-      <div className="flex items-center mb-5 gap-14">
+      <div className="flex items-center my-8 gap-14 ml-8">
         <span className="font-semibold text-black">위 치</span>
-        <span className={event.location ? "text-black" : "text-gray-400"}>
-          {event.location || "없음"}
+        <span
+          className={scheduleDetail.location ? "text-black" : "text-gray-400"}
+        >
+          {scheduleDetail.location || "없음"}
         </span>
       </div>
 
-      <div className="flex items-center mb-5 gap-14">
+      <div className="flex items-center my-8 gap-14 ml-8">
         <span className="font-semibold text-black">예 산</span>
-        <span className={event.price ? "text-black" : "text-gray-400"}>
-          {event.price && parseInt(event.price, 10) !== 0
-            ? `${parseInt(event.price, 10).toLocaleString()}원`
+        <span className={scheduleDetail.price ? "text-black" : "text-gray-400"}>
+          {scheduleDetail.price && parseInt(scheduleDetail.price, 10) !== 0
+            ? `${parseInt(scheduleDetail.price, 10).toLocaleString()}원`
             : "없음"}
         </span>
       </div>
 
-      <div className="flex items-center mb-16 gap-14">
+      <div className="flex items-center mb-16 gap-14 ml-8">
         <span className="font-semibold text-black">구 분</span>
         <div className="flex items-center gap-12">
           <span>{mainCategoryName}</span>
@@ -111,7 +79,7 @@ const ScheduleDetailMolecule = ({ onEdit }) => {
       </div>
 
       <div className="mt-12">
-        <TaskDetailMolecule event={event} />
+        <TaskDetailMolecule event={scheduleDetail} />
       </div>
     </div>
   );
