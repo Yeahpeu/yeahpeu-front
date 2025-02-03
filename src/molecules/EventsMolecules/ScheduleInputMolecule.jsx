@@ -5,7 +5,6 @@ import {
   useCategories,
 } from "../../api/scheduleAPI";
 import { convertUTC } from "../../data/util/timeUtils";
-import { STEP_DATA, STEP_KEYS } from "../../data/stepData";
 import { findCategoryNames } from "../../data/util/findCategoryNames";
 
 const INITIAL_FORM_DATA = {
@@ -13,9 +12,9 @@ const INITIAL_FORM_DATA = {
   date: "",
   time: "",
   location: "",
-  price: null,
-  mainCategoryId: null,
-  subCategoryId: null,
+  price: 0,
+  mainCategoryId: 0,
+  subcategoryId: 0,
 };
 
 const ScheduleInputMolecule = ({ onCancel }) => {
@@ -29,36 +28,32 @@ const ScheduleInputMolecule = ({ onCancel }) => {
     const selectedCategory = customCategories.find(
       (category) => Number(category.id) === Number(formData.mainCategoryId)
     );
-    setSubCategories(selectedCategory ? selectedCategory.children : []);
+    const newSubCategories = selectedCategory ? selectedCategory.children : [];
+
+    setSubCategories((prev) => {
+      const isEqual = JSON.stringify(prev) === JSON.stringify(newSubCategories);
+      return isEqual ? prev : newSubCategories;
+    });
   }, [formData.mainCategoryId, customCategories]);
 
-  const handleChange = (e) => {
-    const { name, value, type } = e.target;
-    const parsedValue = type === "number" ? Number(value) : value;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "mainCategoryId" ? Number(parsedValue) : parsedValue,
-      ...(name === "mainCategoryId" && { subCategoryId: null }), // 메인 카테고리 변경 시 서브 초기화
-    }));
-  };
-
   const handleSubmit = () => {
-    if (!formData.title || !formData.date || !formData.mainCategoryId) {
+    const { title, date, time, mainCategoryId } = formData;
+
+    if (!title || !date || !mainCategoryId) {
       console.log("제목, 일자, 메인 카테고리는 필수 입력");
       return;
     }
 
-    const utcDateTime = convertUTC(formData.date, formData.time);
+    const utcDateTime = convertUTC(date, time);
     const newSchedule = {
       ...formData,
       date: utcDateTime,
+      price: Number(formData.price),
     };
 
-    // 카테고리 이름 찾기 (API ID 기준)
     const categoryNames = findCategoryNames(
       formData.mainCategoryId,
-      formData.subCategoryId
+      formData.subcategoryId
     );
 
     createSchedule(newSchedule, {
@@ -68,8 +63,8 @@ const ScheduleInputMolecule = ({ onCancel }) => {
         );
         if (onCancel) onCancel();
       },
-      onError: () => {
-        console.log("일정 추가 실패");
+      onError: (error) => {
+        console.log("일정 추가 실패", error);
       },
     });
   };
@@ -87,7 +82,7 @@ const ScheduleInputMolecule = ({ onCancel }) => {
           type="text"
           name="title"
           value={formData.title}
-          onChange={handleChange}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           placeholder="제목"
           className="border-gray-300 flex-grow mx-2"
         />
@@ -108,7 +103,7 @@ const ScheduleInputMolecule = ({ onCancel }) => {
             type="date"
             name="date"
             value={formData.date}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
             className="border border-gray-300 rounded-md p-2 w-full"
           />
         </div>
@@ -119,7 +114,7 @@ const ScheduleInputMolecule = ({ onCancel }) => {
             type="time"
             name="time"
             value={formData.time}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, time: e.target.value })}
             className="border border-gray-300 rounded-md p-2 w-full"
           />
         </div>
@@ -130,7 +125,9 @@ const ScheduleInputMolecule = ({ onCancel }) => {
             type="text"
             name="location"
             value={formData.location}
-            onChange={handleChange}
+            onChange={(e) =>
+              setFormData({ ...formData, location: e.target.value })
+            }
             className="border border-gray-300 rounded-md p-2 w-full"
           />
         </div>
@@ -141,7 +138,9 @@ const ScheduleInputMolecule = ({ onCancel }) => {
             type="number"
             name="price"
             value={formData.price}
-            onChange={handleChange}
+            onChange={(e) =>
+              setFormData({ ...formData, price: Number(e.target.value) })
+            }
             className="border border-gray-300 rounded-md p-2 w-full"
           />
         </div>
@@ -151,11 +150,17 @@ const ScheduleInputMolecule = ({ onCancel }) => {
           <div className="flex gap-2 w-full">
             <select
               name="mainCategoryId"
-              value={formData.mainCategoryId || ""}
-              onChange={handleChange}
+              value={formData.mainCategoryId}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  mainCategoryId: Number(e.target.value),
+                  subcategoryId: 0,
+                })
+              }
               className="border border-gray-300 rounded-md p-2 w-1/2"
             >
-              <option value="">메인 카테고리</option>
+              <option value={0}>선택하세요</option>
               {customCategories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -164,13 +169,18 @@ const ScheduleInputMolecule = ({ onCancel }) => {
             </select>
 
             <select
-              name="subCategoryId"
-              value={formData.subCategoryId || ""}
-              onChange={handleChange}
+              name="subcategoryId"
+              value={formData.subcategoryId}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  subcategoryId: Number(e.target.value),
+                })
+              }
               className="border border-gray-300 rounded-md p-2 w-1/2"
               disabled={!formData.mainCategoryId}
             >
-              <option value="">서브 카테고리</option>
+              <option value={0}>선택하세요</option>
               {subCategories.map((option) => (
                 <option key={option.id} value={option.id}>
                   {option.name}

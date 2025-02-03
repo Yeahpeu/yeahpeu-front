@@ -25,7 +25,7 @@ const MyCalendar = ({ events = [], setSelectedDate }) => {
   };
 
   return (
-    <div className="max-w-sm mx-auto bg-red-50 p-4 rounded-lg shadow-md">
+    <div className="w-full mx-auto bg-red-50 p-4 rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-4">
         <button onClick={prevMonth} className="text-gray-600 p-2">
           &lt;

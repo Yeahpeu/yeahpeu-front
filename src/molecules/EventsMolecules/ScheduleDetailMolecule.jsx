@@ -36,7 +36,7 @@ const ScheduleDetailMolecule = ({ onEdit }) => {
     date: "2025-04-05T14:00:00Z",
     location: "채플앳논현",
     mainCategoryId: 1,
-    subCategoryId: 6,
+    subcategoryId: 6,
     price: "200000",
     completed: true,
     checklists: [
@@ -60,7 +60,7 @@ const ScheduleDetailMolecule = ({ onEdit }) => {
 
   const { mainCategoryName, subCategoryName } = findCategoryNames(
     event.mainCategoryId,
-    event.subCategoryId
+    event.subcategoryId
   );
 
   const { date: kstDate, time: kstTime } = convertKST(event.date);

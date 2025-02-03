@@ -1,7 +1,7 @@
 // KST -> UTC
 export const convertUTC = (date, time) => {
-  const kstDateTime = new Date(`${date}T${time}:00+09:00`);
-  return new Date(kstDateTime.getTime() - 9 * 60 * 60 * 1000).toISOString();
+  const kstDateTime = new Date(`${date}T${time}:00+09:00`); // KST로 인식
+  return kstDateTime.toISOString(); // 자동으로 UTC로 변환됨
 };
 
 // UTC -> KST 변환
