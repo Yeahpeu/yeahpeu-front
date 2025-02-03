@@ -130,7 +130,11 @@ const SignupMolecule = () => {
           disabled={
             !username || !isVerified || !isPasswordValid || !isPasswordMatch
           }
-          color="abled"
+          color={
+            !username || !isVerified || !isPasswordValid || !isPasswordMatch
+              ? "disabled"
+              : "abled"
+          }
           onClick={handleSignup}
           value="회원 가입하기"
         />

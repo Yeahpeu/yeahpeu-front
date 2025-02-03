@@ -9,7 +9,7 @@ const HomeBudgetMolecule = () => {
   return (
     <div className="my-2">
       <div className="text-left p-2 font-bold" onClick={handleClick}>
-        예산
+        예산 &gt;
       </div>
       <MyBudgetCard
         total={1000000}
