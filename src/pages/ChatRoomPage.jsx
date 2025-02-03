@@ -1,5 +1,5 @@
 // ChatRoomPage.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import SockJS from "sockjs-client/dist/sockjs";
 import { over } from "stompjs"; // stompjs 라이브러리 필요
@@ -16,7 +16,8 @@ import { useRoomMessages } from "../api/chatAPI";
 
 const ChatRoomPage = () => {
   const [stompClient, setStompClient] = useState(null);
-
+  const messagesContainerRef = useRef(null);
+  const messagesEndRef = useRef(null);
   const { roomId, roomTitle, chat, setChat } = useChatStore();
   const {
     data: RoomMessages = [],
@@ -26,6 +27,11 @@ const ChatRoomPage = () => {
 
   const navigate = useNavigate();
   const [messages, setMessages] = useState(RoomMessages.items);
+
+  useEffect(() => {
+    // 새 메시지가 추가될 때마다 마지막 요소로 스크롤 이동
+    messagesEndRef.current?.scrollIntoView();
+  }, [messages]);
 
   // 컴포넌트가 마운트될 때 웹소켓 연결
   useEffect(() => {
@@ -135,16 +141,7 @@ const ChatRoomPage = () => {
   };
 
   return (
-    <motion.div
-      // 화면 밖 오른쪽에서 시작
-      initial={{ x: "100%" }}
-      // 중앙으로 슬라이드되어 들어옴
-      animate={{ x: 0 }}
-      // exit 애니메이션은 필요에 따라 지정 (예: 왼쪽으로 슬라이드하며 사라짐)
-      exit={{ x: "-100%" }}
-      transition={{ duration: 0.4 }}
-      className="min-h-screen"
-    >
+    <div>
       <div className="p-5"></div>
       <div className="p-8 pt-10">
         <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md p-3 grid grid-cols-3 items-center mb-3">
@@ -160,16 +157,19 @@ const ChatRoomPage = () => {
           <div></div>
         </div>
 
-        <div className="mb-4">
-          {messages.map((item) => (
-            // eslint-disable-next-line react/jsx-key
-            <div className="pb-2" key={item.id}>
+        <div
+          ref={messagesContainerRef}
+          className="flex flex-col overflow-y-auto mb-4"
+        >
+          {messages?.map((item) => (
+            <div className="pb-3" key={item.id}>
               <MyChatBox
-                owner={myId == item.sender.id ? "mine" : "others"}
+                owner={myId === item.sender.id ? "mine" : "others"}
                 message={item.message}
               />
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
         <div className="p-5"></div>
         <div className="fixed bottom-0 left-0 right-0 flex items-center p-4 bg-white">
@@ -183,7 +183,7 @@ const ChatRoomPage = () => {
           <MySendButton className="ml-2" onClick={handleSend} />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
