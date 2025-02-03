@@ -8,7 +8,7 @@ export const useVerifyMutation = () => {
 
   return useMutation({
     mutationFn: async (emailAddress) => {
-      await axiosInstance.post(
+      const response = await axiosInstance.post(
         "/api/v1/auth/email-verification/request",
         emailAddress
       );
