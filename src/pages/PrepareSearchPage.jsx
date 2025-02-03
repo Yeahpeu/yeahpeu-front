@@ -9,7 +9,7 @@ const PrepareSearchPage = () => {
   const { data: wishlist = [], isLoading } = useSearchQuery(query);
 
   return (
-    <div className="p-6">
+    <div className="p-8">
       <MySearchBox value={query} setValue={() => {}} onSearch={() => {}} />
 
       <p className="text-gray-500 mt-2">총 검색 결과: {wishlist.length}건</p>

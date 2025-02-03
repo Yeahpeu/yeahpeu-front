@@ -9,7 +9,11 @@ export const useLoginMutation = () => {
 
   return useMutation({
     mutationFn: async (user) => {
-      await axiosInstance.post("/auth/login", user);
+      const params = new URLSearchParams();
+      params.append("username", user.email);
+      params.append("password", user.password);
+      await axiosInstance.post("/auth/login", params);
+      console.log(params);
     },
 
     onSuccess: () => {

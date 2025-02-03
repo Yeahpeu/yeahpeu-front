@@ -1,6 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import MyCompleteButton from "../common/MyCompleteButton";
 
+const convertToLocalTime = (utcDateTime) => {
+  return new Date(utcDateTime).toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+};
+
 const MyScheduleCard = ({ event }) => {
   const navigate = useNavigate();
   const categoryColors = {
@@ -11,21 +19,14 @@ const MyScheduleCard = ({ event }) => {
     5: "bg-[#FF9447]",
   };
 
-  if (!event) return null; // 안전 장치
+  if (!event) return null;
 
   const locationName =
     event.location.length > 10
       ? `${event.location.slice(0, 10)}...`
       : event.location;
 
-  // "2025-01-10T10:00:00Z" -> "19:00" 변환
-  const formattedTime = event.date
-    ? new Date(event.date).toLocaleTimeString("ko-KR", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      })
-    : "";
+  const formattedTime = event.date ? convertToLocalTime(event.date) : "";
 
   return (
     <div className="bg-white rounded-lg shadow-md mb-4 p-4 w-full flex items-center justify-between border relative">

@@ -1,4 +1,4 @@
-import MyScheduleCard from "../components/Cards/MyScheduleCard";
+import MyScheduleCard from "../../components/Cards/MyScheduleCard";
 import axios from "axios";
 
 const CalendarMolecule = () => {

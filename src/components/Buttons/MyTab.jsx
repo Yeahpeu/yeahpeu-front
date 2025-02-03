@@ -7,7 +7,7 @@ const MyTab = ({ leftValue, rightValue, leftTo, rightTo }) => {
   // const { activeTab, setActiveTab } = useTabStore();
 
   return (
-    <div className="flex mx-8 items-center justify-center bg-gray-100 p-2 rounded-lg shadow-inner shadow-slate-300 my-4">
+    <div className="flex mx-8 items-center justify-center bg-gray-100 rounded-lg shadow-inner shadow-slate-300 my-4">
       <Link
         to={`${leftTo}`}
         className={`flex w-1/2 transition justify-center text-center py-2 rounded-l-lg ${

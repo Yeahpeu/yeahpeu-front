@@ -4,7 +4,7 @@ import axios from "axios";
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8080", //NOTE - 서버의 기본 URL
   headers: {
-    "Content-Type": "application/json", //NOTE - request의 타입이 json임을 명시
+    "Content-Type": "application/x-www-form-urlencoded", //NOTE - request의 타입이 json임을 명시
   },
   withCredentials: true, //NOTE - 모든 페이지에서 쿠키를 허용
 });

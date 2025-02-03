@@ -3,7 +3,7 @@ import MyTab from "../components/Buttons/MyTab";
 
 const SchedulePage = () => {
   return (
-    <>
+    <div className="p-8">
       <MyTab
         leftValue={"캘린더"}
         leftTo={"calendar"}
@@ -11,7 +11,7 @@ const SchedulePage = () => {
         rightTo={"todos"}
       />
       <Outlet />
-    </>
+    </div>
   );
 };
 
