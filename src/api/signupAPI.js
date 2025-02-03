@@ -45,8 +45,10 @@ export const useSignupMutation = () => {
       );
     },
     onSuccess: () => {
-      console.log("회원가입 성공");
       navigate("/login", { replace: "true" });
+    },
+    onError: (error) => {
+      alert(error, "회원가입 실패");
     },
   });
 };

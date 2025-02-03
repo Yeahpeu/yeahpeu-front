@@ -17,7 +17,9 @@ export const useLoginMutation = () => {
 
     onSuccess: () => {
       setLoggedIn(true);
-      navigate("/home");
+      if (document.cookie.includes("authToken")) {
+        navigate("/home", { replace: true });
+      }
     },
     onError: (error) => {
       alert(error, "로그인 실패");
