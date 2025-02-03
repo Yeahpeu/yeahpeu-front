@@ -13,11 +13,10 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     //NOTE - 쿠키에서 authToken 추출
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("authToken="))
-      ?.split("=")[1];
+    const token =
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyRW1haWwiOiJ0ZXN0MEB0ZXN0LmNvbSIsImlhdCI6MTczODQ3MDYzOSwiZXhwIjoyMzQzMjcwNjM5fQ.5yADOWjoKQucuu1nzCVW7dPsMQk6pHQTASpXeGlKkRc";
 
+    console.log("token", token);
     if (token) {
       config.headers.Authorization = `${token}`;
     }

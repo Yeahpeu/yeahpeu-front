@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SplashPage from "./pages/SplashPage";
 import NavMolecule from "./molecules/NavMolecule";
 import HomePage from "./pages/HomePage";
+import BudgetPage from "./pages/BudgetPage";
 import SchedulePage from "./pages/SchedulePage";
 import ChatRoomPage from "./pages/ChatRoomPage";
 import ChatPage from "./pages/ChatPage";
@@ -37,6 +38,7 @@ function App() {
             />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/home" element={<HomePage />} />
+                <Route path="/budget" element={<BudgetPage />} />
             <Route path="/schedule" element={<SchedulePage />}>
               <Route path="calendar" element={<CalendarMolecule />} />
               <Route path="todos" element={<TodosMolecule />} />
@@ -71,6 +73,7 @@ function App() {
           <NavMolecule />
         </BrowserRouter>
       </AnimatePresence>
+
     </>
   );
 }
