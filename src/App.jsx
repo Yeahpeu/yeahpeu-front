@@ -22,6 +22,8 @@ import MychatMolecule from "./molecules/ChatRoomMolecules/mychatMolecule";
 import ScheduleInputPage from "./pages/ScheduleInputPage";
 import ScheduleEditPage from "./pages/ScheduleEditPage";
 import { AnimatePresence } from "framer-motion";
+import MyPage from "./pages/MyPage";
+import MyPageEdit from "./pages/MyPageEdit";
 
 function App() {
   return (
@@ -38,9 +40,12 @@ function App() {
             />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/home" element={<HomePage />} />
-                <Route path="/budget" element={<BudgetPage />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/edit" element={<MyPageEdit />} />
+            <Route path="/budget" element={<BudgetPage />} />
             <Route path="/schedule" element={<SchedulePage />}>
               <Route path="calendar" element={<CalendarMolecule />} />
+
               <Route path="todos" element={<TodosMolecule />} />
             </Route>
             <Route
@@ -73,7 +78,6 @@ function App() {
           <NavMolecule />
         </BrowserRouter>
       </AnimatePresence>
-
     </>
   );
 }

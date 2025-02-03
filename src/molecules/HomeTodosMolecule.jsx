@@ -4,6 +4,15 @@ import { useSchedules } from "../api/scheduleAPI";
 const HomeTodosMolecule = () => {
   const { data: schedules, isLoading, error } = useSchedules();
 
+  // 날짜 포맷팅 함수
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   if (isLoading) {
     return (
       <div className="my-2">
@@ -41,10 +50,16 @@ const HomeTodosMolecule = () => {
     );
   }
 
+  // 날짜 포맷팅 적용
+  const formattedSchedule = {
+    ...nextSchedule,
+    date: formatDate(nextSchedule.date),
+  };
+
   return (
     <div className="my-2">
       <div className="text-left p-2 font-bold">다음일정</div>
-      <MyScheduleCard event={nextSchedule} />
+      <MyScheduleCard event={formattedSchedule} />
     </div>
   );
 };
