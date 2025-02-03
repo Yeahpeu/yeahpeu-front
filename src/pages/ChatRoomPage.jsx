@@ -37,6 +37,7 @@ const ChatRoomPage = () => {
   useEffect(() => {
     // SockJS 엔드포인트 (스프링 서버의 엔드포인트 URL에 맞게 수정)
     const socket = new SockJS("http://localhost:8080/api/ws");
+
     const client = over(socket);
 
     const getAuthToken = () => {
@@ -59,7 +60,6 @@ const ChatRoomPage = () => {
           const parsedMessage = JSON.parse(msg.body);
           console.log(parsedMessage);
           console.log("======");
-          console.log(messages);
           setMessages((prevMessages) => [...prevMessages, parsedMessage]);
           // 여기서 받은 메시지를 상태로 관리하거나 화면에 출력할 수 있습니다.
         });
@@ -103,6 +103,15 @@ const ChatRoomPage = () => {
       );
       console.log("Message sent:", chatMessage);
       setChat(""); // 전송 후 입력창 초기화 (선택사항)
+
+      // updateLastSeenMessage -> 확인이 필요합니다.
+      const lastSeenMessage = { messageId: messages[messages.length - 1].id };
+      stompClient.send(
+        `/api/pub/chat/rooms/${roomId}/read`,
+        {},
+        JSON.stringify(lastSeenMessage)
+      );
+      console.log("Message sent:", lastSeenMessage);
     } else {
       console.log("WebSocket 연결이 되어 있지 않습니다.");
     }
