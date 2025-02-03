@@ -66,7 +66,7 @@ const ScheduleDetailMolecule = ({ onEdit }) => {
   const { date: kstDate, time: kstTime } = convertKST(event.date);
 
   return (
-    <div className="w-full mx-auto p-6 bg-white shadow-md rounded-lg text-left border border-gray-200 mb-3">
+    <div className="w-full mx-auto bg-white shadow-md  text-left mb-3">
       <div className="flex items-center justify-between mb-2">
         <button onClick={() => navigate(-1)} className="text-gray-600 p-2">
           &lt;

@@ -3,12 +3,13 @@ import MyCalendar from "../../components/Cards/MyCalendar";
 import MyScheduleCard from "../../components/Cards/MyScheduleCard";
 import moment from "moment";
 import MyAddButton from "../../components/common/MyAddButton";
-import { useScheduleStore } from "../../stores/scheduleStore"; 
+import { useScheduleStore } from "../../stores/scheduleStore";
 
 const CalendarMolecule = () => {
-  const schedules = useScheduleStore((state) => state.schedules); 
-  const [selectedDate, setSelectedDate] = useState(moment().format("YYYY-MM-DD"));
-
+  const schedules = useScheduleStore((state) => state.schedules);
+  const [selectedDate, setSelectedDate] = useState(
+    moment().format("YYYY-MM-DD")
+  );
 
   const filteredEvents = selectedDate
     ? schedules.filter((event) => {
@@ -20,7 +21,7 @@ const CalendarMolecule = () => {
   return (
     <div className="w-full p-4 flex flex-col items-center justify-center">
       <MyCalendar
-        events={schedules.map((e) => e.date?.split("T")[0])} 
+        events={schedules.map((e) => e.date?.split("T")[0])}
         setSelectedDate={setSelectedDate}
       />
 
