@@ -13,9 +13,11 @@ const MyChatCard = ({
         <div className="font-bold text-lg">{roomTitle}</div>
         <div className="flex flex-row justify-between">
           <div className="w-[90%]">{lastMessageText}</div>
-          <div className="w-[15%] text-sm flex items-center justify-center bg-red-500 text-white rounded-full h-6">
-            {unseenMessageCount}
-          </div>
+          {unseenMessageCount !== 0 && (
+            <div className="w-[15%] text-sm flex items-center justify-center bg-red-500 text-white rounded-full h-6">
+              {unseenMessageCount}
+            </div>
+          )}
         </div>
 
         <div className="text-sm text-right">

@@ -1,5 +1,9 @@
 // ChatRoomPage.jsx
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
+
+import SockJS from "sockjs-client/dist/sockjs";
+import { over } from "stompjs"; // stompjs 라이브러리 필요
+
 import { useParams, useNavigate } from "react-router-dom";
 import MyAddButton from "../components/common/MyAddButton";
 import MyChatBox from "../components/Cards/MyChatbox";
@@ -7,15 +11,126 @@ import { useChatStore } from "../stores/chatStore";
 import { motion } from "framer-motion";
 import MyInputWhite from "../components/common/MyInput-white";
 import MySendButton from "../components/common/MySendButton";
-import { useChatSendMutation } from "../api/chatSendAPI";
+
+import { useRoomMessages } from "../api/chatAPI";
 
 const ChatRoomPage = () => {
-  //const { roomId } = useParams(); // URL에서 roomId 추출
+  const [stompClient, setStompClient] = useState(null);
+  const messagesContainerRef = useRef(null);
+  const messagesEndRef = useRef(null);
   const { roomId, roomTitle, chat, setChat } = useChatStore();
-  const navigate = useNavigate();
-  const chatSendMutation = useChatSendMutation();
+  const {
+    data: RoomMessages = [],
+    isLoading,
+    isError,
+  } = useRoomMessages(roomId);
 
-  const myId = 1;
+  const navigate = useNavigate();
+  const [messages, setMessages] = useState(RoomMessages.items);
+
+  useEffect(() => {
+    // 새 메시지가 추가될 때마다 마지막 요소로 스크롤 이동
+    messagesEndRef.current?.scrollIntoView();
+  }, [messages]);
+
+  useEffect(() => {
+    if (RoomMessages && RoomMessages.items) {
+      setMessages(RoomMessages.items);
+    }
+  }, [RoomMessages]);
+
+  // 컴포넌트가 마운트될 때 웹소켓 연결
+  useEffect(() => {
+    // SockJS 엔드포인트 (스프링 서버의 엔드포인트 URL에 맞게 수정)
+    const socket = new SockJS("http://localhost:8080/api/ws");
+
+    const client = over(socket);
+
+    const getAuthToken = () => {
+      return document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("authToken="))
+        ?.split("=")[1];
+    };
+    const token = getAuthToken();
+    // STOMP 연결
+    client.connect(
+      {
+        Authorization: `${token}`, // 헤더에 토큰 포함 (서버의 요구사항에 따라 형식 조정)
+      },
+      () => {
+        console.log("Connected to WebSocket");
+        // 예시: 서버에서 /topic/messages 구독 (필요한 경우)
+        client.subscribe(`/api/sub/chat/rooms/${roomId}`, (msg) => {
+          console.log("Received message:", msg.body);
+          const parsedMessage = JSON.parse(msg.body);
+          console.log(parsedMessage);
+          console.log("======");
+          setMessages((prevMessages) => [...prevMessages, parsedMessage]);
+          // 여기서 받은 메시지를 상태로 관리하거나 화면에 출력할 수 있습니다.
+        });
+      },
+      (error) => {
+        console.error("WebSocket connection error:", error);
+      }
+    );
+
+    setStompClient(client);
+
+    // 컴포넌트 언마운트 시 연결 해제
+    return () => {
+      if (client && client.connected) {
+        client.disconnect(() => {
+          console.log("Disconnected");
+        });
+      }
+    };
+  }, []);
+
+  // 메시지 전송 핸들러
+  const handleSend = () => {
+    const chatMessage = {
+      message: chat,
+      sentAt: new Date().toISOString(),
+      attachmentRequests: [
+        {
+          url: "",
+          contentType: "",
+        },
+      ],
+    };
+
+    if (stompClient && stompClient.connected) {
+      // /app/chat 는 서버에서 처리할 메시지 엔드포인트 (스프링에서 @MessageMapping("/chat") 등과 연동)
+      stompClient.send(
+        `/api/pub/chat/rooms/${roomId}`,
+        {},
+        JSON.stringify(chatMessage)
+      );
+      console.log("Message sent:", chatMessage);
+      setChat(""); // 전송 후 입력창 초기화 (선택사항)
+
+      // updateLastSeenMessage -> 확인이 필요합니다.
+      const lastSeenMessage = { messageId: messages[messages.length - 1].id };
+      stompClient.send(
+        `/api/pub/chat/rooms/${roomId}/read`,
+        {},
+        JSON.stringify(lastSeenMessage)
+      );
+      console.log("Message sent:", lastSeenMessage);
+    } else {
+      console.log("WebSocket 연결이 되어 있지 않습니다.");
+    }
+  };
+
+  if (isLoading) {
+    // 여기에 로딩 프로그레싱 바 추가 필요 합니다.
+    return <div>Loading...</div>;
+  }
+
+  //const { roomId } = useParams(); // URL에서 roomId 추출
+
+  const myId = 10;
 
   const dummyChatMessage = {
     items: [
@@ -28,249 +143,22 @@ const ChatRoomPage = () => {
         },
         message: "안녕, 다들 준비됐어?",
         sentAt: "2025-01-31T11:00:00.000Z",
-        attachments: [],
-      },
-      {
-        id: 2,
-        roomId: 1,
-        sender: {
-          id: 2,
-          nickname: "수진",
-        },
-        message: "응, 조금 늦었어. 미안!",
-        sentAt: "2025-01-31T11:01:10.000Z",
-        attachments: [],
-      },
-      {
-        id: 3,
-        roomId: 1,
-        sender: {
-          id: 5,
-          nickname: "지훈",
-        },
-        message: "괜찮아, 우리 이제 시작해보자.",
-        sentAt: "2025-01-31T11:02:20.000Z",
-        attachments: [],
-      },
-      {
-        id: 4,
-        roomId: 1,
-        sender: {
-          id: 1,
-          nickname: "은지",
-        },
-        message: "오늘 주제는 결혼 준비야. 각자 준비한 거 공유해볼래?",
-        sentAt: "2025-01-31T11:03:30.000Z",
-        attachments: [],
-      },
-      {
-        id: 5,
-        roomId: 1,
-        sender: {
-          id: 3,
-          nickname: "민수",
-        },
-        message: "신부 들러리 역할은 내가 맡을게. 재미있을 것 같아!",
-        sentAt: "2025-01-31T11:04:40.000Z",
-        attachments: [],
-      },
-      {
-        id: 6,
-        roomId: 1,
-        sender: {
-          id: 4,
-          nickname: "하늘",
-        },
-        message: "민수야, 네 에너지 정말 좋다!",
-        sentAt: "2025-01-31T11:05:50.000Z",
-        attachments: [],
-      },
-      {
-        id: 7,
-        roomId: 1,
-        sender: {
-          id: 2,
-          nickname: "수진",
-        },
-        message: "나도 결혼 준비 Q&A 시간 갖자는데, 다들 궁금한 점 있어?",
-        sentAt: "2025-01-31T11:07:00.000Z",
-        attachments: [],
-      },
-      {
-        id: 8,
-        roomId: 1,
-        sender: {
-          id: 5,
-          nickname: "지훈",
-        },
-        message: "좋아, 어떤 점부터 얘기할까?",
-        sentAt: "2025-01-31T11:08:10.000Z",
-        attachments: [],
-      },
-      {
-        id: 9,
-        roomId: 1,
-        sender: {
-          id: 1,
-          nickname: "은지",
-        },
-        message: "난 신혼여행 계획이 가장 어렵더라. 추천 좀 해줘!",
-        sentAt: "2025-01-31T11:09:20.000Z",
-        attachments: [],
-      },
-      {
-        id: 10,
-        roomId: 1,
-        sender: {
-          id: 3,
-          nickname: "민수",
-        },
-        message: "유럽 여행은 어때? 문화도 다양하고 좋더라구.",
-        sentAt: "2025-01-31T11:10:30.000Z",
-        attachments: [],
-      },
-      {
-        id: 11,
-        roomId: 1,
-        sender: {
-          id: 4,
-          nickname: "하늘",
-        },
-        message: "그리고 결혼식 테마는 정했어?",
-        sentAt: "2025-01-31T11:11:40.000Z",
-        attachments: [],
-      },
-      {
-        id: 12,
-        roomId: 1,
-        sender: {
-          id: 2,
-          nickname: "수진",
-        },
-        message: "난 클래식한 분위기가 좋을 것 같아.",
-        sentAt: "2025-01-31T11:12:50.000Z",
-        attachments: [],
-      },
-      {
-        id: 13,
-        roomId: 1,
-        sender: {
-          id: 5,
-          nickname: "지훈",
-        },
-        message: "어쩌면 모던한 스타일도 괜찮을 것 같은데?",
-        sentAt: "2025-01-31T11:14:00.000Z",
-        attachments: [],
-      },
-      {
-        id: 14,
-        roomId: 1,
-        sender: {
-          id: 1,
-          nickname: "은지",
-        },
-        message: "모두 의견 좋네. 나중에 다 같이 모여서 얘기해보자.",
-        sentAt: "2025-01-31T11:15:10.000Z",
-        attachments: [],
-      },
-      {
-        id: 15,
-        roomId: 1,
-        sender: {
-          id: 3,
-          nickname: "민수",
-        },
-        message: "그래, 오늘 회의 잘 마무리하자!",
-        sentAt: "2025-01-31T11:16:20.000Z",
-        attachments: [],
+        attachments: [{ url: "", contentType: "" }],
       },
     ],
   };
 
-  console.log(dummyChatMessage);
-
   // const dummyChatMessage = {
-  //   items: [
-  //     {
-  //       id: 1,
-  //       roomId: 1,
-  //       sender: {
-  //         id: 4,
-  //         nickname: "하늘",
-  //       },
-  //       message: "신부 들러리 역할을 어떻게 준비하고 있나요?",
-  //       sentAt: "2025-01-31T11:19:04.233Z",
-  //       attachments: [],
-  //     },
-  //     {
-  //       id: 2,
-  //       roomId: 1,
-  //       sender: {
-  //         id: 2,
-  //         nickname: "수진",
-  //       },
-  //       message:
-  //         "결혼 준비 Q&A 시간이에요. 궁금한 점 있으신 분들은 질문해주세요.",
-  //       sentAt: "2025-01-31T11:29:04.233Z",
-  //       attachments: [],
-  //     },
-  //     {
-  //       id: 3,
-  //       roomId: 1,
-  //       sender: {
-  //         id: 5,
-  //         nickname: "지훈",
-  //       },
-  //       message: "결혼식 테마는 무엇으로 정하셨나요?",
-  //       sentAt: "2025-01-31T11:39:04.233Z",
-  //       attachments: [],
-  //     },
-  //     {
-  //       id: 4,
-  //       roomId: 1,
-  //       sender: {
-  //         id: 1,
-  //         nickname: "은지",
-  //       },
-  //       message: "신혼여행 계획은 어떻게 세우고 계신가요?",
-  //       sentAt: "2025-01-31T11:49:04.233Z",
-  //       attachments: [],
-  //     },
-  //     {
-  //       id: 5,
-  //       roomId: 1,
-  //       sender: {
-  //         id: 3,
-  //         nickname: "민수",
-  //       },
-  //       message: "결혼식 장소 추천 좀 부탁드립니다!",
-  //       sentAt: "2025-01-31T11:59:04.233Z",
-  //       attachments: [],
-  //     },
-  //   ],
-  // };
 
   // 나가기 버튼 클릭 시 이전 페이지로 이동
   const handleLeaveChat = () => {
     navigate(-1); // 이전 페이지로 돌아감
   };
 
-  const handleSend = () => {
-    chatSendMutation.mutate(chat);
-  };
-
   return (
-    <motion.div
-      // 화면 밖 오른쪽에서 시작
-      initial={{ x: "100%" }}
-      // 중앙으로 슬라이드되어 들어옴
-      animate={{ x: 0 }}
-      // exit 애니메이션은 필요에 따라 지정 (예: 왼쪽으로 슬라이드하며 사라짐)
-      exit={{ x: "-100%" }}
-      transition={{ duration: 0.4 }}
-      className="min-h-screen"
-    >
-      <div className="p-4">
+    <div>
+      <div className="p-5"></div>
+      <div className="p-8 pt-10">
         <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md p-3 grid grid-cols-3 items-center mb-3">
           <button
             onClick={handleLeaveChat}
@@ -284,18 +172,21 @@ const ChatRoomPage = () => {
           <div></div>
         </div>
 
-        <div className="mb-4">
-          {dummyChatMessage.items.map((item) => (
-            // eslint-disable-next-line react/jsx-key
-            <div className="pb-2">
+        <div
+          ref={messagesContainerRef}
+          className="flex flex-col overflow-y-auto mb-4"
+        >
+          {messages?.map((item) => (
+            <div className="pb-3" key={item.id}>
               <MyChatBox
-                owner={myId == item.sender.id ? "mine" : "others"}
+                owner={myId === item.sender.id ? "mine" : "others"}
                 message={item.message}
               />
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
-
+        <div className="p-5"></div>
         <div className="fixed bottom-0 left-0 right-0 flex items-center p-4 bg-white">
           <MyInputWhite
             type="text"
@@ -307,7 +198,7 @@ const ChatRoomPage = () => {
           <MySendButton className="ml-2" onClick={handleSend} />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
