@@ -45,15 +45,9 @@ export const useSignupMutation = () => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: async (userInfo) => {
-      console.log("userInfo", userInfo.username);
-      const signupInfo = {
-        emailAddress: userInfo.emailAddress,
-        name: userInfo.username,
-        password: userInfo.password,
-      };
       const response = await axiosInstance.post(
         "/api/v1/users/signup",
-        signupInfo
+        userInfo
       );
       if (response.status === 200) {
         navigate("/login", { replace: "true" });
