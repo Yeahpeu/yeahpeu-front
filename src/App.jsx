@@ -24,6 +24,7 @@ import ScheduleEditPage from "./pages/ScheduleEditPage";
 import { AnimatePresence } from "framer-motion";
 import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
+import subcategoryPage from "./pages/subcategoryPage";
 
 function App() {
   return (
@@ -51,6 +52,10 @@ function App() {
             <Route
               path="/schedule/todos/detail/:id"
               element={<ScheduleDetailPage />}
+            />
+            <Route
+              path="/schedule/todos/detail/sub/:id"
+              element={<subcategoryPage />}
             />
             <Route
               path="/schedule/todos/edit/:id"

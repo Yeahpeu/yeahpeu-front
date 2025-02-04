@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import MyCompleteButton from "../common/MyCompleteButton";
+import { useState } from "react";
+import { completeEvents } from "../../api/scheduleAPI";
 
 const convertToLocalTime = (utcDateTime) => {
   return new Date(utcDateTime).toLocaleTimeString(undefined, {
@@ -21,6 +23,23 @@ const MyScheduleCard = ({ event }) => {
 
   if (!event) return null;
 
+  const [completed, setCompleted] = useState(event.completed); // 완료 상태 관리
+  const { mutate: toggleComplete, isLoading } = completeEvents();
+
+  const handleCompleteClick = () => {
+    toggleComplete(
+      { eventId: event.id, completed: !completed },
+      {
+        onSuccess: () => {
+          setCompleted((prev) => !prev); // 성공 시 완료 상태 업데이트
+        },
+        onError: (error) => {
+          console.error("완료 처리 실패:", error);
+        },
+      }
+    );
+  };
+
   const locationName =
     event.location.length > 10
       ? `${event.location.slice(0, 10)}...`
@@ -37,8 +56,8 @@ const MyScheduleCard = ({ event }) => {
     <div className="bg-white rounded-lg shadow-md mb-4 p-4 w-full flex items-center justify-between border relative">
       <div className="absolute top-4 right-6">
         <MyCompleteButton
-          isCompleted={event.Completed}
-          onClick={() => console.log(`완료 상태 변경: ${event.id}`)}
+          isCompleted={event.completed}
+          onClick={handleCompleteClick}
         />
       </div>
 

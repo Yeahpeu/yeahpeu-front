@@ -1,8 +1,11 @@
 import { useState } from "react";
-import axios from "axios";
+import MyInputWhite from "../common/MyInput-white";
+import MyButton from "../common/MyButton";
+import { useCreateTaskMutation } from "../../api/taskAPI";
 
 const MyTaskEdit = ({ onClose, eventId }) => {
-  const [tasks, setTasks] = useState([{ name: "", completed: false }]); // 초기 체크리스트
+  const [tasks, setTasks] = useState([{ name: "", completed: false }]);
+  const { mutate: createTask, isLoading } = useCreateTaskMutation();
 
   // 입력 값 변경 처리
   const handleChange = (index, value) => {
@@ -16,17 +19,27 @@ const MyTaskEdit = ({ onClose, eventId }) => {
     setTasks([...tasks, { name: "", completed: false }]);
   };
 
-  // API로 데이터 전송
-  const handleSubmit = async () => {
-    try {
-      await axios.post(`/api/v1/wedding/events/${eventId}`, {
-        checklists: tasks,
-      });
-      alert("체크리스트가 성공적으로 추가되었습니다.");
-      onClose(); // 완료 후 모달 닫기
-    } catch (error) {
-      alert(`추가 실패: ${error.response?.data?.message || "알 수 없는 오류"}`);
-    }
+  const handleRemoveTask = (index) => {
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
+  };
+
+  // API 호출
+  const handleSubmit = () => {
+    createTask(
+      { eventId, tasks },
+      {
+        onSuccess: () => {
+          alert("체크리스트가 성공적으로 추가되었습니다.");
+          onClose();
+        },
+        onError: (error) => {
+          alert(
+            `추가 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
+          );
+        },
+      }
+    );
   };
 
   return (
@@ -36,23 +49,16 @@ const MyTaskEdit = ({ onClose, eventId }) => {
 
         {tasks.map((task, index) => (
           <div key={index} className="flex items-center mb-3">
-            <input
-              type="checkbox"
-              checked={task.completed}
-              onChange={() => {
-                const updatedTasks = [...tasks];
-                updatedTasks[index].completed = !task.completed;
-                setTasks(updatedTasks);
-              }}
-              className="mr-2"
-            />
-            <input
+            <MyInputWhite
               type="text"
+              placeholder="항목 입력"
               value={task.name}
               onChange={(e) => handleChange(index, e.target.value)}
-              className="border border-gray-300 rounded-md p-1 w-full"
-              placeholder="항목 입력"
             />
+            <button onClick={handleRemoveTask} className="">
+              {" "}
+              -{" "}
+            </button>
           </div>
         ))}
 
@@ -64,18 +70,19 @@ const MyTaskEdit = ({ onClose, eventId }) => {
         </button>
 
         <div className="flex justify-between gap-2 mt-4">
-          <button
+          <MyButton
+            value="취소"
+            color="disabled"
+            disabled="abled"
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 rounded-md"
-          >
-            취소
-          </button>
-          <button
+          />
+
+          <MyButton
+            value="완료"
+            color="abled"
+            disabled="abled"
             onClick={handleSubmit}
-            className="px-4 py-2 bg-red-200 text-white rounded-md"
-          >
-            완료
-          </button>
+          />
         </div>
       </div>
     </div>

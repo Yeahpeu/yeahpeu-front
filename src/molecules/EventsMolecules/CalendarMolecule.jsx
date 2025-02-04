@@ -34,7 +34,11 @@ const CalendarMolecule = () => {
   }, [apiSchedules]);
 
   const filteredEvents = selectedDate
-    ? schedules.filter((event) => event.date.split("T")[0] === selectedDate)
+    ? schedules.filter(
+        (event) =>
+          moment(event.date).add(9, "hours").format("YYYY-MM-DD") ===
+          selectedDate
+      )
     : [];
 
   return (

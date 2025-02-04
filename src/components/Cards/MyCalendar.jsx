@@ -9,10 +9,6 @@ const MyCalendar = ({ setSelectedDate }) => {
 
   const { data: events = [] } = useMonthSchedules(startDate, endDate);
 
-  const eventSet = new Set(
-    events.map((event) => moment(event.date).format("YYYY-MM-DD"))
-  );
-
   const startOfCalendar = moment(currentMonth).startOf("month").startOf("week");
   const endOfCalendar = moment(currentMonth).endOf("month").endOf("week");
 
@@ -22,6 +18,10 @@ const MyCalendar = ({ setSelectedDate }) => {
     days.push(day.clone());
     day.add(1, "day");
   }
+
+  const eventSet = new Set(
+    events.map((event) => moment(event.date).format("YYYY-MM-DD"))
+  );
 
   const prevMonth = () => {
     setCurrentMonth((prev) => prev.clone().subtract(1, "month"));

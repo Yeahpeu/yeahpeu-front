@@ -114,12 +114,52 @@ export const useUpdateScheduleMutation = () => {
   });
 };
 
+// 스케줄 완료 처리
+export const completeEvents = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ eventId, completed }) => {
+      const response = await axiosInstance.patch(
+        `/api/v1/wedding/events/${eventId}/status`,
+        completed
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      console.log("성공적으로 완료");
+      queryClient.invalidateQueries(["schedules"]);
+    },
+    onError: (error) => {
+      console.log(
+        `스케줄 완료 실패: ${
+          error.response?.data?.message || "알 수 없는 오류"
+        }`
+      );
+      console.error(error);
+    },
+  });
+};
+
 // 사용자 커스텀 카테고리 조회
 export const useCategories = () => {
   return useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
       const response = await axiosInstance.get("/api/v1/wedding/categories");
+      return response.data;
+    },
+  });
+};
+
+// 소주제별 이벤트 조회
+export const useSubcategories = (categoryId) => {
+  return useQuery({
+    queryKey: ["subevents"],
+    queryFn: async () => {
+      const response = await axiosInstance.get(
+        `/api/v1/wedding/events/subcategories/${categoryId}`
+      );
       return response.data;
     },
   });
