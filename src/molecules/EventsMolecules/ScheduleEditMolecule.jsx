@@ -68,7 +68,6 @@ const ScheduleEditMolecule = () => {
       { id, updatedData },
       {
         onSuccess: () => {
-          alert("일정이 성공적으로 수정되었습니다.");
           navigate(-1);
         },
         onError: (err) => {

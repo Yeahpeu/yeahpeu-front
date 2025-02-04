@@ -1,19 +1,37 @@
+// searchAPI.js
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
 
-export const useSearchQuery = (query) => {
-  return useQuery(
-    ["search", query],
-    async () => {
-      if (!query) return [];
+export const useSearchQuery = ({ keyword, page }) => {
+  return useQuery({
+    queryKey: ["search", keyword, page],
+    queryFn: async () => {
+      if (!keyword.trim()) {
+        return [];
+      }
 
-      const response = await axiosInstance.get(
-        `/v1/search/shop.json?query=${query}&display=10`
-      );
-      return response.data.items; // 네이버 API 응답에서 결과 데이터 반환
+      try {
+        const response = await axiosInstance.get(
+          `/api/v1/wedding/wishlist/shopping/naver`,
+          {
+            params: {
+              keyword,
+              page,
+            },
+          }
+        );
+
+        console.log("✅ API 응답:", response);
+
+        if (response && response.data && Array.isArray(response.data)) {
+          return response.data;
+        } else {
+          return [];
+        }
+      } catch (error) {
+        return [];
+      }
     },
-    {
-      enabled: !!query, // 검색어가 있을 때만 실행
-    }
-  );
+    enabled: !!keyword,
+  });
 };

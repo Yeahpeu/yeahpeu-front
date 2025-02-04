@@ -3,18 +3,25 @@ import MyEditButton from "../../components/common/MyEditButton";
 import TaskDetailMolecule from "./TaskDetailMolecule";
 import { findCategoryNames } from "../../data/util/findCategoryNames";
 import { convertKST } from "../../data/util/timeUtils";
-import { useScheduleDetail } from "../../api/scheduleAPI";
+import { useScheduleDetail, useDeleteEvent } from "../../api/scheduleAPI";
+import MyConfirm from "../../components/Modals/MyConfirm";
+
+import { useState } from "react";
 
 const ScheduleDetailMolecule = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data: scheduleDetail, isLoading, error } = useScheduleDetail(id);
+
+  const { data: scheduleDetail, isLoading, isError } = useScheduleDetail(id);
+  const { mutate: deleteEvent, isLoading: isDeleting } = useDeleteEvent();
+
+  const [isConfirmVisible, setIsConfirmVisible] = useState(false);
 
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
 
-  if (error || !scheduleDetail) {
+  if (isError || !scheduleDetail) {
     return <div>스케줄 정보를 불러올 수 없습니다.</div>;
   }
 
@@ -28,6 +35,26 @@ const ScheduleDetailMolecule = () => {
   const { date: kstDate, time: kstTime } = scheduleDetail.date
     ? convertKST(scheduleDetail.date)
     : { date: "없음", time: "없음" };
+
+  const handleDeleteClick = () => {
+    setIsConfirmVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
+    deleteEvent(id, {
+      onSuccess: () => {
+        navigate(-1);
+      },
+      onError: (error) => {
+        alert("삭제 중 오류가 발생했습니다.");
+      },
+    });
+    setIsConfirmVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsConfirmVisible(false);
+  };
 
   return (
     <div className="w-full mx-auto bg-white text-left mb-8">
@@ -89,6 +116,22 @@ const ScheduleDetailMolecule = () => {
       <div className="mt-12">
         <TaskDetailMolecule event={scheduleDetail} />
       </div>
+
+      <div
+        className={"w-full flex justify-center mt-14 text-red-300 "}
+        onClick={!isDeleting ? handleDeleteClick : undefined}
+      >
+        {isDeleting ? "삭제 중..." : "삭제하기"}
+      </div>
+
+      <MyConfirm
+        message="정말 삭제하시겠습니까?"
+        onCancel={handleCancel}
+        onConfirm={handleConfirmDelete}
+        optionLeft="취소"
+        optionRight="삭제"
+        visible={isConfirmVisible}
+      />
     </div>
   );
 };

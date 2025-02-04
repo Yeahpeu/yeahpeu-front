@@ -23,7 +23,7 @@ const MyScheduleCard = ({ event }) => {
 
   if (!event) return null;
 
-  const [completed, setCompleted] = useState(event.completed); // 완료 상태 관리
+  const [completed, setCompleted] = useState(event.completed);
   const { mutate: toggleComplete, isLoading } = completeEvents();
 
   const handleCompleteClick = () => {
