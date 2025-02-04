@@ -3,30 +3,23 @@ import axiosInstance from "./axiosInstance";
 import { useChatStore } from "../stores/chatStore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const useChatSendMutation = () => {
-  const { setChat, setRoomId, roomId } = useChatStore();
-  const navigate = useNavigate();
-
-  return useMutation({
-    mutationFn: async (chat) => {
-      await axiosInstance.post("/api/v1/chat/rooms/" + roomId, chat);
-    },
-
-    onSuccess: () => {
-      //navigate("/home", { replace: "true" });
-    },
-    onError: (error) => {
-      //alert(error, "로그인 실패");
+// 참가한 채팅방 전체조회
+export const useUserRooms = () => {
+  return useQuery({
+    queryKey: ["userChatRooms"],
+    queryFn: async () => {
+      const response = await axiosInstance.get("/api/v1/user/chat/rooms");
+      return response.data;
     },
   });
 };
 
-// 참가한 채팅방 전체조회
-export const useUserRooms = () => {
+// 전체 채팅방 조회
+export const useRooms = () => {
   return useQuery({
-    queryKey: ["chatRoom"],
+    queryKey: ["chatRooms"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/api/v1/user/chat/rooms");
+      const response = await axiosInstance.get("/api/v1/chat/rooms");
       return response.data;
     },
   });
@@ -44,5 +37,47 @@ export const useRoomMessages = (roomId) => {
       return response.data;
     },
     enabled: !!roomId,
+  });
+};
+
+// 채팅방 생성성 추가
+export const useCreateRoom = () => {
+  const navigate = useNavigate();
+  const { roomId, roomTitle, setRoomId, setRoomTitle } = useChatStore();
+
+  return useMutation({
+    mutationFn: async (roomInfo) => {
+      const response = await axiosInstance.post("/api/v1/chat/rooms", roomInfo);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      setRoomTitle(data.title);
+      setRoomId(data.id);
+      navigate(`/chat/mychat/rooms/${roomId}`, {
+        state: { roomTitle },
+      });
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+};
+
+// 채팅방 떠나기
+export const useLeaveRoom = () => {
+  return useMutation({
+    mutationFn: async (roomId) => {
+      console.log("떠나기 요청, roomId:", roomId);
+      const response = await axiosInstance.delete(
+        `/api/v1/chat/rooms/${roomId}/leave`
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      console.log("채팅방에서 나감:", data);
+    },
+    onError: (error) => {
+      console.error("떠나기 실패:", error);
+    },
   });
 };
