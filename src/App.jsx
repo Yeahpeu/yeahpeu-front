@@ -25,6 +25,7 @@ import { AnimatePresence } from "framer-motion";
 import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import subcategoryPage from "./pages/subcategoryPage";
+import InvitationCodePage from "./pages/InvitationCodePage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/" element={<SplashPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/invitationCode" element={<InvitationCodePage />} />
             <Route
               path="/registrationStatus"
               element={<RegistrationStatusPage />}

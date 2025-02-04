@@ -43,3 +43,22 @@ export const useCheckOnboarding = () => {
     },
   });
 };
+
+export const usePostInvitationCode = () => {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: async (data) => {
+      console.log(data);
+      const response = await axiosInstance.post("/api/v1/wedding/join", data);
+
+      return response.data;
+    },
+    onSuccess: () => {
+      navigate("/home", { replace: true });
+    },
+    onError: (error) => {
+      alert("실패");
+      console.error(error);
+    },
+  });
+};

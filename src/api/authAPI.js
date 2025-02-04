@@ -31,7 +31,7 @@ export const useLoginMutation = () => {
           const categoryResult = await getCategory();
           setCategory(categoryResult.data);
           console.log(categoryResult.data);
-          navigate("/registrationStatus", { replace: true });
+          navigate("/invitationCode", { replace: true });
         }
       }
     },
