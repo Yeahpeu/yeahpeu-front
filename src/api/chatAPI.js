@@ -14,12 +14,33 @@ export const useUserRooms = () => {
   });
 };
 
+//채팅방 참여
+export const useJoinRoom = () => {
+  return useMutation({
+    mutationFn: (roomId) =>
+      axiosInstance
+        .post(`/api/v1/chat/rooms/${roomId}/join`)
+        .then((response) => response.data),
+  });
+};
+
 // 전체 채팅방 조회
 export const useRooms = () => {
   return useQuery({
     queryKey: ["chatRooms"],
     queryFn: async () => {
       const response = await axiosInstance.get("/api/v1/chat/rooms");
+      return response.data;
+    },
+  });
+};
+
+// 나의 요약 정보 조회
+export const useProfile = () => {
+  return useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const response = await axiosInstance.get("/api/v1/users/me/summary");
       return response.data;
     },
   });
@@ -40,7 +61,7 @@ export const useRoomMessages = (roomId) => {
   });
 };
 
-// 채팅방 생성성 추가
+// 채팅방 생성 추가
 export const useCreateRoom = () => {
   const navigate = useNavigate();
   const { roomId, roomTitle, setRoomId, setRoomTitle } = useChatStore();

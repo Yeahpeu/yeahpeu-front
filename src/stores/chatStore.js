@@ -4,7 +4,9 @@ export const useChatStore = create((set) => ({
   roomId: null,
   roomTitle: "",
   chat: "",
+  userId: "",
 
+  setUserId: (userId) => set({ userId }),
   setRoomId: (roomId) => set({ roomId }),
   setRoomTitle: (roomTitle) => set({ roomTitle }),
   setChat: (chat) => set({ chat }),
