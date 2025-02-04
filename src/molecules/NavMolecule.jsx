@@ -21,20 +21,9 @@ const MyNav = () => {
     "/onboarding",
     "/chat/mychat/rooms/",
   ];
-  if (location.pathname.startsWith(...hidePath)) {
+  if (hidePath.some((path) => location.pathname.startsWith(path))) {
     return null;
   }
-  useEffect(() => {
-    if (pathname.startsWith("/home")) {
-      setActiveIndex(0);
-    } else if (pathname.startsWith("/schedule")) {
-      setActiveIndex(1);
-    } else if (pathname.startsWith("/chat")) {
-      setActiveIndex(2);
-    } else if (pathname.startsWith("/shop")) {
-      setActiveIndex(3);
-    }
-  }, []);
 
   const navItems = [
     { id: 0, tab: "홈", label: "home", icon: <HomeIcon /> },
