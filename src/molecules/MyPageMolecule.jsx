@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import bride from "../assets/bride.png";
+import groom from "../assets/groom.png";
 import { useMyPage } from "../api/mypageAPI";
 
 const MyPageMolecule = () => {
@@ -8,7 +9,8 @@ const MyPageMolecule = () => {
   const handleMoveToEdit = () => {
     navigate("/mypage/edit");
   };
-  const sampleImage = bride;
+  const userImg = data.userImg;
+  const sampleImage = data.weddingRole === "BRIDE" ? bride : groom;
 
   const formatWeddingDate = (data) => {
     const weddingDay = new Date(data.weddingInfoResponse.weddingDay);
@@ -33,10 +35,11 @@ const MyPageMolecule = () => {
       <hr className="w-full mb-2" />
       <div className="flex flex-row items-center gap-10 justify-start my-2">
         <img
-          src={sampleImage}
+          src={userImg ? userImg : sampleImage}
           alt="프로필 이미지"
           className="w-16 h-16 rounded-xl"
         />
+
         <div className="flex flex-col gap-1 w-full">
           <div className="flex flex-row items-center gap-2">
             {data.weddingRole === "BRIDE" ? (

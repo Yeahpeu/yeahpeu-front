@@ -2,16 +2,19 @@ import { create } from "zustand";
 
 const useMypageStore = create((set) => ({
   id: "",
+  userImg: "",
   username: "",
   nickname: "",
   budget: "",
   weddingDay: "",
   profileImage: "",
   partnerName: null,
+
   myCode: "",
   emailAddress: "",
 
   setId: (id) => set({ id }),
+  setUserImg: (userImg) => set({ userImg }),
   setUsername: (username) => set({ username }),
   setNickname: (nickname) => set({ nickname }),
   setBudget: (budget) => set({ budget }),

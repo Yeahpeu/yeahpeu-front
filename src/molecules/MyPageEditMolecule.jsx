@@ -1,17 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import MyInputWhite from "../components/common/MyInput-white";
 import bride from "../assets/bride.png";
+import groom from "../assets/groom.png";
 import useMypageStore from "../stores/mypageStore";
 import { useMyPage, useMyPageMutation } from "../api/mypageAPI";
 
 const MyPageEditMolecule = () => {
   const {
+    userImg,
+    setUserImg,
     username,
     setUsername,
     nickname,
     setNickname,
     budget,
     setBudget,
+    weddingRole,
     weddingDay,
     setWeddingDay,
     partnerName,
@@ -30,7 +34,7 @@ const MyPageEditMolecule = () => {
   const { isLoading } = useMyPage();
 
   const navigate = useNavigate();
-  const sampleImage = bride;
+  const sampleImage = weddingRole === "BRIDE" ? bride : groom;
 
   const formattedWeddingDay = weddingDay
     ? new Date(weddingDay).toISOString().split("T")[0]

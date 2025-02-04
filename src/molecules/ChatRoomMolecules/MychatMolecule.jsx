@@ -1,10 +1,7 @@
-import { useState } from "react";
 import MyChatCard from "../../components/Cards/MyChatCard";
-import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import emptyImg from "../../assets/emptybox.png";
-import { useChatStore } from "../../stores/chatStore.js"; //"../../stores/chatStore"; // store 경로에 맞게 조정
-
+import { useChatStore } from "../../stores/chatStore.js";
 import { useUserRooms } from "../../api/chatAPI";
 
 const MychatMolecule = () => {
@@ -12,14 +9,6 @@ const MychatMolecule = () => {
 
   const navigate = useNavigate();
   const { setRoomTitle, setRoomId } = useChatStore();
-
-  // 선택한 날짜의 이벤트 필터링
-  // const filteredEvents = selectedDate
-  //   ? events.filter((event) => {
-  //       const eventDate = new Date(event.date);
-  //       return eventDate.toISOString().split("T")[0] === selectedDate;
-  //     })
-  //   : [];
 
   const handleChatCardClick = (roomId, roomTitle) => {
     console.log(`채팅방 ID ${roomId} 클릭됨`);
