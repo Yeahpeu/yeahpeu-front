@@ -14,6 +14,16 @@ export const useUserRooms = () => {
   });
 };
 
+//채팅방 참여
+export const useJoinRoom = () => {
+  return useMutation({
+    mutationFn: (roomId) =>
+      axiosInstance
+        .post(`/api/v1/chat/rooms/${roomId}/join`)
+        .then((response) => response.data),
+  });
+};
+
 // 전체 채팅방 조회
 export const useRooms = () => {
   return useQuery({

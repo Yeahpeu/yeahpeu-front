@@ -10,7 +10,7 @@ const MychatMolecule = () => {
   const { data: userProfile = [], isLoading } = useProfile();
 
   const navigate = useNavigate();
-  const { setRoomTitle, setRoomId, userId, setUserId } = useChatStore();
+  const { setRoomTitle, setRoomId, setUserId } = useChatStore();
 
   const handleChatCardClick = (roomId, roomTitle) => {
     console.log(`채팅방 ID ${roomId} 클릭됨`);

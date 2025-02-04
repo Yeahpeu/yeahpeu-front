@@ -35,7 +35,7 @@ const MyCreateChat = ({ onCancel, onConfirm, visible }) => {
 
   const createRoomHandle = (groupName, selectedMembers) => {
     console.log(groupName, selectedMembers);
-
+    onConfirm();
     const roomInfo = {
       title: groupName,
       reservedMemberCount: selectedMembers,
