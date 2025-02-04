@@ -7,7 +7,7 @@ import { useCreateRoom } from "../../api/chatAPI";
 const MyCreateChat = ({ onCancel, onConfirm, visible }) => {
   if (!visible) return null;
 
-  const { mutate: createRoom, isLoading } = useCreateRoom();
+  const { mutate: createRoom } = useCreateRoom();
 
   const [groupName, setGroupName] = useState("");
   const [selectedMembers, setSelectedMembers] = useState(0);
@@ -35,7 +35,7 @@ const MyCreateChat = ({ onCancel, onConfirm, visible }) => {
 
   const createRoomHandle = (groupName, selectedMembers) => {
     console.log(groupName, selectedMembers);
-
+    onConfirm();
     const roomInfo = {
       title: groupName,
       reservedMemberCount: selectedMembers,

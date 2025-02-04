@@ -6,7 +6,7 @@ const CalendarMolecule = () => {
 
   const groupedEvents = schedules.reduce((acc, event) => {
     const date = new Date(event.date);
-    date.setHours(date.getHours() + 9);
+    date.setHours(date.getHours());
 
     const eventDate = date.toISOString().split("T")[0];
     if (!acc[eventDate]) {
@@ -26,19 +26,25 @@ const CalendarMolecule = () => {
 
   return (
     <div>
-      {sortedDates.map((date) => (
-        <div key={date} className="pb-4">
-          <h2 className="text-lg font-bold m-2 text-left">
-            {date} ({getKoreanDay(date)})
-          </h2>
+      {sortedDates.length === 0 ? (
+        <p className=" text-lg text-center ">
+          결혼식이 끝나신 건가요 ( °ᗝ° ) ?
+        </p>
+      ) : (
+        sortedDates.map((date) => (
+          <div key={date} className="pb-4">
+            <h2 className="text-lg font-bold m-2 text-left">
+              {date} ({getKoreanDay(date)})
+            </h2>
 
-          {groupedEvents[date]
-            .sort((a, b) => new Date(a.date) - new Date(b.date))
-            .map((event) => (
-              <MyScheduleCard event={event} key={event.id} />
-            ))}
-        </div>
-      ))}
+            {groupedEvents[date]
+              .sort((a, b) => new Date(a.date) - new Date(b.date))
+              .map((event) => (
+                <MyScheduleCard event={event} key={event.id} />
+              ))}
+          </div>
+        ))
+      )}
     </div>
   );
 };

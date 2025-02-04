@@ -1,8 +1,4 @@
-import { useNavigate } from "react-router-dom";
-
-const WishInfoMolecule = () => {
-  const navigate = useNavigate();
-
+const WishInfoMolecule = ({ onItemClick }) => {
   const categories = [
     {
       name: "가전",
@@ -28,17 +24,13 @@ const WishInfoMolecule = () => {
     },
     {
       name: "침구/생활용품",
-      items: ["침구세트", "카페트", "쿠션", "방석", "수건", "담요"],
+      items: ["침구세트", "카페트", "방석", "수건", "담요"],
     },
     {
       name: "주방용품",
       items: ["냄비세트", "밀폐용기", "앞치마", "프라이팬", "컵세트", "식기"],
     },
   ];
-
-  const handleItemClick = (query) => {
-    navigate(`/wishlist?query=${encodeURIComponent(query)}`);
-  };
 
   return (
     <div className="p-2 w-full">
@@ -47,15 +39,15 @@ const WishInfoMolecule = () => {
       </h2>
       {categories.map((category) => (
         <div key={category.name} className="mb-6">
-          <h3 className="text-left text-medi font-bold mb-2 ml-3-2">
+          <h3 className="text-left text-medi font-bold mb-2">
             {category.name}
           </h3>
           <hr className="m-1" />
-          <ul className="flex flex-wrap  gap-2">
+          <ul className="flex flex-wrap gap-2">
             {category.items.map((item) => (
               <li
                 key={item}
-                onClick={() => handleItemClick(item)}
+                onClick={() => onItemClick(item)}
                 className="cursor-pointer text-blue-500 hover:underline inline-block px-2"
               >
                 {item}

@@ -9,6 +9,7 @@ import ChatInput from "../components/Chat/ChatInput";
 import { useStompClient } from "../api/ws/useStompClient";
 import MyConfirm from "../components/Modals/MyConfirm";
 import { useLeaveRoom } from "../api/chatAPI";
+import progressinGIF from "../assets/progressing.gif";
 
 const ChatRoomPage = () => {
   const { mutate: leaveRoom, error } = useLeaveRoom();
@@ -19,8 +20,8 @@ const ChatRoomPage = () => {
   const navigate = useNavigate();
 
   // 방 정보 관리
-  const { roomId, roomTitle, chat, setChat } = useChatStore();
-
+  const { roomId, roomTitle, chat, setChat, userId } = useChatStore();
+  console.log("나의 유저아이디 : " + userId);
   // ws 를 활용한 방메시지 관리
   const {
     data: RoomMessages = { items: [] },
@@ -100,15 +101,23 @@ const ChatRoomPage = () => {
   };
 
   if (isLoading) {
-    //로딩 프로세싱 (todo)
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <img src={progressinGIF} alt="로딩중....." />
+      </div>
+    );
   }
 
   if (isError) {
     return <div>Error loading messages</div>;
   }
 
-  const myId = 10;
+  console.log("=============채팅방 입장=============");
+  console.log(`userId = ${userId}            `);
+  console.log(`roomId = ${roomId}             `);
+  console.log(`roomTitle = ${roomTitle}       `);
+
+  console.log("====================================");
 
   return (
     <div className="p-8 pt-10">
@@ -117,7 +126,7 @@ const ChatRoomPage = () => {
         onLeave={handleLeaveChat}
         onDelete={handleDeleteChat}
       />
-      <ChatMessages messages={messages} myId={myId} />
+      <ChatMessages messages={messages} myId={userId} />
       <ChatInput chat={chat} setChat={setChat} onSend={handleSend} />
       <MyConfirm
         message="정말로 이 방을 떠나시겠습니까?"

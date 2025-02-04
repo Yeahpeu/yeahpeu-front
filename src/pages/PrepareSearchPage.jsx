@@ -1,18 +1,36 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useSearchQuery } from "../api/searchAPI";
 import MySearchBox from "../components/common/MySearchBar";
 import MyWishCard from "../components/Cards/MyWishCard";
 
 const PrepareSearchPage = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const query = searchParams.get("query") || "";
-  const { data: wishlist = [], isLoading } = useSearchQuery(query);
+  const page = parseInt(searchParams.get("page")) || 1;
+
+  const { data: wishlist = [], isLoading } = useSearchQuery({
+    keyword: query,
+    page,
+  });
+
+  const handleSearch = (newQuery) => {
+    if (newQuery.trim()) {
+      setSearchParams({ query: newQuery, page: 1 });
+    }
+  };
+
+  const handlePageChange = (newPage) => {
+    setSearchParams({ query, page: newPage });
+  };
 
   return (
     <div className="p-8">
-      <MySearchBox value={query} setValue={() => {}} onSearch={() => {}} />
-
-      <p className="text-gray-500 mt-2">총 검색 결과: {wishlist.length}건</p>
+      <MySearchBox
+        value={query}
+        setValue={(e) => handleSearch(e.target.value)}
+        onSearch={() => handleSearch(query)}
+      />
 
       {isLoading ? (
         <p className="text-gray-500 mt-4">검색 중...</p>
@@ -35,7 +53,11 @@ const PrepareSearchPage = () => {
 
       <div className="flex justify-center mt-6 space-x-2">
         {[1, 2, 3, 4, 5].map((num) => (
-          <button key={num} className="px-3 py-1 border rounded-md">
+          <button
+            key={num}
+            className={`px-3 py-1 border rounded-md ${num === page ? "bg-blue-500 text-white" : ""}`}
+            onClick={() => handlePageChange(num)}
+          >
             {num}
           </button>
         ))}

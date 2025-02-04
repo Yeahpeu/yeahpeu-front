@@ -75,9 +75,8 @@ function App() {
               element={<ChatRoomPage />}
             />
 
-            <Route path="/shop" element={<PrepareMainPage />}>
-              <Route path="search" element={<PrepareSearchPage />} />
-            </Route>
+            <Route path="/shop" element={<PrepareMainPage />} />
+            <Route path="/shop/search" element={<PrepareSearchPage />} />
             <Route path="/shop/mywish" element={<WishPage />} />
           </Routes>
           <NavMolecule />
