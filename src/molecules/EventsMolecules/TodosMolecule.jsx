@@ -5,7 +5,10 @@ const CalendarMolecule = () => {
   const { data: schedules = [] } = useSchedules();
 
   const groupedEvents = schedules.reduce((acc, event) => {
-    const eventDate = new Date(event.date).toISOString().split("T")[0]; // "YYYY-MM-DD" 형식
+    const date = new Date(event.date);
+    date.setHours(date.getHours() + 9);
+
+    const eventDate = date.toISOString().split("T")[0];
     if (!acc[eventDate]) {
       acc[eventDate] = [];
     }

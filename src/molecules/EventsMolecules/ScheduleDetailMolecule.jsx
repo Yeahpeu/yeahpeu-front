@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import MyEditButton from "../../components/common/MyEditButton";
 import TaskDetailMolecule from "./TaskDetailMolecule";
 import { findCategoryNames } from "../../data/util/findCategoryNames";
@@ -74,7 +74,15 @@ const ScheduleDetailMolecule = () => {
         <span className="font-semibold text-black">구 분</span>
         <div className="flex items-center gap-12">
           <span>{mainCategoryName}</span>
-          <span>{subCategoryName}</span>
+          <span className="flex items-center gap-2">
+            <Link
+              to={`/schedule/todos/detail/sub/${scheduleDetail.subcategoryId}`}
+              className="text-blue-500 underline"
+            >
+              {subCategoryName}
+            </Link>
+            <span>&gt;</span>
+          </span>
         </div>
       </div>
 
