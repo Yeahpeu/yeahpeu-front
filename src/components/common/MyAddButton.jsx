@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-const MyAddButton = ({ isCompleted }) => {
+const MyAddButton = ({ isCompleted, location }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/schedule/todos/input');
+    navigate(location);
   };
 
   return (

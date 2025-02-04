@@ -35,9 +35,7 @@ const CalendarMolecule = () => {
 
   const filteredEvents = selectedDate
     ? schedules.filter(
-        (event) =>
-          moment(event.date).add(9, "hours").format("YYYY-MM-DD") ===
-          selectedDate
+        (event) => moment(event.date).format("YYYY-MM-DD") === selectedDate
       )
     : [];
 
@@ -58,7 +56,7 @@ const CalendarMolecule = () => {
       )}
 
       <div className="flex items-center justify-center border w-12 h-12 rounded-full mt-8">
-        <MyAddButton />
+        <MyAddButton location={"/schedule/todos/input"} />
       </div>
     </div>
   );

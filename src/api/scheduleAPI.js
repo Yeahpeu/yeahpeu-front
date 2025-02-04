@@ -114,6 +114,21 @@ export const useUpdateScheduleMutation = () => {
   });
 };
 
+// 스케줄 삭제
+export const useDeleteEvent = () => {
+  return useMutation({
+    mutationFn: async (scheduleId) => {
+      const response = await axiosInstance.delete(
+        `/api/v1/wedding/events/${scheduleId}`
+      );
+      return response.data;
+    },
+    onError: (error) => {
+      console.error("떠나기 실패:", error);
+    },
+  });
+};
+
 // 스케줄 완료 처리
 export const completeEvents = () => {
   const queryClient = useQueryClient();
