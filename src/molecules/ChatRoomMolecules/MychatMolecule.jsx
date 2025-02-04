@@ -2,20 +2,32 @@ import MyChatCard from "../../components/Cards/MyChatCard";
 import { useNavigate } from "react-router-dom";
 import emptyImg from "../../assets/emptybox.png";
 import { useChatStore } from "../../stores/chatStore.js";
-import { useUserRooms } from "../../api/chatAPI";
+import { useUserRooms, useProfile } from "../../api/chatAPI";
+import progressinGIF from "../../assets/progressing.gif";
 
 const MychatMolecule = () => {
   const { data: userRooms = [] } = useUserRooms();
+  const { data: userProfile = [], isLoading } = useProfile();
 
   const navigate = useNavigate();
-  const { setRoomTitle, setRoomId } = useChatStore();
+  const { setRoomTitle, setRoomId, userId, setUserId } = useChatStore();
 
   const handleChatCardClick = (roomId, roomTitle) => {
     console.log(`채팅방 ID ${roomId} 클릭됨`);
     setRoomTitle(roomTitle);
     setRoomId(roomId);
+    console.log(userProfile);
+    setUserId(userProfile.id);
     navigate(`/chat/mychat/rooms/${roomId}`, { state: { roomTitle } });
   };
+
+  if (isLoading) {
+    return (
+      <div>
+        <img src={progressinGIF} alt="로딩중....." />
+      </div>
+    );
+  }
 
   return (
     <div>

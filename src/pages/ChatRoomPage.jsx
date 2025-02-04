@@ -19,8 +19,8 @@ const ChatRoomPage = () => {
   const navigate = useNavigate();
 
   // 방 정보 관리
-  const { roomId, roomTitle, chat, setChat } = useChatStore();
-
+  const { roomId, roomTitle, chat, setChat, userId } = useChatStore();
+  console.log("나의 유저아이디 : " + userId);
   // ws 를 활용한 방메시지 관리
   const {
     data: RoomMessages = { items: [] },
@@ -108,8 +108,6 @@ const ChatRoomPage = () => {
     return <div>Error loading messages</div>;
   }
 
-  const myId = 10;
-
   return (
     <div className="p-8 pt-10">
       <ChatHeader
@@ -117,7 +115,7 @@ const ChatRoomPage = () => {
         onLeave={handleLeaveChat}
         onDelete={handleDeleteChat}
       />
-      <ChatMessages messages={messages} myId={myId} />
+      <ChatMessages messages={messages} myId={userId} />
       <ChatInput chat={chat} setChat={setChat} onSend={handleSend} />
       <MyConfirm
         message="정말로 이 방을 떠나시겠습니까?"

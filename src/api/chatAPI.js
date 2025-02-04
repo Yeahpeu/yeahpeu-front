@@ -25,6 +25,17 @@ export const useRooms = () => {
   });
 };
 
+// 나의 요약 정보 조회
+export const useProfile = () => {
+  return useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const response = await axiosInstance.get("/api/v1/users/me/summary");
+      return response.data;
+    },
+  });
+};
+
 // 특정 채팅방의 텍스트 조회
 export const useRoomMessages = (roomId) => {
   return useQuery({
@@ -40,7 +51,7 @@ export const useRoomMessages = (roomId) => {
   });
 };
 
-// 채팅방 생성성 추가
+// 채팅방 생성 추가
 export const useCreateRoom = () => {
   const navigate = useNavigate();
   const { roomId, roomTitle, setRoomId, setRoomTitle } = useChatStore();
