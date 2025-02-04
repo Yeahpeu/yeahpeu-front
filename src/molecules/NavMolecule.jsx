@@ -1,35 +1,44 @@
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import HomeIcon from "../components/Buttons/NavButtons/HomeIcon";
 import CalendarIcon from "../components/Buttons/NavButtons/CalendarIcon";
 import ChatIcon from "../components/Buttons/NavButtons/ChatIcon";
 import ShopIcon from "../components/Buttons/NavButtons/ShopIcon";
-import { useTabStore } from "../stores/commonStore";
+import { useCommonStore } from "../stores/commonStore";
+import { useEffect } from "react";
 
 const MyNav = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const { setActiveTab } = useTabStore();
+  const { activeIndex, setActiveIndex } = useCommonStore();
   const location = useLocation();
+  const pathname = location.pathname;
 
+  if (location.pathname === "/") {
+    return null;
+  }
   const hidePath = [
-    "/",
     "/login",
     "/signup",
     "/registrationStatus",
     "/onboarding",
+    "/chat/mychat/rooms/",
   ];
-
-  if (hidePath.includes(location.pathname)) {
+  if (location.pathname.startsWith(...hidePath)) {
     return null;
   }
-
-  // 채팅방에서 nav바를 없애기 위한 코드
-  if (location.pathname.startsWith("/chat/mychat/rooms/")) {
-    return null;
-  }
+  useEffect(() => {
+    if (pathname.startsWith("/home")) {
+      setActiveIndex(0);
+    } else if (pathname.startsWith("/schedule")) {
+      setActiveIndex(1);
+    } else if (pathname.startsWith("/chat")) {
+      setActiveIndex(2);
+    } else if (pathname.startsWith("/shop")) {
+      setActiveIndex(3);
+    }
+  }, []);
 
   const navItems = [
     { id: 0, tab: "홈", label: "home", icon: <HomeIcon /> },
+
     {
       id: 1,
       tab: "캘린더",
@@ -52,7 +61,6 @@ const MyNav = () => {
             }`}
             onClick={() => {
               setActiveIndex(item.id);
-              setActiveTab(item.tab);
             }}
           >
             <div className="w-6 h-10">{item.icon}</div>

@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
-const useCommonStore = create((set) => {
+export const useCommonStore = create((set) => {
   return {
-    activeIndex: 0,
+    activeIndex: "",
     setActiveIndex: (id) => {
       set(() => {
         return { activeIndex: id };
@@ -13,7 +13,7 @@ const useCommonStore = create((set) => {
 
 export const useTabStore = create((set) => {
   return {
-    activeTab: "캘린더",
+    activeTab: "",
     setActiveTab: (value) => {
       set(() => {
         return { activeTab: value };
@@ -21,5 +21,3 @@ export const useTabStore = create((set) => {
     },
   };
 });
-
-export default useCommonStore;
