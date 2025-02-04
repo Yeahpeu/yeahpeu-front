@@ -7,13 +7,13 @@ const MyBudgetCard = ({ total, expend, onClick }) => {
     >
       <div className="flex justify-between font-bold text-lg">
         <span>총 예산</span>
-        <span>{total.toLocaleString()} 원</span>
+        <span>{total?.toLocaleString()} 원</span>
       </div>
       <hr className="my-3" />
       <div className="text-lg space-y-2">
         <div className="flex justify-between font-bold text-gray-400">
           <b>지출 금액</b>
-          <span>{expend.toLocaleString()} 원</span>
+          <span>{expend?.toLocaleString()} 원</span>
         </div>
         <div
           className={`flex justify-between font-bold ${

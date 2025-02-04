@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
-import { useAuthStore } from "../stores/authStore";
+import { useBudgetStore } from "../stores/homeStore";
 
 export const useBudgetQuery = () => {
-  const { isLoggedIn } = useAuthStore();
+  const { setTotalBudget, setUsedBudget } = useBudgetStore();
   return useQuery({
     queryKey: ["budget"],
     queryFn: () => axiosInstance.get("/api/v1/wedding/budget"),

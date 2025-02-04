@@ -3,10 +3,14 @@ import MyBudgetCard from "../components/Cards/MyBudgetCard";
 import HeaderMolecule from "../molecules/HeaderMolecule";
 import MyAccordion from "../components/Cards/MyAccordion";
 import { useBudgetQuery } from "../api/commonAPI";
+import { useBudgetStore } from "../stores/homeStore";
 
 const BudgetPage = () => {
   const [openAccordion, setOpenAccordion] = useState(null);
   const { data, isLoading } = useBudgetQuery();
+  const { totalBudget, usedBudget } = useBudgetStore();
+
+  console.log(totalBudget, usedBudget);
 
   const handleAccordionClick = (id) => {
     setOpenAccordion(openAccordion === id ? null : id);
@@ -21,9 +25,14 @@ const BudgetPage = () => {
   return (
     <div className="flex flex-col p-8">
       <HeaderMolecule />
-      <MyBudgetCard total={1000000} expend={10000} balance={1000} />
+      <MyBudgetCard
+        total={totalBudget}
+        expend={usedBudget}
+        balance={totalBudget - usedBudget}
+      />
       <div className="mt-4">
         <p className="text-lg font-bold mb-2 text-left">상세 내역</p>
+
         {data.data?.map((budget) => (
           <MyAccordion
             key={budget.id}

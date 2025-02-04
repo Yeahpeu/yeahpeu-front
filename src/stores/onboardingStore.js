@@ -1,34 +1,29 @@
 import { create } from "zustand";
-import { STEP_KEYS } from "../components/onboardingSteps";
 
 const useOnboardingStore = create((set, get) => ({
   weddingRole: "",
   weddingDay: "",
   budget: 0,
   currentStep: 0,
-  selections: {
-    wedding: [],
-    styling: [],
-    gift: [],
-    house: [],
-    honeymoon: [],
-  },
+  selectedCategoryIds: [],
+  category: [],
 
   setWeddingRole: (role) => set({ weddingRole: role }),
-  setWeddingDay: (day) => set({ weddingDay: day }),
+  setWeddingDay: (day) => {
+    // day가 이미 ISO 문자열이 아닌 경우에만 변환
+    const dateString = day instanceof Date ? day.toISOString() : day;
+    set({ weddingDay: dateString });
+  },
   setBudget: (amount) => set({ budget: amount }),
+  setCategory: (category) => set({ category: category }),
 
-  setCurrentStep: (step) =>
-    set(() => {
-      return { currentStep: step };
-    }),
+  setCurrentStep: (step) => set({ currentStep: step }),
 
-  setSelections: (step, selections) =>
+  toggleCategoryId: (id) =>
     set((state) => ({
-      selections: {
-        ...state.selections,
-        [step]: selections,
-      },
+      selectedCategoryIds: state.selectedCategoryIds.includes(id)
+        ? state.selectedCategoryIds.filter((categoryId) => categoryId !== id)
+        : [...state.selectedCategoryIds, id],
     })),
 
   getCurrentProgress: () => {
@@ -41,30 +36,16 @@ const useOnboardingStore = create((set, get) => ({
       weddingRole: "",
       weddingDay: "",
       budget: 0,
-      selections: {
-        wedding: [],
-        styling: [],
-        gift: [],
-        house: [],
-        honeymoon: [],
-      },
+      selectedCategoryIds: [],
     }),
 
   getAllSelections: () => {
-    const { weddingRole, weddingDay, budget, selections } = get();
+    const { weddingRole, weddingDay, budget, selectedCategoryIds } = get();
     return {
       weddingRole,
       weddingDay,
       budget,
-      selectedTasks: STEP_KEYS.reduce((acc, key) => {
-        return [
-          ...acc,
-          ...selections[key].map((task) => ({
-            category: key,
-            task: task,
-          })),
-        ];
-      }, []),
+      categoryIds: selectedCategoryIds,
     };
   },
 }));

@@ -6,9 +6,6 @@ import HomeTodosMolecule from "../molecules/HomeTodosMolecule";
 import QuotesMolecule from "../molecules/QuotesMolecule";
 
 const HomePage = () => {
-  useEffect(() => {}, []);
-  const KST = new Date();
-
   return (
     <div className="flex flex-col p-8">
       <HeaderMolecule />

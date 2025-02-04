@@ -4,12 +4,12 @@ const MyProgressBar = ({ progressPercent }) => {
   return (
     <ProgressBar
       completed={progressPercent}
-      height="40px"
+      height="30px"
       bgColor="#fecaca"
       animateOnRender="true"
       className="shadow-md shadow-slate-300 rounded-3xl"
       customLabel="💐"
-      labelSize="30px"
+      labelSize="25px"
     />
   );
 };

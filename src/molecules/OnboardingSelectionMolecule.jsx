@@ -2,22 +2,20 @@ import React from "react";
 import MyCheckButton from "../components/Buttons/MyCheckButton";
 import useOnboardingStore from "../stores/onboardingStore";
 import { useSubmitOnboardingMutation } from "../api/onboardingAPI";
-import { STEP_DATA, STEP_KEYS } from "../components/onboardingSteps";
+import { STEP_KEYS, CATEGORY_KEYS } from "../components/onboardingSteps";
 
 const OnboardingSelectionMolecule = () => {
-  const { currentStep, selections, setSelections } = useOnboardingStore();
+  const { currentStep, selectedCategoryIds, toggleCategoryId, category } =
+    useOnboardingStore();
   const submitMutation = useSubmitOnboardingMutation();
 
   const currentStepKey = STEP_KEYS[currentStep];
-  const currentStepData = STEP_DATA[currentStepKey];
+  const currentCategory = category.find(
+    (cat) => CATEGORY_KEYS[cat.id] === currentStepKey
+  );
 
   const handleSelection = (option) => {
-    const currentSelections = selections[currentStepKey] || [];
-    const newSelections = currentSelections.includes(option)
-      ? currentSelections.filter((item) => item !== option)
-      : [...currentSelections, option];
-
-    setSelections(currentStepKey, newSelections);
+    toggleCategoryId(option.id);
   };
 
   const handleNext = () => {
@@ -29,20 +27,22 @@ const OnboardingSelectionMolecule = () => {
     }
   };
 
+  if (!currentCategory) return null;
+
   return (
     <div className="flex flex-col h-full">
-      <h2 className=" font-medium">세부 일정</h2>
+      <h2 className="font-medium">세부 일정</h2>
 
       <div className="flex-1 px-6 overflow-y-auto">
         <div className="bg-white rounded-2xl p-2 shadow-sm space-y-1">
-          {currentStepData.options.map((option, index) => (
+          {currentCategory.children.map((option, index) => (
             <div
-              key={index}
+              key={option.id}
               className="transition-all duration-200 ease-in-out"
             >
               <MyCheckButton
-                value={option}
-                checked={selections[currentStepKey]?.includes(option)}
+                value={option.name}
+                checked={selectedCategoryIds.includes(option.id)}
                 onChange={() => handleSelection(option)}
                 index={index}
               />

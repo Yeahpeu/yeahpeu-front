@@ -61,8 +61,11 @@ const CoupleInfoPage = () => {
           <input
             type="date"
             className="border bg-red-50 border-gray-300 rounded-lg p-2 w-full"
-            value={weddingDay}
-            onChange={(e) => setWeddingDay(e.target.value)}
+            value={weddingDay ? weddingDay.split("T")[0] : ""}
+            onChange={(e) => {
+              const date = new Date(e.target.value);
+              setWeddingDay(date.toISOString());
+            }}
           />
         </div>
 
