@@ -14,7 +14,7 @@ export const shareKakao = (linkUrl, title, imageUrl) => {
         description: "아래 링크를 클릭해 상품을 확인하세요!",
         imageUrl: imageUrl,
         link: {
-          webUrl: linkUrl,
+          webUrl: "localhost:3000/shop",
           mobileWebUrl: linkUrl,
         },
       },
