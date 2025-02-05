@@ -18,21 +18,6 @@ const InvitationCodePage = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <header className="flex items-center p-4 relative">
-        <button onClick={() => navigate(-1)} className="absolute left-4">
-          <svg
-            className="w-6 h-6 text-gray-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
         <h1 className="text-xl text-rose-300 font-medium text-center w-full">
           부부 정보
         </h1>

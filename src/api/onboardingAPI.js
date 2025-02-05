@@ -21,26 +21,30 @@ export const useSubmitOnboardingMutation = () => {
   });
 };
 
-export const useGetCategory = () => {
+export const useGetCategory = (options = {}) => {
   return useQuery({
     queryKey: ["category"],
     queryFn: async () => {
       const response = await axiosInstance.get("/api/v1/categories");
       return response.data;
     },
+    enabled: false,
+    ...options,
     onSuccess: (data) => {
       console.log(data);
     },
   });
 };
 
-export const useCheckOnboarding = () => {
+export const useCheckOnboarding = (options = {}) => {
   return useQuery({
     queryKey: ["onboardingcheck"],
     queryFn: async () => {
       const response = await axiosInstance.get("/api/v1/onboarding/status");
       return response.data;
     },
+    enabled: false,
+    ...options,
   });
 };
 

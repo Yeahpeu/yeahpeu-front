@@ -9,11 +9,10 @@ const MyPageMolecule = () => {
   const handleMoveToEdit = () => {
     navigate("/mypage/edit");
   };
-  const userImg = data.userImg;
-  const sampleImage = data.weddingRole === "BRIDE" ? bride : groom;
-
+  const sampleImage = data?.weddingRole === "BRIDE" ? bride : groom;
+  console.log(data?.avatarUrl);
   const formatWeddingDate = (data) => {
-    const weddingDay = new Date(data.weddingInfoResponse.weddingDay);
+    const weddingDay = new Date(data?.weddingInfoResponse.weddingDay);
     const year = weddingDay.getFullYear();
     const month = String(weddingDay.getMonth() + 1).padStart(2, "0");
     const day = String(weddingDay.getDate()).padStart(2, "0");
@@ -33,58 +32,61 @@ const MyPageMolecule = () => {
         <h1 className="text-xl font-bold text-left">내 정보</h1>
       </div>
       <hr className="w-full mb-2" />
-      <div className="flex flex-row items-center gap-10 justify-start my-2">
-        <img
-          src={userImg ? userImg : sampleImage}
-          alt="프로필 이미지"
-          className="w-16 h-16 rounded-xl"
-        />
-
-        <div className="flex flex-col gap-1 w-full">
-          <div className="flex flex-row items-center gap-2">
-            {data.weddingRole === "BRIDE" ? (
+      <div className="flex flex-row items-center gap-10 my-2">
+        <div className="flex flex-col items-center gap-2">
+          <img
+            src={data?.avatarUrl || sampleImage}
+            alt="프로필 이미지"
+            className="rounded-full w-16 h-16 object-cover"
+          />
+        </div>
+        <div className="flex flex-col gap-1 w-1/2">
+          <div className="flex flex-row items-center gap-2 w-full">
+            {data?.weddingRole === "BRIDE" ? (
               <span className="font-semibold text-black w-1/2">신부</span>
             ) : (
-              <span className="font-semibold text-black w-1/4">신랑</span>
+              <span className="font-semibold text-black w-1/2">신랑</span>
             )}
-            <div className="w-">{data.username}</div>
+
+            <div className="w-1/2">{data?.username}</div>
           </div>
 
-          <div className="flex flex-row items-center gap-2">
-            <span className="font-semibold text-black w-1/4">별명</span>
-            {data.nickname}
+          <div className="flex flex-row items-center gap-2 w-full">
+            <span className="font-semibold text-black w-1/2">별명</span>
+            <div className="w-1/2">{data?.nickname}</div>
           </div>
         </div>
       </div>
+
       <div className="flex flex-col justify-center gap-4 my-2">
         <div className="flex flex-row items-center gap-4">
           <span className="font-semibold text-black w-1/4 text-left">
             고유 번호
           </span>
-          <span>{data.myCode}</span>
+          <span>{data?.myCode}</span>
         </div>
         <div className="flex flex-row items-center gap-4">
           <span className="font-semibold text-black w-1/4 text-left">
             이메일
           </span>
-          <span>{data.emailAddress}</span>
+          <span>{data?.emailAddress}</span>
         </div>
         <hr className="mt-3 mb-5" />
         <div className="flex flex-row items-center gap-4">
           <span className="font-semibold text-black w-1/4 text-left">
-            신랑 정보
+            배우자 정보
           </span>
           <span>
-            {data.weddingInfoResponse.partnerName === null ? (
+            {data?.weddingInfoResponse.partnerName === null ? (
               <span className="text-gray-500">배우자를 초대하세요.</span>
             ) : (
-              data.weddingInfoResponse.partnerName
+              data?.weddingInfoResponse.partnerName
             )}
           </span>
         </div>
         <div className="flex flex-row items-center gap-4">
           <span className="font-semibold text-black w-1/4 text-left">예산</span>
-          <span>{data.weddingInfoResponse.budget}</span>
+          <span>{data?.weddingInfoResponse.budget}</span>
         </div>
         <div className="flex flex-row items-center gap-4">
           <span className="font-semibold text-black w-1/4 text-left">

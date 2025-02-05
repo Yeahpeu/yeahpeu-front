@@ -29,7 +29,7 @@ import InvitationCodePage from "./pages/InvitationCodePage";
 
 function App() {
   return (
-    <>
+    <div className="min-h-screen pb-[60px]">
       <AnimatePresence mode="wait">
         <BrowserRouter>
           <Routes>
@@ -84,7 +84,7 @@ function App() {
           <NavMolecule />
         </BrowserRouter>
       </AnimatePresence>
-    </>
+    </div>
   );
 }
 
