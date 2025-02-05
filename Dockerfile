@@ -34,3 +34,5 @@ EXPOSE 80
 
 # nginx 서버를 실행하고 백그라운드로 동작하도록 한다.
 CMD ["nginx", "-g", "daemon off;"]
+
+
