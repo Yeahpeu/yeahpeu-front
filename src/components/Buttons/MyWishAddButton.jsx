@@ -4,11 +4,11 @@ const MyWishAddButton = ({ isCompleted, onClick }) => {
       role="checkbox"
       aria-checked={isCompleted}
       onClick={onClick}
-      className="cursor-pointer flex items-center justify-center w-8 h-8"
+      className="cursor-pointer flex items-center justify-center w-6 h-6"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className={`w-7 h-7 transition ${
+        className={`w-6 h-6 transition ${
           isCompleted ? "text-red-300" : "text-gray-500"
         } border rounded-md shadow-sm `}
         fill="currentColor"

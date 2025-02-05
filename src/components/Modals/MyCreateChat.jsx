@@ -13,6 +13,7 @@ const MyCreateChat = ({ onCancel, onConfirm, visible }) => {
   const [selectedMembers, setSelectedMembers] = useState(0);
 
   const memberOptions = [
+    { value: "", label: "인원 수 선택" },
     { value: 100, label: "100명" },
     { value: 200, label: "200명" },
     { value: 300, label: "300명" },
@@ -30,11 +31,9 @@ const MyCreateChat = ({ onCancel, onConfirm, visible }) => {
 
   const handleMembersChange = (e) => {
     setSelectedMembers(e.target.value);
-    console.log(e.target.value);
   };
 
   const createRoomHandle = (groupName, selectedMembers) => {
-    console.log(groupName, selectedMembers);
     onConfirm();
     const roomInfo = {
       title: groupName,
@@ -48,7 +47,7 @@ const MyCreateChat = ({ onCancel, onConfirm, visible }) => {
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* 어두운 오버레이 */}
       <div className="fixed inset-0 bg-black opacity-50"></div>
-      <div className="z-10 flex flex-col justify-center bg-white rounded-lg shadow-lg p-6 w-full max-w-md border">
+      <div className="z-10 flex flex-col justify-center bg-white rounded-lg shadow-lg p-6 w-[80%] max-w-md border">
         <h2 className="font-bold text-lg mb-2">채팅방 추가</h2>
         <hr className="border-gray-300 mb-4" />
 

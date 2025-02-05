@@ -7,7 +7,7 @@ const MySearchBox = ({ value, setValue, onSearch }) => {
   };
 
   return (
-    <div className="mb-3 md:w-96 mx-auto">
+    <div className="mb-3 w-full mx-auto">
       <div className="relative mb-4 flex w-full flex-wrap items-stretch">
         <input
           type="search"

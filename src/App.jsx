@@ -15,7 +15,7 @@ import SignupPage from "./pages/SignupPage";
 import RegistrationStatusPage from "./pages/RegistrationStatusPage";
 import OnboardingPage from "./pages/OnboardingPage";
 import PrepareSearchPage from "./pages/PrepareSearchPage";
-import WishPage from "./pages/WishPage";
+import MyWishPage from "./pages/MyWishPage";
 import ScheduleDetailPage from "./pages/ScheduleDetailPage";
 import AllchatMolecule from "./molecules/ChatRoomMolecules/AllchatMolecule";
 import MychatMolecule from "./molecules/ChatRoomMolecules/mychatMolecule";
@@ -24,7 +24,7 @@ import ScheduleEditPage from "./pages/ScheduleEditPage";
 import { AnimatePresence } from "framer-motion";
 import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
-import subcategoryPage from "./pages/subcategoryPage";
+import SubcategoryPage from "./pages/SubcategoryPage";
 
 function App() {
   return (
@@ -55,7 +55,7 @@ function App() {
             />
             <Route
               path="/schedule/todos/detail/sub/:id"
-              element={<subcategoryPage />}
+              element={<SubcategoryPage />}
             />
             <Route
               path="/schedule/todos/edit/:id"
@@ -77,7 +77,7 @@ function App() {
 
             <Route path="/shop" element={<PrepareMainPage />} />
             <Route path="/shop/search" element={<PrepareSearchPage />} />
-            <Route path="/shop/mywish" element={<WishPage />} />
+            <Route path="/shop/mywish" element={<MyWishPage />} />
           </Routes>
           <NavMolecule />
         </BrowserRouter>

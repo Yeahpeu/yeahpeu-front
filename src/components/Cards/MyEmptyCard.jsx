@@ -1,4 +1,4 @@
-import emptyImg from "../assets/emptybox.png";
+import emptyImg from "../../assets/emptybox.png";
 
 const MyEmptyCard = ({ value }) => {
   return (
