@@ -17,7 +17,7 @@ const MyConfirm = ({
 
       {/* 중앙에 위치하는 모달 */}
 
-      <div className="relative z-10">
+      <div className="relative z-50">
         <div className="flex-col justify-center bg-white rounded-lg shadow-lg p-5 px-10 max-w-lg border">
           <p className="text-center mb-4 mt-4 font-bold text-lg">{message}</p>
           <div className="flex justify-center w-[80%] mx-auto space-x-8">
