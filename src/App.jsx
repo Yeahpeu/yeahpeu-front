@@ -24,17 +24,19 @@ import ScheduleEditPage from "./pages/ScheduleEditPage";
 import { AnimatePresence } from "framer-motion";
 import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
-import SubcategoryPage from "./pages/SubcategoryPage";
+import subcategoryPage from "./pages/subcategoryPage";
+import InvitationCodePage from "./pages/InvitationCodePage";
 
 function App() {
   return (
-    <>
+    <div className="min-h-screen pb-[60px]">
       <AnimatePresence mode="wait">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<SplashPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/invitationCode" element={<InvitationCodePage />} />
             <Route
               path="/registrationStatus"
               element={<RegistrationStatusPage />}
@@ -82,7 +84,7 @@ function App() {
           <NavMolecule />
         </BrowserRouter>
       </AnimatePresence>
-    </>
+    </div>
   );
 }
 
