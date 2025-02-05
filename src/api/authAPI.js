@@ -9,8 +9,8 @@ export const useLoginMutation = () => {
   const { setLoggedIn } = useAuthStore();
   const { setCategory } = useOnboardingStore();
   const navigate = useNavigate();
-  const { refetch: checkOnboarding } = useCheckOnboarding();
-  const { refetch: getCategory } = useGetCategory();
+  const { refetch: checkOnboarding } = useCheckOnboarding({ enabled: false });
+  const { refetch: getCategory } = useGetCategory({ enabled: false });
 
   return useMutation({
     mutationFn: async (user) => {
@@ -31,7 +31,7 @@ export const useLoginMutation = () => {
           const categoryResult = await getCategory();
           setCategory(categoryResult.data);
           console.log(categoryResult.data);
-          navigate("/registrationStatus", { replace: true });
+          navigate("/invitationCode", { replace: true });
         }
       }
     },

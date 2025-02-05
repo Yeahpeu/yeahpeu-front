@@ -41,8 +41,8 @@ const MyNav = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full m-0 bg-white shadow-lg z-10">
-      <div className="flex justify-around items-center py-2">
+    <nav className="fixed bottom-0 left-0 w-full h-[60px] m-0 bg-white shadow-lg z-10">
+      <div className="flex justify-around items-center h-full">
         {navItems.map((item) => (
           <Link
             to={`/${item.label}`}

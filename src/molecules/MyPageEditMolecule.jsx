@@ -3,12 +3,17 @@ import MyInputWhite from "../components/common/MyInput-white";
 import bride from "../assets/bride.png";
 import groom from "../assets/groom.png";
 import useMypageStore from "../stores/mypageStore";
-import { useMyPage, useMyPageMutation } from "../api/mypageAPI";
+import {
+  useMyPage,
+  useMyPageMutation,
+  useAvatarUpload,
+} from "../api/mypageAPI";
+import imageCompression from "browser-image-compression";
 
 const MyPageEditMolecule = () => {
   const {
-    userImg,
-    setUserImg,
+    avatarUrl,
+    setAvatarUrl,
     username,
     setUsername,
     nickname,
@@ -23,6 +28,7 @@ const MyPageEditMolecule = () => {
     emailAddress,
   } = useMypageStore();
   const userInfo = {
+    avatarUrl,
     username,
     nickname,
     budget,
@@ -30,6 +36,7 @@ const MyPageEditMolecule = () => {
   };
 
   const myPageMutation = useMyPageMutation();
+  const avatarUpload = useAvatarUpload();
 
   const { isLoading } = useMyPage();
 
@@ -39,6 +46,31 @@ const MyPageEditMolecule = () => {
   const formattedWeddingDay = weddingDay
     ? new Date(weddingDay).toISOString().split("T")[0]
     : "";
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const options = {
+        maxSizeMB: 1, // 최대 파일 크기 1MB
+        maxWidthOrHeight: 1024, // 최대 너비/높이
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(file, options);
+
+      // Blob을 File 객체로 변환
+      const convertedFile = new File([compressedFile], file.name, {
+        type: file.type,
+        lastModified: new Date().getTime(),
+      });
+
+      await avatarUpload.mutateAsync(convertedFile);
+    } catch (error) {
+      alert("이미지 업로드에 실패했습니다.");
+    }
+  };
 
   if (isLoading) {
     return <div></div>;
@@ -65,17 +97,36 @@ const MyPageEditMolecule = () => {
       <div className="flex flex-row items-center gap-10 my-2">
         <div className="flex flex-col items-center gap-2">
           <img
-            src={sampleImage}
+            src={avatarUrl || sampleImage}
             alt="프로필 이미지"
-            className="w-16 h-16 rounded-xl"
+            className="w-16 h-16 rounded-full object-cover"
           />
           <div className="">
-            <button className="text-gray-600 text-xs">업로드</button>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileUpload}
+              className="hidden"
+              id="avatar-upload"
+              disabled={avatarUpload.isPending}
+            />
+            <label
+              htmlFor="avatar-upload"
+              className={`text-gray-600 text-xs cursor-pointer hover:text-gray-800 ${
+                avatarUpload.isPending ? "opacity-50" : ""
+              }`}
+            >
+              {avatarUpload.isPending ? "업로드 중" : "업로드"}
+            </label>
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center gap-2">
-            <span className="font-semibold text-black w-1/4">신랑</span>
+            {weddingRole === "BRIDE" ? (
+              <span className="font-semibold text-black w-1/4">신부</span>
+            ) : (
+              <span className="font-semibold text-black w-1/4">신랑</span>
+            )}
             <MyInputWhite
               type="text"
               value={username}
@@ -108,7 +159,7 @@ const MyPageEditMolecule = () => {
         <hr className="mt-3 mb-5" />
         <div className="flex flex-row items-center gap-4">
           <span className="font-semibold text-black w-1/4 text-left">
-            신랑 정보
+            배우자 정보
           </span>
           <span>
             {partnerName === null ? (
