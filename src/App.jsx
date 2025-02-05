@@ -24,8 +24,8 @@ import ScheduleEditPage from "./pages/ScheduleEditPage";
 import { AnimatePresence } from "framer-motion";
 import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
-import subcategoryPage from "./pages/subcategoryPage";
 import InvitationCodePage from "./pages/InvitationCodePage";
+import SubcategoryPage from "./pages/subcategoryPage";
 
 function App() {
   return (
