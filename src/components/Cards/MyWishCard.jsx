@@ -3,7 +3,7 @@ import shareIcon from "../../assets/kakaotalk_sharing_btn.png";
 import { useEffect } from "react";
 import { shareKakao } from "../../data/util/kakaoshare";
 
-const MyWishCard = ({ item, onWishClick }) => {
+const MyWishCard = ({ item, selected, onWishClick }) => {
   const removeHtmlTags = (str) => str.replace(/<[^>]*>/g, "");
 
   useEffect(() => {
@@ -30,10 +30,13 @@ const MyWishCard = ({ item, onWishClick }) => {
         <div className="flex justify-between items-center">
           <p className="text-xs text-gray-500">{item.mallName}</p>
           <div className="flex items-center gap-2">
-            <button onClick={handleShareClick}>
+            {/* <button onClick={handleShareClick}>
               <img src={shareIcon} className="w-6 h-6" alt="공유하기" />
-            </button>
-            <MyWishAddButton onClick={() => onWishClick(item)} />
+            </button> */}
+            <MyWishAddButton
+              onClick={() => onWishClick(item)}
+              isCompleted={selected}
+            />
           </div>
         </div>
         <a

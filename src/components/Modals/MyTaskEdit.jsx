@@ -30,7 +30,6 @@ const MyTaskEdit = ({ onClose, eventId }) => {
       { eventId, tasks },
       {
         onSuccess: () => {
-          alert("체크리스트가 성공적으로 추가되었습니다.");
           onClose();
         },
         onError: (error) => {

@@ -170,7 +170,7 @@ export const useCategories = () => {
 // 소주제별 이벤트 조회
 export const useSubcategories = (categoryId) => {
   return useQuery({
-    queryKey: ["subevents"],
+    queryKey: ["subevents", categoryId],
     queryFn: async () => {
       const response = await axiosInstance.get(
         `/api/v1/wedding/events/subcategories/${categoryId}`

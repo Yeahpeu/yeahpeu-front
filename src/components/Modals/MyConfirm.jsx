@@ -13,7 +13,7 @@ const MyConfirm = ({
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* 어두운 오버레이 */}
-      <div className="fixed inset-0 bg-black/50 z-40"></div>
+      <div className="fixed inset-0 bg-black/50 z-30"></div>
 
       {/* 중앙에 위치하는 모달 */}
 

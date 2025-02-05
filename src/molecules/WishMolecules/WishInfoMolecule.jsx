@@ -46,7 +46,7 @@ const WishInfoMolecule = ({ onItemClick }) => {
           <ul className="flex flex-wrap gap-2">
             {category.items.map((item) => (
               <li
-                key={item}
+                key={item.id}
                 onClick={() => onItemClick(item)}
                 className="cursor-pointer text-blue-500 hover:underline inline-block px-2"
               >

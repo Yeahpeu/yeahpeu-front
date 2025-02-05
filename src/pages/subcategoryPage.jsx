@@ -1,11 +1,11 @@
 import CategoryMolecule from "../molecules/EventsMolecules/CategoryMolecule";
 
-const subcategoryPage = () => {
+const SubcategoryPage = () => {
   return (
-    <div>
+    <div className="p-8">
       <CategoryMolecule />
     </div>
   );
 };
 
-export default subcategoryPage;
+export default SubcategoryPage;
