@@ -18,14 +18,14 @@ import PrepareSearchPage from "./pages/PrepareSearchPage";
 import MyWishPage from "./pages/MyWishPage";
 import ScheduleDetailPage from "./pages/ScheduleDetailPage";
 import AllchatMolecule from "./molecules/ChatRoomMolecules/AllchatMolecule";
-import MychatMolecule from "./molecules/ChatRoomMolecules/mychatMolecule";
+import MychatMolecule from "./molecules/ChatRoomMolecules/MychatMolecule";
 import ScheduleInputPage from "./pages/ScheduleInputPage";
 import ScheduleEditPage from "./pages/ScheduleEditPage";
 import { AnimatePresence } from "framer-motion";
 import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import InvitationCodePage from "./pages/InvitationCodePage";
-import SubcategoryPage from "./pages/subcategoryPage";
+import SubcategoryPage from "./pages/SubcategoryPage";
 
 function App() {
   return (

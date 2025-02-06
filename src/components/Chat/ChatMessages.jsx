@@ -15,7 +15,7 @@ const ChatMessages = ({ messages, myId }) => {
         <div className="pb-3" key={item.id}>
           <MyChatBox
             owner={myId === item.sender.id ? "mine" : "others"}
-            message={item.message}
+            item={item}
           />
         </div>
       ))}
