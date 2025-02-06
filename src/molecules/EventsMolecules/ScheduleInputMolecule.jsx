@@ -102,8 +102,7 @@ const ScheduleInputMolecule = () => {
             onChange={(e) =>
               setFormData({ ...formData, title: e.target.value })
             }
-            placeholder="제목"
-            className="border-gray-300 flex-grow mx-2"
+            className="border border-gray-300 rounded-md p-2 w-full"
           />
         </div>
 

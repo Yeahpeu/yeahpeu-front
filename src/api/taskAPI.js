@@ -65,9 +65,9 @@ export const useUpdateTaskMutation = () => {
 // 체크리스트 삭제
 export const useDeleteTask = () => {
   return useMutation({
-    mutationFn: async (scheduleId, taskId) => {
+    mutationFn: async ({ eventId, taskId }) => {
       const response = await axiosInstance.delete(
-        `/api/v1/wedding/events/${scheduleId}/tasks/${taskId}`
+        `/api/v1/wedding/events/${eventId}/tasks/${taskId}`
       );
       return response.data;
     },

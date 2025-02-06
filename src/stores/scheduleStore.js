@@ -3,6 +3,7 @@ import { create } from "zustand";
 export const useScheduleStore = create((set) => ({
   schedules: [], // 전체 스케줄
   scheduleDetails: {}, // 상세 스케줄
+  categories: [],
 
   addSchedule: (newSchedule) =>
     set((state) => ({
@@ -64,4 +65,15 @@ export const useScheduleStore = create((set) => ({
     })),
 
   resetChecklist: () => set({ schedules: [], scheduleDetails: {} }),
+
+  setCategories: (categories) =>
+    set(() => ({
+      categories,
+    })),
+
+  // categories 상태를 초기화 (빈 객체로 리셋)
+  resetCategories: () =>
+    set(() => ({
+      categories: [],
+    })),
 }));

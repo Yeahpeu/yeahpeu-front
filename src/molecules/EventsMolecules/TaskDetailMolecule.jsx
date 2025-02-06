@@ -4,7 +4,10 @@ import { useParams } from "react-router-dom";
 import {
   useCreateTaskMutation,
   useUpdateTaskMutation,
+  useDeleteTask,
 } from "../../api/taskAPI";
+import { useCategories } from "../../api/scheduleAPI";
+import MyDeleteTaskButton from "../../components/common/MyDeleteButton";
 
 const ScheduleDetailMolecule = ({ event }) => {
   const [checklists, setChecklists] = useState(event.checklists);
@@ -12,8 +15,11 @@ const ScheduleDetailMolecule = ({ event }) => {
   const [isAdding, setIsAdding] = useState(false);
   const { id: eventId } = useParams();
 
+  const { data: customCategories = [] } = useCategories();
+
   const createTaskMutation = useCreateTaskMutation();
   const updateTaskMutation = useUpdateTaskMutation();
+  const deleteTaskMutation = useDeleteTask();
 
   const handleToggleComplete = (taskId) => {
     const updatedTasks = checklists.map((item) =>
@@ -33,8 +39,6 @@ const ScheduleDetailMolecule = ({ event }) => {
         name: newTask,
       });
 
-      console.log(response.id);
-
       const newItem = {
         id: response.id,
         name: newTask,
@@ -49,6 +53,15 @@ const ScheduleDetailMolecule = ({ event }) => {
     }
   };
 
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await deleteTaskMutation.mutateAsync({ eventId, taskId });
+      setChecklists((prev) => prev.filter((task) => task.id !== taskId));
+    } catch (error) {
+      console.error("🚨 Error deleting task:", error);
+    }
+  };
+
   return (
     <div className="text-left">
       <div className="flex justify-between items-center">
@@ -58,27 +71,24 @@ const ScheduleDetailMolecule = ({ event }) => {
 
       <hr className="mt-3" />
 
-      <ul className="list-disc pl-5 mt-4">
+      <ul className="list-disc pl-5 mt-4 ">
         {checklists.map((item) => (
-          <li key={item.id} className="mt-3 flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={item.completed}
-              onChange={() => handleToggleComplete(item.id)}
-            />
+          <li key={item.id} className="mt-3 flex justify-between mr-2">
             <span
               className={`cursor-pointer ${
                 item.completed ? "line-through text-gray-500" : ""
               }`}
+              onClick={() => handleToggleComplete(item.id)}
             >
               {item.name}
             </span>
+            <MyDeleteTaskButton onClick={() => handleDeleteTask(item.id)} />
           </li>
         ))}
       </ul>
 
       {isAdding && (
-        <div className="mt-4 flex items-center gap-2">
+        <div className="mt-2 pl-3 flex items-center gap-2">
           <input
             type="text"
             value={newTask}

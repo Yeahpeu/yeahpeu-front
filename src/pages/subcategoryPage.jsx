@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { findMainCategory } from "../data/util/findMainCategory";
 import CategoryMolecule from "../molecules/EventsMolecules/CategoryMolecule";
 import { findCategoryNames } from "../data/util/findCategoryNames";
+import { useCategories } from "../api/scheduleAPI";
 
 const SubcategoryPage = () => {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ const SubcategoryPage = () => {
     mainCategoryId,
     id
   );
+
+  const { data: customCategories = [] } = useCategories();
 
   const categoryColors = {
     1: "bg-[#FF85EB]",

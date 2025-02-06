@@ -3,7 +3,11 @@ import MyEditButton from "../../components/common/MyEditButton";
 import TaskDetailMolecule from "./TaskDetailMolecule";
 import { findCategoryNames } from "../../data/util/findCategoryNames";
 import { convertKST } from "../../data/util/timeUtils";
-import { useScheduleDetail, useDeleteEvent } from "../../api/scheduleAPI";
+import {
+  useScheduleDetail,
+  useDeleteEvent,
+  useCategories,
+} from "../../api/scheduleAPI";
 import MyConfirm from "../../components/Modals/MyConfirm";
 
 import { useState } from "react";
@@ -11,6 +15,8 @@ import { useState } from "react";
 const ScheduleDetailMolecule = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const { data: customCategories = [] } = useCategories();
 
   const { data: scheduleDetail, isLoading, isError } = useScheduleDetail(id);
   const { mutate: deleteEvent, isLoading: isDeleting } = useDeleteEvent();
@@ -57,7 +63,7 @@ const ScheduleDetailMolecule = () => {
   };
 
   return (
-    <div className="w-full mx-auto bg-white text-left relative max-h-screen">
+    <div className="w-full mx-auto bg-white text-left">
       <div className="mb-8">
         <div className="flex items-center justify-between ">
           <button onClick={() => navigate(-1)} className="text-gray-600">
@@ -125,7 +131,7 @@ const ScheduleDetailMolecule = () => {
         </div>
       </div>
 
-      <div className="ml-8">
+      <div className="ml-8 ">
         <TaskDetailMolecule event={scheduleDetail} />
       </div>
 

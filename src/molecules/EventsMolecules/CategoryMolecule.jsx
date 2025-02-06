@@ -1,13 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useSubcategories } from "../../api/scheduleAPI";
+import { useCategories, useSubcategories } from "../../api/scheduleAPI";
 import { convertKST } from "../../data/util/timeUtils";
-import { findCategoryNames } from "../../data/util/findCategoryNames";
 import MyCompleteButton from "../../components/common/MyCompleteButton";
 
 const CategoryMolecule = () => {
   const { id: subcategoryId } = useParams();
   const { data: subevents, isLoading, error } = useSubcategories(subcategoryId);
+
+  const { data: customCategories = [] } = useCategories();
 
   if (!subevents || subevents.length === 0) return <p>데이터 없음</p>;
 
