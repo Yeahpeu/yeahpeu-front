@@ -7,7 +7,7 @@ export const useTaskDetail = (eventId) => {
     queryKey: ["task", eventId],
     queryFn: async () => {
       const { data } = await axiosInstance.get(
-        `/api/v1/wedding/events/${eventId}`
+        `/api/v1/wedding/events/${eventId}/tasks`
       );
       return data;
     },
@@ -20,22 +20,20 @@ export const useCreateTaskMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ eventId, tasks }) => {
-      const { data } = await axiosInstance.post(
-        `/api/v1/wedding/events/${eventId}`,
-        {
-          checklists: tasks,
-        }
+    mutationFn: async ({ eventId, name }) => {
+      const response = await axiosInstance.post(
+        `/api/v1/wedding/events/${eventId}/tasks`,
+        { name }
       );
-      return data;
+      return response.data;
     },
     onSuccess: () => {
-      console.log("체크리스트가 성공적으로 추가되었습니다.");
-      queryClient.invalidateQueries(["task"]); // 데이터 무효화
+      console.log("체크리스트가 성공적으로 추가");
+      queryClient.invalidateQueries(["task"]);
     },
     onError: (error) => {
       console.error(
-        `체크리스트 추가 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
+        `🚨 체크리스트 추가 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
       );
     },
   });
@@ -44,26 +42,37 @@ export const useCreateTaskMutation = () => {
 export const useUpdateTaskMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(
-    async ({ eventId, updatedTasks }) => {
+  return useMutation({
+    mutationFn: async ({ eventId, updatedTasks }) => {
       const { data } = await axiosInstance.put(
-        `/api/v1/wedding/events/${eventId}`,
-        {
-          checklists: updatedTasks,
-        }
+        `/api/v1/wedding/events/${eventId}/tasks/{taskId}`,
+        { checklists: updatedTasks }
       );
       return { data, eventId };
     },
-    {
-      onSuccess: ({ data, eventId }) => {
-        console.log("체크리스트가 성공적으로 수정되었습니다.");
-        queryClient.invalidateQueries(["task", eventId]);
-      },
-      onError: (error) => {
-        console.error(
-          `체크리스트 수정 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
-        );
-      },
-    }
-  );
+    onSuccess: ({ data, eventId }) => {
+      console.log("체크리스트가 성공적으로 수정되었습니다.");
+      queryClient.invalidateQueries(["task", eventId]);
+    },
+    onError: (error) => {
+      console.error(
+        `체크리스트 수정 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
+      );
+    },
+  });
+};
+
+// 체크리스트 삭제
+export const useDeleteTask = () => {
+  return useMutation({
+    mutationFn: async (scheduleId, taskId) => {
+      const response = await axiosInstance.delete(
+        `/api/v1/wedding/events/${scheduleId}/tasks/${taskId}`
+      );
+      return response.data;
+    },
+    onError: (error) => {
+      console.error("떠나기 실패:", error);
+    },
+  });
 };

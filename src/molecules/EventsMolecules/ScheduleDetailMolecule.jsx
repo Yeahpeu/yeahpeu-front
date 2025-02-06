@@ -57,51 +57,63 @@ const ScheduleDetailMolecule = () => {
   };
 
   return (
-    <div className="w-full mx-auto bg-white text-left mb-8">
-      <div className="flex items-center justify-between ">
-        <button onClick={() => navigate(-1)} className="text-gray-600 p-2 mr-4">
-          &lt;
-        </button>
-        <h1 className="text-xl font-bold mr-4">
-          {scheduleDetail.title || "제목 없음"}
-        </h1>
-        <MyEditButton onClick={() => navigate(`/schedule/todos/edit/${id}`)} />
-      </div>
-      <hr className="mt-3 mb-5 my-2" />
+    <div className="w-full mx-auto bg-white text-left relative max-h-screen">
+      <div className="mb-8">
+        <div className="flex items-center justify-between ">
+          <button onClick={() => navigate(-1)} className="text-gray-600">
+            &lt;
+          </button>
+          <h1 className="text-xl font-bold">
+            {scheduleDetail.title || "제목 없음"}
+          </h1>
+          <MyEditButton
+            onClick={() => navigate(`/schedule/todos/edit/${id}`)}
+          />
+        </div>
+        <hr className="mt-3 mb-5 my-2" />
 
-      <div className="flex items-center my-8 gap-14 ml-8">
-        <span className="font-semibold text-black">일 자</span>
-        <span>{kstDate}</span>
-      </div>
+        <div className="flex items-center my-8 gap-14 ml-8">
+          <span className="font-semibold text-black">일 자</span>
+          <span>{kstDate}</span>
+        </div>
 
-      <div className="flex items-center my-8 gap-14 ml-8">
-        <span className="font-semibold text-black">시 간</span>
-        <span>{kstTime}</span>
-      </div>
+        <div className="flex items-center my-8 gap-14 ml-8">
+          <span className="font-semibold text-black">시 간</span>
+          <span>{kstTime}</span>
+        </div>
 
-      <div className="flex items-center my-8 gap-14 ml-8">
-        <span className="font-semibold text-black">위 치</span>
-        <span
-          className={scheduleDetail.location ? "text-black" : "text-gray-400"}
-        >
-          {scheduleDetail.location || "없음"}
-        </span>
-      </div>
+        <div className="flex items-center my-8 gap-14 ml-8">
+          <span className="font-semibold text-black">위 치</span>
+          <span
+            className={scheduleDetail.location ? "text-black" : "text-gray-400"}
+          >
+            {scheduleDetail.location || "없음"}
+          </span>
+        </div>
 
-      <div className="flex items-center my-8 gap-14 ml-8">
-        <span className="font-semibold text-black">예 산</span>
-        <span className={scheduleDetail.price ? "text-black" : "text-gray-400"}>
-          {scheduleDetail.price && parseInt(scheduleDetail.price, 10) !== 0
-            ? `${parseInt(scheduleDetail.price, 10).toLocaleString()}원`
-            : "없음"}
-        </span>
-      </div>
+        <div className="flex items-center my-8 gap-14 ml-8">
+          <span className="font-semibold text-black">예 산</span>
+          <span
+            className={scheduleDetail.price ? "text-black" : "text-gray-400"}
+          >
+            {scheduleDetail.price && parseInt(scheduleDetail.price, 10) !== 0
+              ? `${parseInt(scheduleDetail.price, 10).toLocaleString()}원`
+              : "없음"}
+          </span>
+        </div>
 
-      <div className="flex items-center mb-16 gap-14 ml-8">
-        <span className="font-semibold text-black">구 분</span>
-        <div className="flex items-center gap-12">
-          <span>{mainCategoryName}</span>
-          <span className="flex items-center gap-2">
+        <div className="flex mb-8 gap-14 ml-8">
+          <span className="flex font-semibold text-black content-start">
+            주 제
+          </span>
+          <div>{mainCategoryName}</div>
+        </div>
+
+        <div className="flex mb-16 gap-14 ml-8">
+          <span className="flex font-semibold text-black content-start">
+            태 그
+          </span>
+          <div className="flex items-center gap-2">
             <Link
               to={`/schedule/todos/detail/sub/${scheduleDetail.subcategoryId}`}
               className="text-blue-500 underline"
@@ -109,16 +121,18 @@ const ScheduleDetailMolecule = () => {
               {subCategoryName}
             </Link>
             <span>&gt;</span>
-          </span>
+          </div>
         </div>
       </div>
 
-      <div className="mt-12">
+      <div className="ml-8">
         <TaskDetailMolecule event={scheduleDetail} />
       </div>
 
       <div
-        className={"w-full flex justify-center mt-14 text-red-300 "}
+        className={
+          "w-full flex justify-center mt-14 text-red-300 absolube bottom-0"
+        }
         onClick={!isDeleting ? handleDeleteClick : undefined}
       >
         {isDeleting ? "삭제 중..." : "삭제하기"}

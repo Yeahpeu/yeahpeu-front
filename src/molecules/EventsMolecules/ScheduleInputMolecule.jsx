@@ -77,21 +77,14 @@ const ScheduleInputMolecule = () => {
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={() => navigate(-1)}
-          className="text-gray-600 mr-2 text-base w-12"
+          className="text-gray-600  text-base"
         >
           &lt;
         </button>
-        <MyInputWhite
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          placeholder="제목"
-          className="border-gray-300 flex-grow mx-2"
-        />
+        <h1 className="text-xl font-bold">일정 수립하기</h1>
         <button
           onClick={handleSubmit}
-          className="text-red-200 text-sm w-12 text-center m-2"
+          className="text-red-200 text-sm text-center "
         >
           완료
         </button>
@@ -99,7 +92,21 @@ const ScheduleInputMolecule = () => {
 
       <hr className="mt-2 mb-4" />
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 ml-8">
+        <div className="flex items-center gap-8 ">
+          <label className="font-semibold text-black w-16">제 목</label>
+          <MyInputWhite
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
+            placeholder="제목"
+            className="border-gray-300 flex-grow mx-2"
+          />
+        </div>
+
         <div className="flex items-center gap-8">
           <label className="font-semibold text-black w-16">일 자</label>
           <MyInputWhite
@@ -163,7 +170,7 @@ const ScheduleInputMolecule = () => {
               }
               className="border border-gray-300 rounded-md p-2 w-1/2"
             >
-              <option value={0}>선택하세요</option>
+              <option value={0}>주제</option>
               {customCategories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -183,7 +190,7 @@ const ScheduleInputMolecule = () => {
               className="border border-gray-300 rounded-md p-2 w-1/2"
               disabled={!formData.mainCategoryId}
             >
-              <option value={0}>선택하세요</option>
+              <option value={0}>세부</option>
               {subCategories.map((option) => (
                 <option key={option.id} value={option.id}>
                   {option.name}

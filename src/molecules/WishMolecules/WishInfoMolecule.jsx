@@ -34,9 +34,6 @@ const WishInfoMolecule = ({ onItemClick }) => {
 
   return (
     <div className="p-2 w-full">
-      <h2 className="text-xl text-left font-bold mb-4 text-red-200">
-        추천 혼수 리스트
-      </h2>
       {categories.map((category) => (
         <div key={category.name} className="mb-6">
           <h3 className="text-left text-medi font-bold mb-2">
@@ -48,7 +45,7 @@ const WishInfoMolecule = ({ onItemClick }) => {
               <li
                 key={item.id}
                 onClick={() => onItemClick(item)}
-                className="cursor-pointer text-blue-500 hover:underline inline-block px-2"
+                className="cursor-pointer text-blue-500 hover:underline inline-block pr-2"
               >
                 {item}
               </li>

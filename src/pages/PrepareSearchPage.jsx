@@ -4,6 +4,7 @@ import { useAddWish } from "../api/wishAPI";
 import MySearchBox from "../components/common/MySearchBar";
 import MyWishCard from "../components/Cards/MyWishCard";
 import MyConfirm from "../components/Modals/MyConfirm";
+import MyEmptyCard from "../components/Cards/MyEmptyCard";
 import { useState } from "react";
 
 const PrepareSearchPage = () => {
@@ -21,6 +22,7 @@ const PrepareSearchPage = () => {
 
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [searchValue, setSearchValue] = useState(query);
 
   const handleSearch = (newQuery) => {
     if (newQuery.trim()) {
@@ -34,6 +36,8 @@ const PrepareSearchPage = () => {
 
   const handleBack = () => {
     navigate(-1);
+    setSearchValue("");
+    setSearchParams({});
   };
 
   const handleWishClick = (item) => {
@@ -64,17 +68,17 @@ const PrepareSearchPage = () => {
 
   return (
     <div className="p-8">
+      <h2 className="text-xl text-center font-bold mb-4 text-red-200">
+        혼수 검색하기
+      </h2>
       <div className="flex items-center space-x-2 align-middle">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-gray-600 mr-4 pb-6"
-        >
+        <button onClick={handleBack} className="text-gray-600 mr-3">
           &lt;
         </button>
         <MySearchBox
-          value={query}
-          setValue={(e) => handleSearch(e.target.value)}
-          onSearch={() => handleSearch(query)}
+          value={searchValue}
+          setValue={setSearchValue}
+          onSearch={() => handleSearch(searchValue)}
         />
       </div>
 
@@ -92,25 +96,28 @@ const PrepareSearchPage = () => {
               />
             ))
           ) : (
-            <p className="text-gray-500">검색 결과가 없습니다.</p>
+            <p className="text-gray-500 max-h-screen">
+              <MyEmptyCard value={"검색 결과가 없습니다"} />
+            </p>
           )}
         </div>
       )}
 
-      <div className="flex justify-center mt-6 space-x-2">
-        {[1, 2, 3, 4, 5].map((num) => (
-          <button
-            key={num}
-            className={`px-3 py-1 border rounded-md ${
-              num === page ? "bg-blue-500 text-white" : ""
-            }`}
-            onClick={() => handlePageChange(num)}
-          >
-            {num}
-          </button>
-        ))}
-      </div>
-
+      {wishlist.length > 0 && (
+        <div className="flex justify-center mt-6 space-x-2">
+          {[1, 2, 3, 4, 5].map((num) => (
+            <button
+              key={num}
+              className={`px-3 py-1 border rounded-md ${
+                num === page ? "bg-blue-500 text-white" : ""
+              }`}
+              onClick={() => handlePageChange(num)}
+            >
+              {num}
+            </button>
+          ))}
+        </div>
+      )}
       <MyConfirm
         message="위시리스트에 추가하시겠습니까?"
         onCancel={handleCancel}

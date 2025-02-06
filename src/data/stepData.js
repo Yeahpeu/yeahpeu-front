@@ -3,7 +3,7 @@ export const STEP_DATA = {
     id: 1,
     title: "결혼식",
     options: [
-      { id: 6, parent_id: 1, name: "결혼식장" },
+      { id: 6, parent_id: 1, name: "결혼식장 선정" },
       { id: 7, parent_id: 1, name: "상견례" },
       { id: 8, parent_id: 1, name: "웨딩 어시스트" },
       { id: 9, parent_id: 1, name: "본식 촬영" },

@@ -137,7 +137,7 @@ export const completeEvents = () => {
     mutationFn: async ({ eventId, completed }) => {
       const response = await axiosInstance.patch(
         `/api/v1/wedding/events/${eventId}/status`,
-        completed
+        { completed }
       );
       return response.data;
     },

@@ -31,7 +31,7 @@ const MyScheduleCard = ({ event }) => {
       { eventId: event.id, completed: !completed },
       {
         onSuccess: () => {
-          setCompleted((prev) => !prev); // 성공 시 완료 상태 업데이트
+          setCompleted((prev) => !prev);
         },
         onError: (error) => {
           console.error("완료 처리 실패:", error);

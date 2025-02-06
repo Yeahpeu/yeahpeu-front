@@ -3,14 +3,14 @@ import MySearchBar from "../../components/common/MySearchBar";
 import MyChatCard from "../../components/Cards/MyChatCard";
 import { useMutation } from "@tanstack/react-query";
 import { useProfile } from "../../api/chatAPI";
-
+import chatImg from "../../assets/chat-icon.png";
 import { useNavigate } from "react-router-dom";
-import emptyImg from "../../assets/emptybox.png";
 import MyConfirm from "../../components/Modals/MyConfirm";
 import { useRooms, useJoinRoom } from "../../api/chatAPI";
 import { useChatStore } from "../../stores/chatStore";
 import MyCreateChat from "../../components/Modals/MyCreateChat";
 import progressinGIF from "../../assets/progressing.gif";
+import MyEmptyCard from "../../components/Cards/MyEmptyCard";
 
 const AllchatMolecule = () => {
   const { data: userRooms = [] } = useRooms();
@@ -100,7 +100,7 @@ const AllchatMolecule = () => {
 
   return (
     <div>
-      <div className="flex items-center w-full">
+      <div className="flex items-center w-full gap-2">
         <div className="flex-grow">
           <MySearchBar
             value={searchKeyword}
@@ -109,23 +109,10 @@ const AllchatMolecule = () => {
           />
         </div>
         <button
-          onClick={handleAddChatRoom} // 클릭 시 실행할 함수
-          className="bg-red-100 p-2 text-gray-500 font-bol p-2 rounded-full"
+          onClick={handleAddChatRoom}
+          className="bg-red-100 p-2 text-gray-500 font-bold rounded-full flex items-center justify-center"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-white"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
+          <img src={chatImg} className="h-4 w-4" />
         </button>
       </div>
       <div className="">
@@ -140,7 +127,7 @@ const AllchatMolecule = () => {
                   roomTitle={item.title}
                   maxMember={item.reservedMemberCount}
                   currentMember={item.usedMemberCount}
-                  imgSrc="https://edu.ssafy.com/asset/images/header-logo.jpg" // 필요에 따라 동적으로 변경 가능
+                  imgSrc="https://edu.ssafy.com/asset/images/header-logo.jpg"
                   lastMessageText=""
                   unseenMessageCount={0}
                 />
@@ -150,20 +137,8 @@ const AllchatMolecule = () => {
         ) : (
           <div className="flex flex-col items-center justify-center mt-10">
             {/* 기본 이미지 표시 */}
-            <img
-              src={emptyImg} // 로컬 이미지 사용 시
-              alt="채팅방 없음"
-              className="w-[70%] mb-4"
-            />
-            {/* 또는 외부 이미지 URL 사용 시 */}
-            {/* <img
-            src="https://via.placeholder.com/150?text=No+Chat+Rooms"
-            alt="채팅방 없음"
-            className="w-32 h-32 mb-4"
-          /> */}
-            <p className="text-black-500 text-6xl">텅</p>
-            <p className="text-gray-500 text-lg">
-              현재 이용 가능한 채팅방이 없습니다.
+            <p className="text-gray-500 max-h-screen">
+              <MyEmptyCard value={"이용 가능한 채팅방이 없습니다"} />
             </p>
           </div>
         )}

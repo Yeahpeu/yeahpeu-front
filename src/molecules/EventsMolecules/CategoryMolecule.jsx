@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useSubcategories } from "../../api/scheduleAPI";
 import { convertKST } from "../../data/util/timeUtils";
 import { findCategoryNames } from "../../data/util/findCategoryNames";
+import MyCompleteButton from "../../components/common/MyCompleteButton";
 
 const CategoryMolecule = () => {
   const { id: subcategoryId } = useParams();
@@ -10,19 +11,8 @@ const CategoryMolecule = () => {
 
   if (!subevents || subevents.length === 0) return <p>데이터 없음</p>;
 
-  const mainCategoryId = subevents[0]?.mainCategoryId;
-  const { mainCategoryName, subCategoryName } = findCategoryNames(
-    mainCategoryId,
-    subcategoryId
-  );
-
   return (
     <div>
-      <div>
-        <h1>
-          {mainCategoryName} {subCategoryName}
-        </h1>
-      </div>
       <div>
         {subevents.map((subevent) => {
           const { date: kstDate, time: kstTime } = subevent.date
@@ -30,9 +20,17 @@ const CategoryMolecule = () => {
             : { date: "없음", time: "없음" };
 
           return (
-            <p key={subevent.id}>
-              {subevent.title} - {kstDate} {kstTime}
-            </p>
+            <div key={subevent.id}>
+              <div className="py-2 flex justify-between items-center">
+                <span className="scale-75">
+                  <MyCompleteButton isCompleted={subevent.completed} />
+                </span>
+                <span>{subevent.title}</span>
+                <span>{kstDate}</span>
+              </div>
+
+              <hr className="border-dashed" />
+            </div>
           );
         })}
       </div>
