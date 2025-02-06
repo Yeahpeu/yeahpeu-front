@@ -4,6 +4,7 @@ import emptyImg from "../../assets/emptybox.png";
 import { useChatStore } from "../../stores/chatStore.js";
 import { useUserRooms, useProfile } from "../../api/chatAPI";
 import progressinGIF from "../../assets/progressing.gif";
+import MyEmptyCard from "../../components/Cards/MyEmptyCard";
 
 const MychatMolecule = () => {
   const { data: userRooms = [] } = useUserRooms();
@@ -56,20 +57,8 @@ const MychatMolecule = () => {
       ) : (
         <div className="flex flex-col items-center justify-center mt-10">
           {/* 기본 이미지 표시 */}
-          <img
-            src={emptyImg} // 로컬 이미지 사용 시
-            alt="채팅방 없음"
-            className="w-[70%] mb-4"
-          />
-          {/* 또는 외부 이미지 URL 사용 시 */}
-          {/* <img
-            src="https://via.placeholder.com/150?text=No+Chat+Rooms"
-            alt="채팅방 없음"
-            className="w-32 h-32 mb-4"
-          /> */}
-          <p className="text-black-500 text-6xl">텅</p>
-          <p className="text-gray-500 text-lg">
-            현재 이용 가능한 채팅방이 없습니다.
+          <p className="text-gray-500 max-h-screen">
+            <MyEmptyCard value={"이용 가능한 채팅방이 없습니다"} />
           </p>
         </div>
       )}

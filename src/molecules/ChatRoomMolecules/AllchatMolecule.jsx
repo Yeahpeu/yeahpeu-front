@@ -6,7 +6,7 @@ import { useProfile } from "../../api/chatAPI";
 import chatImg from "../../assets/chat-icon.png";
 import { useNavigate } from "react-router-dom";
 import MyConfirm from "../../components/Modals/MyConfirm";
-import { useRooms, useJoinRoom } from "../../api/chatAPI";
+import { useRooms, useJoinRoom, useGetChatUsers } from "../../api/chatAPI";
 import { useChatStore } from "../../stores/chatStore";
 import MyCreateChat from "../../components/Modals/MyCreateChat";
 import progressinGIF from "../../assets/progressing.gif";
@@ -16,7 +16,6 @@ const AllchatMolecule = () => {
   const { data: userRooms = [] } = useRooms();
   const [searchKeyword, setSearchKeyword] = useState("");
   const { data: userProfile = [], isLoading } = useProfile();
-
   // 선택된 채팅방 ID와 모달 표시 여부를 관리
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -27,8 +26,6 @@ const AllchatMolecule = () => {
   const navigate = useNavigate();
 
   const handleChatCardClick = (roomId, roomTitle) => {
-    console.log(`채팅방 ID : ${roomId} 클릭됨`);
-    console.log(`채팅방 TITLE : ${roomTitle} 클릭됨`);
     setRoomId(roomId);
     setRoomTitle(roomTitle);
     setShowConfirmModal(true);
@@ -37,11 +34,11 @@ const AllchatMolecule = () => {
   const handleJoinConfirm = () => {
     // 여기서 추가 작업을 할 수 있음
     setShowConfirmModal(false);
-    console.log(roomId);
 
     joinRoom(roomId, {
       onSuccess: (data) => {
-        console.log("채팅방 참여 성공:", data);
+        //NOTE - 참여 성공 후 유저 정보 조회
+
         // 참여 성공 후 채팅방 페이지로 이동
         setUserId(userProfile.id);
         navigate(`/chat/mychat/rooms/${roomId}`, {
@@ -49,7 +46,6 @@ const AllchatMolecule = () => {
         });
       },
       onError: (error) => {
-        console.error("채팅방 참여 실패:", error);
         // 실패 시 에러 처리 로직 추가
       },
     });
@@ -67,7 +63,6 @@ const AllchatMolecule = () => {
     setUserId(userProfile.id);
 
     // 채팅방 생성하고 해당 채팅방으로 이동
-    console.log(data);
     // setRoomTitle(data.title);
     // setRoomId(data.id);
     // navigate(`/chat/mychat/rooms/${roomId}`, {

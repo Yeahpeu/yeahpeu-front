@@ -11,7 +11,7 @@ import MyConfirm from "../components/Modals/MyConfirm";
 import { useLeaveRoom } from "../api/chatAPI";
 import progressinGIF from "../assets/progressing.gif";
 import imageCompression from "browser-image-compression";
-import { useSendFile } from "../api/chatAPI";
+import { useSendFile, useGetChatUsers } from "../api/chatAPI";
 
 const ChatRoomPage = () => {
   const { mutate: leaveRoom } = useLeaveRoom();
@@ -33,8 +33,8 @@ const ChatRoomPage = () => {
     userId,
     roomTitle,
   } = useChatStore();
-  console.log("나의 유저아이디 : " + userId);
   // ws 를 활용한 방메시지 관리
+  const { data: chatUsers } = useGetChatUsers(roomId);
   const {
     data: RoomMessages = { items: [] },
     isLoading,
@@ -93,9 +93,7 @@ const ChatRoomPage = () => {
   const handleConfirm = () => {
     setShowConfirmModal(false);
     //탈퇴처리
-    console.log("23=====");
     leaveRoom(roomId);
-    console.log("23");
     handleLeaveChat();
   };
 
@@ -110,7 +108,6 @@ const ChatRoomPage = () => {
 
     try {
       let fileToUpload = file;
-      console.log("파일 타입 : ", file.type);
       // 이미지 파일인 경우에만 압축 적용
       if (file.type.startsWith("image/")) {
         const options = {
@@ -128,13 +125,11 @@ const ChatRoomPage = () => {
 
       // 파일 업로드
       const response = await sendFileMutation.mutateAsync(fileToUpload);
-      console.log("파일 업로드 응답:", response);
 
       // 응답을 받은 후에 상태 업데이트
       setAttachment(response.url, response.contentType);
       setChatMessage(file.name);
     } catch (error) {
-      console.error("파일 업로드 오류:", error);
       alert("파일 업로드에 실패했습니다.");
     }
   };
