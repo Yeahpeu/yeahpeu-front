@@ -10,17 +10,29 @@ import { useStompClient } from "../api/ws/useStompClient";
 import MyConfirm from "../components/Modals/MyConfirm";
 import { useLeaveRoom } from "../api/chatAPI";
 import progressinGIF from "../assets/progressing.gif";
+import imageCompression from "browser-image-compression";
+import { useSendFile } from "../api/chatAPI";
 
 const ChatRoomPage = () => {
-  const { mutate: leaveRoom, error } = useLeaveRoom();
+  const { mutate: leaveRoom } = useLeaveRoom();
+  const sendFileMutation = useSendFile();
 
-  // back navaigate (뒤로가기)
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const navigate = useNavigate();
 
   // 방 정보 관리
-  const { roomId, roomTitle, chat, setChat, userId } = useChatStore();
+  const {
+    roomId,
+    chat,
+    setChat,
+    chatMessage,
+    setChatMessage,
+    setAttachment,
+    resetChatMessage,
+    userId,
+    roomTitle,
+  } = useChatStore();
   console.log("나의 유저아이디 : " + userId);
   // ws 를 활용한 방메시지 관리
   const {
@@ -48,30 +60,22 @@ const ChatRoomPage = () => {
     [setMessages]
   );
 
-  // ws 클라이언트 초기화
   const { sendMessage } = useStompClient(roomId, handleIncomingMessage);
 
   // 메시지 전송
-  const handleSend = () => {
-    const chatMessage = {
-      message: chat,
-      sentAt: new Date().toISOString(),
-      attachmentRequests: [
-        {
-          url: "",
-          contentType: "",
-        },
-      ],
-    };
+  const handleSend = (onComplete) => {
     sendMessage(`/api/pub/chat/rooms/${roomId}`, chatMessage);
-    // 채팅input 초기화
     setChat("");
+    resetChatMessage();
+
+    if (onComplete) {
+      onComplete();
+    }
 
     // 마지막 메시지 읽음 업데이트
     if (messages.length > 0) {
       const lastSeenMessage = { messageId: messages[messages.length - 1].id };
       sendMessage(`/api/pub/chat/rooms/${roomId}/read`, lastSeenMessage);
-      console.log("Read update sent:", lastSeenMessage);
     }
   };
 
@@ -100,6 +104,41 @@ const ChatRoomPage = () => {
     setShowConfirmModal(false);
   };
 
+  const handleAddFile = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      let fileToUpload = file;
+      console.log("파일 타입 : ", file.type);
+      // 이미지 파일인 경우에만 압축 적용
+      if (file.type.startsWith("image/")) {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        };
+
+        const compressedFile = await imageCompression(file, options);
+        fileToUpload = new File([compressedFile], file.name, {
+          type: file.type,
+          lastModified: new Date().getTime(),
+        });
+      }
+
+      // 파일 업로드
+      const response = await sendFileMutation.mutateAsync(fileToUpload);
+      console.log("파일 업로드 응답:", response);
+
+      // 응답을 받은 후에 상태 업데이트
+      setAttachment(response.url, response.contentType);
+      setChatMessage(file.name);
+    } catch (error) {
+      console.error("파일 업로드 오류:", error);
+      alert("파일 업로드에 실패했습니다.");
+    }
+  };
+
   if (isLoading) {
     return (
       <div>
@@ -107,17 +146,6 @@ const ChatRoomPage = () => {
       </div>
     );
   }
-
-  if (isError) {
-    return <div>Error loading messages</div>;
-  }
-
-  console.log("=============채팅방 입장=============");
-  console.log(`userId = ${userId}            `);
-  console.log(`roomId = ${roomId}             `);
-  console.log(`roomTitle = ${roomTitle}       `);
-
-  console.log("====================================");
 
   return (
     <div className="p-8 pt-10">
@@ -127,7 +155,13 @@ const ChatRoomPage = () => {
         onDelete={handleDeleteChat}
       />
       <ChatMessages messages={messages} myId={userId} />
-      <ChatInput chat={chat} setChat={setChat} onSend={handleSend} />
+      <ChatInput
+        chat={chat}
+        setChat={setChat}
+        onSend={handleSend}
+        onAddFile={handleAddFile}
+        setChatMessage={setChatMessage}
+      />
       <MyConfirm
         message="정말로 이 방을 떠나시겠습니까?"
         onCancel={handleCancel}

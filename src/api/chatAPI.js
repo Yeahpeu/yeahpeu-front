@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "./axiosInstance";
 import { useChatStore } from "../stores/chatStore";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 // 참가한 채팅방 전체조회
 export const useUserRooms = () => {
@@ -99,6 +99,42 @@ export const useLeaveRoom = () => {
     },
     onError: (error) => {
       console.error("떠나기 실패:", error);
+    },
+  });
+};
+
+//NOTE - 파일 전송
+export const useSendFile = () => {
+  return useMutation({
+    mutationFn: async (file) => {
+      const formData = new FormData();
+
+      formData.append("file", file);
+
+      const response = await axiosInstance.post(
+        "/api/v1/assets/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("파일 전송 성공:", response.data);
+      return response.data;
+    },
+  });
+};
+
+//NOTE - 참여자 정보 조회
+export const useGetChatUsers = (roomId) => {
+  return useQuery({
+    queryKey: ["chatUsers", roomId],
+    queryFn: async () => {
+      const response = await axiosInstance.get(
+        `/api/v1/chat/rooms/${roomId}/users`
+      );
+      return response.data;
     },
   });
 };

@@ -1,18 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import MyInputWhite from "../common/MyInput-white";
 import MySendButton from "../common/MySendButton";
+import MyAddFileButton from "../Buttons/MyAddFileButton";
 
-const ChatInput = ({ chat, setChat, onSend }) => {
+const ChatInput = ({ chat, setChat, onSend, onAddFile, setChatMessage }) => {
+  const [isFileSelected, setIsFileSelected] = useState(false);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setIsFileSelected(true);
+      setChat(file.name);
+      onAddFile(event);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    if (!isFileSelected) {
+      const newMessage = e.target.value;
+      setChat(newMessage);
+      setChatMessage(newMessage);
+    }
+  };
+
+  const handleSend = () => {
+    onSend(() => {
+      setIsFileSelected(false);
+    });
+  };
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex items-center p-4 bg-white">
+    <div className="fixed bottom-0 left-0 right-0 flex items-center p-4 gap-2 bg-white">
       <MyInputWhite
         type="text"
         placeholder="채팅을 입력하세요"
         value={chat}
-        onChange={(e) => setChat(e.target.value)}
-        className="flex-grow"
+        onChange={handleInputChange}
+        className={` ${
+          isFileSelected
+            ? "bg-gray-100 text-gray-500 cursor-not-allowed pointer-events-none"
+            : ""
+        }`}
+        disabled={isFileSelected}
       />
-      <MySendButton className="ml-2" onClick={onSend} />
+      <MySendButton onClick={handleSend} />
+      <MyAddFileButton onChange={handleFileChange} />
     </div>
   );
 };
