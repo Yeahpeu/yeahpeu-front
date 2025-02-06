@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 export const useChatStore = create((set) => ({
   roomId: null,
+  chatUsers: [],
   roomTitle: "",
   chat: "",
   userId: "",
@@ -20,7 +21,7 @@ export const useChatStore = create((set) => ({
   setRoomId: (roomId) => set({ roomId }),
   setRoomTitle: (roomTitle) => set({ roomTitle }),
   setChat: (chat) => set({ chat }),
-
+  setChatUsers: (chatUsers) => set({ chatUsers }),
   setChatMessage: (message) =>
     set((state) => ({
       chatMessage: {

@@ -88,7 +88,6 @@ export const useCreateRoom = () => {
 export const useLeaveRoom = () => {
   return useMutation({
     mutationFn: async (roomId) => {
-      console.log("떠나기 요청, roomId:", roomId);
       const response = await axiosInstance.delete(
         `/api/v1/chat/rooms/${roomId}/leave`
       );
@@ -120,7 +119,6 @@ export const useSendFile = () => {
           },
         }
       );
-      console.log("파일 전송 성공:", response.data);
       return response.data;
     },
   });
@@ -128,12 +126,14 @@ export const useSendFile = () => {
 
 //NOTE - 참여자 정보 조회
 export const useGetChatUsers = (roomId) => {
+  const { setChatUsers } = useChatStore();
   return useQuery({
     queryKey: ["chatUsers", roomId],
     queryFn: async () => {
       const response = await axiosInstance.get(
         `/api/v1/chat/rooms/${roomId}/users`
       );
+      setChatUsers(response.data);
       return response.data;
     },
   });
