@@ -1,20 +1,15 @@
-import { STEP_DATA, STEP_KEYS } from "../stepData";
+import { useScheduleStore } from "../../stores/scheduleStore";
 
 export const findMainCategory = (subcategoryId) => {
+  const categories = useScheduleStore.getState().categories;
+
   const subcategoryIdNum = Number(subcategoryId);
 
-  for (const key of STEP_KEYS) {
-    const category = STEP_DATA[key];
-    const subCategory = category.options.find(
-      (option) => option.id === subcategoryIdNum
-    );
+  const category = categories.find((cat) =>
+    cat.children.some((child) => child.id === subcategoryIdNum)
+  );
 
-    if (subCategory) {
-      return {
-        mainCategoryId: category.id,
-      };
-    }
-  }
-  // 항상 객체 반환
-  return { mainCategoryId: null };
+  return {
+    mainCategoryId: category ? category.id : null,
+  };
 };

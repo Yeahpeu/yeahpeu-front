@@ -1,5 +1,6 @@
 import MyScheduleCard from "../../components/Cards/MyScheduleCard";
 import { useSchedules } from "../../api/scheduleAPI";
+import MyEmptyCard from "../../components/Cards/MyEmptyCard";
 
 const CalendarMolecule = () => {
   const { data: schedules = [] } = useSchedules();
@@ -27,8 +28,8 @@ const CalendarMolecule = () => {
   return (
     <div>
       {sortedDates.length === 0 ? (
-        <p className=" text-lg text-center ">
-          결혼식이 끝나신 건가요 ( °ᗝ° ) ?
+        <p className=" flex items-center justify-center ">
+          <MyEmptyCard value={"일정을 추가해서 결혼식을 준비하세요"} />
         </p>
       ) : (
         sortedDates.map((date) => (

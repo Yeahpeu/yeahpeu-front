@@ -1,19 +1,21 @@
-import { STEP_DATA, STEP_KEYS } from "../stepData"; // STEP_DATA 임포트
+import { useScheduleStore } from "../../stores/scheduleStore";
 
 export const findCategoryNames = (mainCategoryId, subcategoryId) => {
+  const categories = useScheduleStore.getState().categories;
   const subcategoryIdNum = Number(subcategoryId);
 
-  for (const key of STEP_KEYS) {
-    const category = STEP_DATA[key];
-    if (category.id === mainCategoryId) {
-      const subCategory = category.options.find(
-        (option) => option.id === subcategoryIdNum
-      );
-      return {
-        mainCategoryName: category.title,
-        subCategoryName: subCategory ? subCategory.name : "기타",
-      };
-    }
+  const category = categories.find((cat) => cat.id === mainCategoryId);
+
+  if (!category) {
+    return { mainCategoryName: "오류", subCategoryName: "오류" };
   }
-  return { mainCategoryName: "없음", subCategoryName: "없음" };
+
+  const subCategory = category.children.find(
+    (option) => option.id === subcategoryIdNum
+  );
+
+  return {
+    mainCategoryName: category.name,
+    subCategoryName: subCategory ? subCategory.name : "기타",
+  };
 };

@@ -158,11 +158,20 @@ export const completeEvents = () => {
 
 // 사용자 커스텀 카테고리 조회
 export const useCategories = () => {
+  const setCategories = useScheduleStore((state) => state.setCategories);
+
   return useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
       const response = await axiosInstance.get("/api/v1/wedding/categories");
+      setCategories(response.data);
       return response.data;
+    },
+    onSuccess: (data) => {
+      console.log("카테고리 저장 완료", data);
+    },
+    onError: (error) => {
+      console.error("카테고리 불러오기 실패:", error);
     },
   });
 };
