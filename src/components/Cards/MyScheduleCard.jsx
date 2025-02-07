@@ -63,7 +63,9 @@ const MyScheduleCard = ({ event }) => {
 
       <div className="flex items-center space-x-3">
         <div
-          className={`w-4 h-4 rounded-full ${categoryColors[event.mainCategoryId]}`}
+          className={`w-4 h-4 rounded-full ${
+            categoryColors[event.mainCategoryId]
+          }`}
         ></div>
         <div
           onClick={() => navigate(`/schedule/todos/detail/${event.id}`)}

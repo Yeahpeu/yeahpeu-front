@@ -15,11 +15,20 @@ const ChatInput = ({ chat, setChat, onSend, onAddFile, setChatMessage }) => {
     }
   };
 
+  const countNewlines = (text) => {
+    return (text.match(/\n/g) || []).length;
+  };
+
   const handleInputChange = (e) => {
     if (!isFileSelected) {
       const newMessage = e.target.value;
-      setChat(newMessage);
-      setChatMessage(newMessage);
+
+      const newlineCount = countNewlines(newMessage);
+
+      if (newlineCount <= 9 || newMessage.length < chat.length) {
+        setChat(newMessage);
+        setChatMessage(newMessage);
+      }
     }
   };
 
@@ -32,10 +41,11 @@ const ChatInput = ({ chat, setChat, onSend, onAddFile, setChatMessage }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 flex items-center p-4 gap-2 bg-white">
       <textarea
+        maxLength={100}
         placeholder="채팅을 입력하세요"
         value={chat}
         onChange={handleInputChange}
-        className={`w-full h-10 p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-200 overflow-hidden ${
+        className={`w-full h-10 p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-200 overflow-hidden  ${
           isFileSelected
             ? "bg-gray-100 text-gray-500 cursor-not-allowed pointer-events-none"
             : ""

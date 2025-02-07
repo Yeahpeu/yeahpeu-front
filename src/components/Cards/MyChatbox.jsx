@@ -60,7 +60,7 @@ const MyChatBox = ({ owner, item }) => {
                 owner === "mine" ? "bg-gray-100" : "bg-red-100"
               }`}
             >
-              <span className="block break-all whitespace-pre-wrap max-w-40 text-start">
+              <span className="block break-all whitespace-pre-wrap max-w-40 max-h-96 overflow-y-auto text-start">
                 {item.message}
               </span>
             </div>

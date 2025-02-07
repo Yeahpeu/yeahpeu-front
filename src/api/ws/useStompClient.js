@@ -10,7 +10,7 @@ export const useStompClient = (roomId, onMessageReceived) => {
 
   useEffect(() => {
     // SockJS 엔드포인트 (서버 URL에 맞게 수정)
-    const socket = new SockJS(`${BASE_URL}/api/ws`);
+    const socket = new SockJS(`${BASE_URL}api/ws`);
     const client = over(socket);
 
     const getAuthToken = () => {

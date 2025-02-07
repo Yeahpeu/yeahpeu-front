@@ -10,8 +10,7 @@ const loginInstance = axios.create({
 
 loginInstance.interceptors.response.use(
   (response) => {
-    const newToken =
-      response.headers.authorization || response.headers.Authorization;
+    const newToken = response.headers.authorization;
 
     if (newToken) {
       document.cookie = `authToken=${newToken}; path=/`;
