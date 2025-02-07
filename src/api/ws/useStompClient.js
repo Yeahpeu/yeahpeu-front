@@ -6,9 +6,11 @@ import { over } from "stompjs";
 export const useStompClient = (roomId, onMessageReceived) => {
   const [stompClient, setStompClient] = useState(null);
 
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     // SockJS 엔드포인트 (서버 URL에 맞게 수정)
-    const socket = new SockJS("http://localhost:8080/api/ws");
+    const socket = new SockJS(`${BASE_URL}/api/ws`);
     const client = over(socket);
 
     const getAuthToken = () => {

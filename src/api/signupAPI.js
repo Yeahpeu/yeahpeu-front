@@ -8,6 +8,7 @@ export const useVerifyMutation = () => {
 
   return useMutation({
     mutationFn: async (emailAddress) => {
+      console.log(import.meta.env.VITE_API_BASE_URL);
       const response = await axiosInstance.post(
         "/api/v1/auth/email-verification/request",
         emailAddress
@@ -45,6 +46,7 @@ export const useSignupMutation = () => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: async (userInfo) => {
+      console.log(userInfo);
       const response = await axiosInstance.post(
         "/api/v1/users/signup",
         userInfo

@@ -7,4 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {},
   },
+  define: {
+    "process.env": import.meta.env,
+  },
 });
