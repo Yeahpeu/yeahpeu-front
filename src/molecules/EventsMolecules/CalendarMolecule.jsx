@@ -15,23 +15,23 @@ const CalendarMolecule = () => {
   const startDate = currentMonth.startOf("month").format("YYYY-MM-DD");
   const endDate = currentMonth.endOf("month").format("YYYY-MM-DD");
 
-  const { data: apiSchedules = [] } = useMonthSchedules(startDate, endDate);
+  const { data: monthschedule = [] } = useMonthSchedules(startDate, endDate);
 
   // 중복 데이터 방지 및 초기화 개선
   useEffect(() => {
-    if (apiSchedules.length > 0) {
+    if (monthschedule.length > 0) {
       if (schedules.length === 0) {
         resetSchedules();
       }
 
-      apiSchedules.forEach((schedule) => {
+      monthschedule.forEach((schedule) => {
         const exists = schedules.some((s) => s.id === schedule.id);
         if (!exists) {
           addSchedule(schedule);
         }
       });
     }
-  }, [apiSchedules]);
+  }, [monthschedule]);
 
   const filteredEvents = selectedDate
     ? schedules.filter(

@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <div className="flex flex-col p-8">
       <HeaderMolecule />
-      <HomeProgressMolecule marriagePercent={33} />
+      <HomeProgressMolecule />
       <QuotesMolecule />
       <HomeBudgetMolecule />
       <HomeTodosMolecule />

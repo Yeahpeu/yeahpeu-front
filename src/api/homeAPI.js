@@ -20,3 +20,13 @@ export const useBudgetAPI = () => {
     },
   });
 };
+
+export const usePercentBar = async () => {
+  try {
+    const response = await axiosInstance.get("/api/v1/wedding/events/bar");
+    return response.data;
+  } catch (error) {
+    console.error("진행률 불러오기 실패:", error);
+    throw error;
+  }
+};

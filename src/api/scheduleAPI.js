@@ -141,15 +141,14 @@ export const completeEvents = () => {
       );
       return response.data;
     },
-    onSuccess: () => {
-      console.log("성공적으로 완료");
+    onSuccess: (data) => {
+      console.log("성공적으로 완료:", data);
+
       queryClient.invalidateQueries(["schedules"]);
     },
     onError: (error) => {
       console.log(
-        `스케줄 완료 실패: ${
-          error.response?.data?.message || "알 수 없는 오류"
-        }`
+        `스케줄 완료 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
       );
       console.error(error);
     },
