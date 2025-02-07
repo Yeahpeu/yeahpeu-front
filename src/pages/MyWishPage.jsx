@@ -6,7 +6,7 @@ import MyEmptyCard from "../components/Cards/MyEmptyCard";
 import MyConfirm from "../components/Modals/MyConfirm";
 import { useState } from "react";
 
-const WishPage = () => {
+const MyWishPage = () => {
   const navigate = useNavigate();
   const { data, isLoading } = useWishes();
   const [selectedItem, setSelectedItem] = useState(null);
@@ -77,7 +77,7 @@ const WishPage = () => {
       )}
 
       <MyConfirm
-        message={"위시 아이템을 정말 삭제하시겠습니까?"}
+        message={"위시 아이템을 삭제하시겠습니까?"}
         onCancel={handleCancel}
         onConfirm={handleConfirmDelete}
         optionLeft="취소"
@@ -88,4 +88,4 @@ const WishPage = () => {
   );
 };
 
-export default WishPage;
+export default MyWishPage;

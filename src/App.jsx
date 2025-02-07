@@ -7,14 +7,12 @@ import BudgetPage from "./pages/BudgetPage";
 import SchedulePage from "./pages/SchedulePage";
 import ChatRoomPage from "./pages/ChatRoomPage";
 import ChatPage from "./pages/ChatPage";
-import PrepareMainPage from "./pages/PrepareMainPage";
 import CalendarMolecule from "./molecules/EventsMolecules/CalendarMolecule";
 import TodosMolecule from "./molecules/EventsMolecules/TodosMolecule";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import RegistrationStatusPage from "./pages/RegistrationStatusPage";
 import OnboardingPage from "./pages/OnboardingPage";
-import PrepareSearchPage from "./pages/PrepareSearchPage";
 import MyWishPage from "./pages/MyWishPage";
 import ScheduleDetailPage from "./pages/ScheduleDetailPage";
 import AllchatMolecule from "./molecules/ChatRoomMolecules/AllchatMolecule";
@@ -26,6 +24,9 @@ import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import InvitationCodePage from "./pages/InvitationCodePage";
 import SubcategoryPage from "./pages/SubcategoryPage";
+import WishPage from "./pages/WishPage";
+import WishMainMolecule from "./molecules/WishMolecules/WishMainMolecule";
+import WishSearchMolecule from "./molecules/WishMolecules/WishSearchMolecule";
 
 function App() {
   return (
@@ -77,8 +78,11 @@ function App() {
               element={<ChatRoomPage />}
             />
 
-            <Route path="/shop" element={<PrepareMainPage />} />
-            <Route path="/shop/search" element={<PrepareSearchPage />} />
+            <Route path="/shop" element={<WishPage />}>
+              <Route index element={<WishMainMolecule />} />
+              <Route path="main" element={<WishMainMolecule />} />
+              <Route path="search" element={<WishSearchMolecule />} />
+            </Route>
             <Route path="/shop/mywish" element={<MyWishPage />} />
           </Routes>
           <NavMolecule />

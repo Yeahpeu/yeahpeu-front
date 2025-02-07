@@ -37,7 +37,7 @@ const MyNav = () => {
       icon: <CalendarIcon />,
     },
     { id: 2, tab: "채팅", label: "chat/allchat", icon: <ChatIcon /> },
-    { id: 3, tab: "쇼핑", label: "shop", icon: <ShopIcon /> },
+    { id: 3, tab: "쇼핑", label: "shop/main", icon: <ShopIcon /> },
   ];
 
   return (
