@@ -1,16 +1,38 @@
 import MyScheduleCard from "../components/Cards/MyScheduleCard";
 import { useSchedules } from "../api/scheduleAPI";
+import { useState, useEffect } from "react";
 
 const HomeTodosMolecule = () => {
   const { data: schedules, isLoading, error } = useSchedules();
+  const [nextSchedule, setNextSchedule] = useState(null);
 
-  // 날짜 포맷팅 함수
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+  useEffect(() => {
+    if (schedules) {
+      updateNextSchedule(schedules);
+    }
+  }, [schedules]);
+
+  const updateNextSchedule = (updatedSchedules) => {
+    const now = new Date();
+    const upcomingSchedules = updatedSchedules
+      .filter(
+        (schedule) => !schedule.completed && new Date(schedule.date) > now
+      )
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    setNextSchedule(upcomingSchedules[0] || null);
+  };
+
+  const handleComplete = (completedScheduleId) => {
+    const updatedSchedules = schedules.map((schedule) =>
+      schedule.id === completedScheduleId
+        ? { ...schedule, completed: true }
+        : schedule
+    );
+
+    updateNextSchedule(updatedSchedules);
+    setNextSchedule(null);
+    setTimeout(() => updateNextSchedule(updatedSchedules), 0);
   };
 
   if (isLoading) {
@@ -33,12 +55,6 @@ const HomeTodosMolecule = () => {
     );
   }
 
-  // 현재 날짜 이후의 미완료 일정 중 가장 가까운 일정 찾기
-  const now = new Date();
-  const nextSchedule = schedules
-    ?.filter((schedule) => !schedule.completed && new Date(schedule.date) > now)
-    .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
-
   if (!nextSchedule) {
     return (
       <div className="my-2">
@@ -50,16 +66,10 @@ const HomeTodosMolecule = () => {
     );
   }
 
-  // 날짜 포맷팅 적용
-  const formattedSchedule = {
-    ...nextSchedule,
-    date: formatDate(nextSchedule.date),
-  };
-
   return (
     <div className="my-2">
       <div className="text-left p-2 font-bold">다음일정</div>
-      <MyScheduleCard event={formattedSchedule} />
+      <MyScheduleCard event={nextSchedule} />
     </div>
   );
 };

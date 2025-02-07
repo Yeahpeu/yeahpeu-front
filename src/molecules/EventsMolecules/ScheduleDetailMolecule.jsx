@@ -49,7 +49,7 @@ const ScheduleDetailMolecule = () => {
   const handleConfirmDelete = () => {
     deleteEvent(id, {
       onSuccess: () => {
-        navigate(-1);
+        navigate(-1, { state: { refresh: true } });
       },
       onError: (error) => {
         alert("삭제 중 오류가 발생했습니다.");
@@ -69,7 +69,7 @@ const ScheduleDetailMolecule = () => {
           <button onClick={() => navigate(-1)} className="text-gray-600">
             &lt;
           </button>
-          <h1 className="text-xl font-bold">
+          <h1 className="text-lg font-bold">
             {scheduleDetail.title || "제목 없음"}
           </h1>
           <MyEditButton
@@ -88,10 +88,14 @@ const ScheduleDetailMolecule = () => {
           <span>{kstTime}</span>
         </div>
 
-        <div className="flex items-center my-8 gap-14 ml-8">
-          <span className="font-semibold text-black">위 치</span>
+        <div className="flex items-start my-8 gap-14 ml-8">
+          <span className="font-semibold text-black whitespace-nowrap">
+            위 치
+          </span>
           <span
-            className={scheduleDetail.location ? "text-black" : "text-gray-400"}
+            className={`${
+              scheduleDetail.location ? "text-black" : "text-gray-400"
+            } flex-1 min-w-0 break-words`}
           >
             {scheduleDetail.location || "없음"}
           </span>

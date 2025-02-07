@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import MyCompleteButton from "../common/MyCompleteButton";
-import { useState } from "react";
-import { completeEvents } from "../../api/scheduleAPI";
+import { useState, useEffect } from "react";
+import { completeEvents, useMonthSchedules } from "../../api/scheduleAPI";
+import { useScheduleStore } from "../../stores/scheduleStore";
 
 const convertToLocalTime = (utcDateTime) => {
   return new Date(utcDateTime).toLocaleTimeString(undefined, {
@@ -13,6 +14,13 @@ const convertToLocalTime = (utcDateTime) => {
 
 const MyScheduleCard = ({ event }) => {
   const navigate = useNavigate();
+  const { updateSchedule } = useScheduleStore();
+  const { refetch } = useMonthSchedules();
+
+  useEffect(() => {
+    setCompleted(event.completed);
+  }, [event]);
+
   const categoryColors = {
     1: "bg-[#FF85EB]",
     2: "bg-[#AB92FF]",
@@ -26,12 +34,17 @@ const MyScheduleCard = ({ event }) => {
   const [completed, setCompleted] = useState(event.completed);
   const { mutate: toggleComplete, isLoading } = completeEvents();
 
+  useEffect(() => {
+    setCompleted(event.completed);
+  }, [event.completed]);
+
   const handleCompleteClick = () => {
     toggleComplete(
       { eventId: event.id, completed: !completed },
       {
-        onSuccess: () => {
-          setCompleted((prev) => !prev);
+        onSuccess: (data) => {
+          setCompleted(data.completed);
+          updateSchedule(event.id, { completed: data.completed });
         },
         onError: (error) => {
           console.error("완료 처리 실패:", error);
@@ -41,8 +54,8 @@ const MyScheduleCard = ({ event }) => {
   };
 
   const locationName =
-    event.location.length > 10
-      ? `${event.location.slice(0, 10)}...`
+    event.location.length > 8
+      ? `${event.location.slice(0, 8)}...`
       : event.location || "없음";
 
   const titleName =
@@ -56,7 +69,7 @@ const MyScheduleCard = ({ event }) => {
     <div className="bg-white rounded-lg shadow-md mb-4 p-4 w-full flex items-center justify-between border relative">
       <div className="absolute top-4 right-6">
         <MyCompleteButton
-          isCompleted={event.completed}
+          isCompleted={completed}
           onClick={handleCompleteClick}
         />
       </div>
