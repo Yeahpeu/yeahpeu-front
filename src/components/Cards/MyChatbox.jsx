@@ -56,11 +56,13 @@ const MyChatBox = ({ owner, item }) => {
               </span>
             )}
             <div
-              className={`rounded-lg p-2 shadow-sm ${
+              className={`rounded-lg p-2 shadow-sm block w-fit ${
                 owner === "mine" ? "bg-gray-100" : "bg-red-100"
               }`}
             >
-              <span className="block">{item.message}</span>
+              <span className="block break-all whitespace-pre-wrap max-w-40 text-start">
+                {item.message}
+              </span>
             </div>
             {owner !== "mine" && (
               <span className="text-xs text-gray-500">

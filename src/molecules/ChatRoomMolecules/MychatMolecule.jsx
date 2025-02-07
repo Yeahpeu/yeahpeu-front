@@ -41,8 +41,8 @@ const MychatMolecule = () => {
             <div className="cursor-pointer active:bg-red-100 hover:bg-red-50">
               <MyChatCard
                 roomTitle={item.title}
-                currentMember="500"
-                maxMember="1000"
+                currentMember={item.usedMemberCount}
+                maxMember={item.reservedMemberCount}
                 imgSrc="https://edu.ssafy.com/asset/images/header-logo.jpg" // 필요에 따라 동적으로 변경 가능
                 lastMessageText={
                   item.lastMessage

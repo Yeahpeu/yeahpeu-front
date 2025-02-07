@@ -1,17 +1,34 @@
-const MySearchBox = ({ value, setValue, onSearch }) => {
+const MySearchBox = ({ value, setValue, onSearch, noSearch }) => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
+
       onSearch();
     }
   };
-
+  if (noSearch) {
+    return (
+      <div className="w-full h-full mx-auto">
+        <div className="relative flex w-full flex-wrap items-stretch">
+          <input
+            type="search"
+            className="relative m-0 block min-w-0 flex-auto text-xs rounded-l border border-neutral-300 px-3 py-[0.25rem] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
+            placeholder="검색어를 작성하세요"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            aria-describedby="button-addon3"
+          />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="w-full mx-auto">
       <div className="relative flex w-full flex-wrap items-stretch">
         <input
           type="search"
-          className="relative m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto text-xs rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+          className="relative m-0 block min-w-0 flex-auto text-xs rounded-l border border-neutral-300 px-3 py-[0.25rem] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
           placeholder="검색어를 작성하세요"
           value={value}
           onChange={(e) => setValue(e.target.value)}
