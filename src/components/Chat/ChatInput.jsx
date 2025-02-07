@@ -31,12 +31,11 @@ const ChatInput = ({ chat, setChat, onSend, onAddFile, setChatMessage }) => {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 flex items-center p-4 gap-2 bg-white">
-      <MyInputWhite
-        type="text"
+      <textarea
         placeholder="채팅을 입력하세요"
         value={chat}
         onChange={handleInputChange}
-        className={` ${
+        className={`w-full h-10 p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-200 overflow-hidden ${
           isFileSelected
             ? "bg-gray-100 text-gray-500 cursor-not-allowed pointer-events-none"
             : ""

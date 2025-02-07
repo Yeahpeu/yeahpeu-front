@@ -6,7 +6,12 @@ import { useProfile } from "../../api/chatAPI";
 import chatImg from "../../assets/chat-icon.png";
 import { useNavigate } from "react-router-dom";
 import MyConfirm from "../../components/Modals/MyConfirm";
-import { useRooms, useJoinRoom, useGetChatUsers } from "../../api/chatAPI";
+import {
+  useRooms,
+  useJoinRoom,
+  useGetChatUsers,
+  useUserRooms,
+} from "../../api/chatAPI";
 import { useChatStore } from "../../stores/chatStore";
 import MyCreateChat from "../../components/Modals/MyCreateChat";
 import progressinGIF from "../../assets/progressing.gif";
@@ -14,6 +19,7 @@ import MyEmptyCard from "../../components/Cards/MyEmptyCard";
 
 const AllchatMolecule = () => {
   const { data: userRooms = [] } = useRooms();
+  const { data: joinedRooms = [] } = useUserRooms();
   const [searchKeyword, setSearchKeyword] = useState("");
   const { data: userProfile = [], isLoading } = useProfile();
   // 선택된 채팅방 ID와 모달 표시 여부를 관리
@@ -81,9 +87,14 @@ const AllchatMolecule = () => {
   };
 
   // 검색어가 변경될 때마다 필터링된 결과를 계산
-  const filteredUserRooms = userRooms.filter((item) =>
-    item.title.toLowerCase().includes(searchKeyword.toLowerCase())
-  );
+  const filteredUserRooms = userRooms
+    .filter(
+      (room) =>
+        !joinedRooms.items?.some((joinedRoom) => joinedRoom.id === room.id)
+    ) // items 배열에서 확인
+    .filter((room) =>
+      room.title.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
 
   if (isLoading) {
     return (
@@ -101,15 +112,16 @@ const AllchatMolecule = () => {
             value={searchKeyword}
             setValue={setSearchKeyword}
             onSearch={(e) => setSearchKeyword(e.target.value)}
+            noSearch={true}
           />
         </div>
-        <button
-          onClick={handleAddChatRoom}
-          className="bg-red-100 p-2 text-gray-500 font-bold rounded-full flex items-center justify-center"
-        >
-          <img src={chatImg} className="h-4 w-4" />
-        </button>
       </div>
+      <button
+        onClick={handleAddChatRoom}
+        className="bg-red-100 p-2 text-gray-500 font-bold rounded-full flex items-center justify-center fixed bottom-20 right-10"
+      >
+        <img src={chatImg} className="h-8 w-8" />
+      </button>
       <div className="">
         {filteredUserRooms && filteredUserRooms.length > 0 ? (
           filteredUserRooms.map((item) => (

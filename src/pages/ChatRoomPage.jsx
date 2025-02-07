@@ -145,7 +145,9 @@ const ChatRoomPage = () => {
   return (
     <div className="p-8 pt-10">
       <ChatHeader
-        roomTitle={roomTitle}
+        roomTitle={
+          roomTitle.length > 15 ? `${roomTitle.slice(0, 15)}...` : roomTitle
+        }
         onLeave={handleLeaveChat}
         onDelete={handleDeleteChat}
       />
