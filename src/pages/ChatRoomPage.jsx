@@ -119,7 +119,6 @@ const ChatRoomPage = () => {
         const compressedFile = await imageCompression(file, options);
         fileToUpload = new File([compressedFile], file.name, {
           type: file.type,
-          lastModified: new Date().getTime(),
         });
       }
 
@@ -131,6 +130,9 @@ const ChatRoomPage = () => {
       setChatMessage(file.name);
     } catch (error) {
       alert("파일 업로드에 실패했습니다.");
+      setChat("");
+      setChatMessage("");
+      setAttachment(null, null);
     }
   };
 
@@ -145,9 +147,7 @@ const ChatRoomPage = () => {
   return (
     <div className="p-8 pt-10">
       <ChatHeader
-        roomTitle={
-          roomTitle.length > 15 ? `${roomTitle.slice(0, 15)}...` : roomTitle
-        }
+        roomTitle={roomTitle}
         onLeave={handleLeaveChat}
         onDelete={handleDeleteChat}
       />
@@ -158,6 +158,7 @@ const ChatRoomPage = () => {
         onSend={handleSend}
         onAddFile={handleAddFile}
         setChatMessage={setChatMessage}
+        isUploading={sendFileMutation.isLoading}
       />
       <MyConfirm
         message="정말로 이 방을 떠나시겠습니까?"
