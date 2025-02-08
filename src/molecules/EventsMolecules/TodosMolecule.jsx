@@ -1,15 +1,13 @@
 import MyScheduleCard from "../../components/Cards/MyScheduleCard";
 import { useSchedules } from "../../api/scheduleAPI";
 import MyEmptyCard from "../../components/Cards/MyEmptyCard";
+import { convertToKST } from "../../data/util/timeUtils";
 
-const CalendarMolecule = () => {
+const TodosMolecule = () => {
   const { data: schedules = [] } = useSchedules();
 
   const groupedEvents = schedules.reduce((acc, event) => {
-    const date = new Date(event.date);
-    date.setHours(date.getHours());
-
-    const eventDate = date.toISOString().split("T")[0];
+    const eventDate = convertToKST(event.date);
     if (!acc[eventDate]) {
       acc[eventDate] = [];
     }
@@ -28,9 +26,9 @@ const CalendarMolecule = () => {
   return (
     <div>
       {sortedDates.length === 0 ? (
-        <p className=" flex items-center justify-center ">
+        <div className=" flex items-center justify-center ">
           <MyEmptyCard value={"일정을 추가해서 결혼식을 준비하세요"} />
-        </p>
+        </div>
       ) : (
         sortedDates.map((date) => (
           <div key={date} className="pb-4">
@@ -50,4 +48,4 @@ const CalendarMolecule = () => {
   );
 };
 
-export default CalendarMolecule;
+export default TodosMolecule;

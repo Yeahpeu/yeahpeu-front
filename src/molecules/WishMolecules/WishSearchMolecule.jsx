@@ -5,6 +5,7 @@ import MyEmptyCard from "../../components/Cards/MyEmptyCard";
 import MyConfirm from "../../components/Modals/MyConfirm";
 import { useState } from "react";
 import { useAddWish } from "../../api/wishAPI";
+import MyLoading from "../../components/common/MyLoading";
 
 const WishSearch = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -43,18 +44,20 @@ const WishSearch = () => {
   };
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 overflow-y-hidden max-h-full min-h-full">
       {isLoading ? (
-        <p className="text-gray-500">검색 중...</p>
+        <MyLoading />
       ) : wishlist.length > 0 ? (
-        wishlist.map((item) => (
-          <MyWishCard
-            key={item.productId}
-            item={item}
-            onWishClick={() => handleWishClick(item)}
-            selected={false}
-          />
-        ))
+        <div className="flex flex-col gap-y-4">
+          {wishlist.map((item, index) => (
+            <MyWishCard
+              key={index}
+              item={item}
+              onWishClick={() => handleWishClick(item)}
+              selected={false}
+            />
+          ))}
+        </div>
       ) : (
         <MyEmptyCard value="검색 결과가 없습니다" />
       )}
@@ -73,7 +76,6 @@ const WishSearch = () => {
         </div>
       )}
 
-      {/* ✅ 위시 추가 모달 */}
       <MyConfirm
         message="위시리스트에 추가하시겠습니까?"
         onCancel={() => setIsConfirmVisible(false)}

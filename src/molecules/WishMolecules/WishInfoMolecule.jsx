@@ -1,58 +1,46 @@
+import { useState } from "react";
+import { categories } from "../../data/categories"; // categories 가져오기
+
 const WishInfoMolecule = ({ onItemClick }) => {
-  const categories = [
-    {
-      name: "가전",
-      items: [
-        "식기세척기",
-        "청소기",
-        "냉장고",
-        "밥솥",
-        "전자레인지",
-        "세탁기",
-        "정수기",
-        "TV",
-        "공기청정기",
-        "인터넷",
-        "가습기",
-        "다리미",
-        "전기포트",
-      ],
-    },
-    {
-      name: "가구",
-      items: ["화장대", "서랍장", "침대", "옷장", "소파", "책상", "식탁"],
-    },
-    {
-      name: "침구/생활용품",
-      items: ["침구세트", "카페트", "방석", "수건", "담요"],
-    },
-    {
-      name: "주방용품",
-      items: ["냄비세트", "밀폐용기", "앞치마", "프라이팬", "컵세트", "식기"],
-    },
-  ];
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]); // 기본 선택
+  const itemCount = categories.length; // 카테고리 개수 계산
 
   return (
-    <div className="p-2 w-full">
-      {categories.map((category) => (
-        <div key={category.name} className="mb-6">
-          <h3 className="text-left text-medi font-bold mb-2">
+    <div className="flex w-full h-full border rounded-md overflow-hidden">
+      <ul
+        className="grid w-1/4"
+        style={{ gridTemplateRows: `repeat(${itemCount}, 1fr)` }}
+      >
+        {categories.map((category) => (
+          <li
+            key={category.name}
+            className={`cursor-pointer p-4 text-width border-b flex items-center justify-center ${
+              selectedCategory.name === category.name
+                ? "bg-white font-bold text-black"
+                : "bg-gray-300 text-gray-500"
+            }`}
+            onClick={() => setSelectedCategory(category)}
+          >
             {category.name}
-          </h3>
-          <hr className="m-1" />
-          <ul className="flex flex-wrap gap-2">
-            {category.items.map((item) => (
-              <li
-                key={item.id}
-                onClick={() => onItemClick(item)}
-                className="cursor-pointer text-blue-500 hover:underline inline-block pr-2"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+          </li>
+        ))}
+      </ul>
+
+      <div className="w-3/4 px-4 py-2 overflow-y-auto h-full bg-white text-left">
+        <ul>
+          {selectedCategory.items.map((item, index) => (
+            <li
+              key={item}
+              onClick={() => onItemClick(item)}
+              className={`cursor-pointer text-blue-500 hover:underline p-1 py-2 ${
+                index === selectedCategory.items.length - 1 ? "" : "border-b"
+              }`}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import MySearchBox from "../../components/common/MySearchBar";
 
-const SearchBoxMolecule = () => {
+const WishSearchBox = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ const SearchBoxMolecule = () => {
 
   const handleSearch = () => {
     if (!searchValue.trim()) return;
-    setSearchParams({ query: searchValue, page: 1 });
+    navigate(`/shop/search?query=${encodeURIComponent(searchValue)}&page=1`);
   };
 
   const handleBack = () => {
@@ -40,4 +40,4 @@ const SearchBoxMolecule = () => {
   );
 };
 
-export default SearchBoxMolecule;
+export default WishSearchBox;

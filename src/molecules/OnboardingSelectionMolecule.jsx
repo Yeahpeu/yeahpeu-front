@@ -35,7 +35,7 @@ const OnboardingSelectionMolecule = () => {
 
       <div className="flex-1 px-6 overflow-y-auto">
         <div className="bg-white rounded-2xl p-2 shadow-sm space-y-1">
-          {currentCategory.children.map((option, index) => (
+          {currentCategory.children.slice(0, -1).map((option, index) => (
             <div
               key={option.id}
               className="transition-all duration-200 ease-in-out"

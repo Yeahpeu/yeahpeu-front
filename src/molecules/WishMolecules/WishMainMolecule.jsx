@@ -11,13 +11,14 @@ const WishMainMolecule = () => {
   const total = data?.total || 0;
 
   return (
-    <div className="mt-4">
-      <WishInfoMolecule
-        onItemClick={(item) =>
-          navigate(`/shop/search?query=${encodeURIComponent(item)}&page=1`)
-        }
-      />
-
+    <div className="mt-4 h-full">
+      <div className="h-[40vh] mb-4">
+        <WishInfoMolecule
+          onItemClick={(item) =>
+            navigate(`/shop/search?query=${encodeURIComponent(item)}&page=1`)
+          }
+        />
+      </div>
       <MyWishSmallCard images={imageUrls} total={total} />
     </div>
   );

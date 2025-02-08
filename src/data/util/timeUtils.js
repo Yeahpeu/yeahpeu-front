@@ -25,3 +25,13 @@ export const convertKST = (utcDateTime) => {
 
   return { date: kstDate, time: kstTime };
 };
+
+export const convertToKST = (utcDateString) => {
+  if (!utcDateString) return "";
+
+  const utcDate = new Date(utcDateString);
+  const kstOffset = 9 * 60;
+  const kstDate = new Date(utcDate.getTime() + kstOffset * 60 * 1000);
+
+  return kstDate.toISOString().split("T")[0];
+};
