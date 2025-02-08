@@ -1,6 +1,7 @@
 import { useState } from "react";
-import MyAddTaskButton from "../../components/common/MyAddTaskButton";
 import { useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query"; // ✅ QueryClient 추가
+import MyAddTaskButton from "../../components/common/MyAddTaskButton";
 import {
   useCreateTaskMutation,
   useUpdateTaskMutation,
@@ -14,6 +15,7 @@ const ScheduleDetailMolecule = ({ event }) => {
   const [newTask, setNewTask] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const { id: eventId } = useParams();
+  const queryClient = useQueryClient(); // ✅ QueryClient 추가
 
   const { data: customCategories = [] } = useCategories();
 
@@ -56,7 +58,7 @@ const ScheduleDetailMolecule = ({ event }) => {
   const handleDeleteTask = async (taskId) => {
     try {
       await deleteTaskMutation.mutateAsync({ eventId, taskId });
-      setChecklists((prev) => prev.filter((task) => task.id !== taskId));
+      queryClient.invalidateQueries(["tasks", eventId]); // ✅ 삭제 후 최신 데이터 불러오기
     } catch (error) {
       console.error("🚨 Error deleting task:", error);
     }
@@ -71,7 +73,7 @@ const ScheduleDetailMolecule = ({ event }) => {
 
       <hr className="mt-3" />
 
-      <ul className="list-disc pl-5 mt-4 ">
+      <ul className="list-disc pl-5 mt-4">
         {checklists.map((item) => (
           <li key={item.id} className="mt-3 flex justify-between mr-2">
             <span
@@ -99,7 +101,7 @@ const ScheduleDetailMolecule = ({ event }) => {
           />
           <button
             onClick={handleAddTask}
-            className="bg-blue-500 text-white px-3 py-1 rounded"
+            className="bg-red-200 text-white px-3 py-1 rounded"
           >
             👌
           </button>

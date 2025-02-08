@@ -7,9 +7,11 @@ import {
   useUpdateScheduleMutation,
 } from "../../api/scheduleAPI";
 import { convertUTC, convertKST } from "../../data/util/timeUtils";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ScheduleEditMolecule = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { id } = useParams();
   const { data: event, isLoading, error } = useScheduleDetail(id);
   const { data: customCategories = [] } = useCategories();
@@ -68,6 +70,7 @@ const ScheduleEditMolecule = () => {
       { id, updatedData },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries(["schedules"]);
           navigate(-1);
         },
         onError: (err) => {
@@ -92,21 +95,14 @@ const ScheduleEditMolecule = () => {
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={() => navigate(-1)}
-          className="text-gray-600 mr-2 text-base w-12"
+          className="text-gray-600 text-base"
         >
           &lt;
         </button>
-        <MyInputWhite
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          placeholder="제목"
-          className="border-gray-300 flex-grow mx-2"
-        />
+        <h1 className="text-xl font-bold">일정 수정하기</h1>
         <button
           onClick={handleSubmit}
-          className="text-red-200 text-sm w-12 text-center m-2"
+          className="text-red-200 text-sm text-center"
         >
           완료
         </button>
@@ -115,6 +111,20 @@ const ScheduleEditMolecule = () => {
       <hr className="mt-2 mb-4" />
 
       <div className="flex flex-col gap-6">
+        <div className="flex items-center gap-8">
+          <label className="font-semibold text-black w-16">제 목</label>
+          <MyInputWhite
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
+            placeholder="제목"
+            className="border border-gray-300 rounded-md p-2 w-full"
+          />
+        </div>
+
         <div className="flex items-center gap-8">
           <label className="font-semibold text-black w-16">일 자</label>
           <MyInputWhite
@@ -173,7 +183,7 @@ const ScheduleEditMolecule = () => {
                 setFormData({
                   ...formData,
                   mainCategoryId: Number(e.target.value),
-                  subcategoryId: "", // 메인 카테고리 변경 시 서브 초기화
+                  subcategoryId: "",
                 })
               }
               className="border border-gray-300 rounded-md p-2 w-1/2"

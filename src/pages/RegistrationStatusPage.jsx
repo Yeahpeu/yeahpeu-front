@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
 import MyInputPink from "../components/common/MyInput-pink";
 import MyRole from "../components/Buttons/MyRole";
 import useOnboardingStore from "../stores/onboardingStore";
@@ -13,6 +14,23 @@ const CoupleInfoPage = () => {
     setWeddingDay,
     setBudget,
   } = useOnboardingStore();
+
+  const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipRef = useRef(null);
+
+  // 바깥 클릭 시 툴팁 닫기
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+        setShowTooltip(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleNext = () => {
     if (!weddingRole || !weddingDay || !budget) {
@@ -51,17 +69,51 @@ const CoupleInfoPage = () => {
           <MyInputPink
             type="number"
             placeholder="예산을 입력해주세요"
-            value={budget}
-            onChange={(e) => setBudget(Number(e.target.value))}
+            value={budget === 0 ? "" : budget} // 0이면 빈 문자열로 표시
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              if (!isNaN(value) && value >= 0 && value <= 999999999) {
+                setBudget(value);
+              }
+            }}
+            className="border border-gray-300 rounded-md p-2 w-full"
+            min={0}
+            max={999999999}
           />
         </div>
 
-        <div>
-          <h2 className="text-lg mb-4">결혼식 예정 날짜</h2>
+        <div className="relative">
+          <div className="flex items-center mb-4 justify-center">
+            <h2 className="text-lg ">결혼식 예정 날짜</h2>
+            {/* <button
+              className="ml-2 text-gray-500 hover:text-gray-700 border rounded-full w-8 aspect-square flex items-center justify-center"
+              onClick={() => setShowTooltip(!showTooltip)}
+            >
+              ?
+            </button> */}
+          </div>
+
+          {showTooltip && (
+            <div
+              ref={tooltipRef}
+              className="absolute top-[-110%] left-1/2 -translate-x-1/2 bg-white bg-opacity-90 border border-gray-300 shadow-lg p-3 rounded-md w-auto max-w-xs text-sm text-gray-700"
+            >
+              📅 날짜 선택 가이드:
+              <p>오늘 이후만 선택할 수 있습니다.</p>
+              <p>최대 3년 이내의 날짜만 선택해 주세요.</p>
+            </div>
+          )}
+
           <input
             type="date"
             className="border bg-red-50 border-gray-300 rounded-lg p-2 w-full"
             value={weddingDay ? weddingDay.split("T")[0] : ""}
+            min={new Date().toISOString().split("T")[0]}
+            max={
+              new Date(new Date().setFullYear(new Date().getFullYear() + 3))
+                .toISOString()
+                .split("T")[0]
+            }
             onChange={(e) => {
               const date = new Date(e.target.value);
               setWeddingDay(date.toISOString());
@@ -70,7 +122,7 @@ const CoupleInfoPage = () => {
         </div>
 
         <div>
-          <h2 className="text-lg mb-4 transition">역할</h2>
+          <h2 className="text-lg mb-4">역할</h2>
           <MyRole
             selectedRole={weddingRole}
             onClick={(role) => setWeddingRole(role.toUpperCase())}

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import MyInputWhite from "../../components/common/MyInput-white";
 import {
   useCreateScheduleMutation,
@@ -8,7 +9,12 @@ import { convertUTC } from "../../data/util/timeUtils";
 import { findCategoryNames } from "../../data/util/findCategoryNames";
 import { useNavigate } from "react-router-dom";
 
-const getFormattedDate = (date) => date.toISOString().split("T")[0];
+const getFormattedDate = (date) => {
+  const kstOffset = 9 * 60 * 60 * 1000;
+  const kstDate = new Date(date.getTime() + kstOffset);
+
+  return kstDate.toISOString().split("T")[0];
+};
 
 const INITIAL_FORM_DATA = {
   title: "",
@@ -25,6 +31,8 @@ const ScheduleInputMolecule = () => {
   const { data: customCategories = [] } = useCategories();
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
   const today = new Date();
   const minDateObj = new Date(today);
   minDateObj.setFullYear(today.getFullYear() - 1);
@@ -35,6 +43,25 @@ const ScheduleInputMolecule = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [minDate] = useState(getFormattedDate(minDateObj));
   const [maxDate] = useState(getFormattedDate(maxDateObj));
+
+  useEffect(() => {
+    console.log("customCategories:", customCategories); // 카테고리 전체 출력
+    console.log("현재 선택된 mainCategoryId:", formData.mainCategoryId);
+
+    if (formData.mainCategoryId) {
+      const selectedCategory = customCategories.find(
+        (category) => category.id === formData.mainCategoryId
+      );
+
+      if (selectedCategory && selectedCategory.children) {
+        setSubCategories(selectedCategory.children);
+      } else {
+        setSubCategories([]);
+      }
+    } else {
+      setSubCategories([]);
+    }
+  }, [formData.mainCategoryId, customCategories]);
 
   const handleSubmit = () => {
     const { title, date, time, mainCategoryId } = formData;
@@ -61,6 +88,7 @@ const ScheduleInputMolecule = () => {
         console.log(
           `일정 추가 성공: ${categoryNames.mainCategoryName} - ${categoryNames.subCategoryName}`
         );
+        queryClient.invalidateQueries(["schedules"]);
         navigate(-1);
       },
       onError: (error) => {
@@ -163,6 +191,7 @@ const ScheduleInputMolecule = () => {
             className="border border-gray-300 rounded-md p-2 w-full"
             min={0}
             max={999999999}
+            placeholder="10억 미만 설정 가능합니다"
           />
         </div>
 
