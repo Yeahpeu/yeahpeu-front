@@ -30,8 +30,8 @@ const BudgetPage = () => {
         expend={usedBudget}
         balance={totalBudget - usedBudget}
       />
-      <div className="mt-4">
-        <p className="text-lg font-bold mb-2 text-left">상세 내역</p>
+      <div className="mt-6">
+        <p className="text-lg font-bold mb-2 text-left ml-2">상세 내역</p>
 
         {data.data?.map((budget) => (
           <MyAccordion
@@ -43,6 +43,7 @@ const BudgetPage = () => {
             value={budget.subCategories.map((sub) => ({
               subTitle: sub.name,
               price: sub.amount,
+              subId: sub.id,
             }))}
           />
         ))}
