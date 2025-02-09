@@ -97,7 +97,7 @@ const MyPageMolecule = () => {
       </div>
       <div className="my-10">
         <button
-          className="flex flex-row justify-between border border-gray-300 rounded-lg p-2 w-full text-sm my-20"
+          className="flex flex-row justify-between border-y border-gray-300 p-2 w-full text-sm my-20"
           onClick={handleMoveToEdit}
         >
           <div>회원 정보 수정</div>

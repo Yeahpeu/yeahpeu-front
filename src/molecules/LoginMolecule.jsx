@@ -19,37 +19,47 @@ const LoginMolecule = () => {
   };
 
   return (
-    <div className="flex flex-col gap-3 p-4 rounded-lg w-full max-w-sm mx-auto">
+    <div className="flex flex-col p-4 rounded-lg w-full max-w-sm mx-auto">
       <div className="text-left">
-        <p className="mb-1 p-1">이메일</p>
+        <p className="p-1">이메일</p>
         <MyInputWhite
           placeholder="이메일 주소"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {!isEmailValid && email.length > 0 && (
-          <p className="text-red-500 text-sm">이메일 형식을 유지해주세요.</p>
-        )}
+        <p
+          className={`text-red-500 text-sm ml-2 transition-opacity duration-300 ${
+            !isEmailValid && email.length > 0
+              ? "opacity-100 visible"
+              : "opacity-0 invisible"
+          }`}
+        >
+          이메일 형식을 유지해주세요.
+        </p>
       </div>
 
       <div className="text-left">
-        <p className="mb-1 p-1">비밀번호</p>
+        <p className=" p-1">비밀번호</p>
         <MyInputWhite
           placeholder="영문 대소문자 + 특수기호 포함 8글자 이상"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {!isPasswordValid && password.length > 0 && (
-          <p className="text-red-500 text-sm mb-2">
-            비밀번호는 8자 이상, 영문 대소문자 및 특수기호 1개 이상 포함해야
-            합니다.
-          </p>
-        )}
+        <p
+          className={`text-red-500 text-sm transition-opacity duration-300 ${
+            !isPasswordValid && password.length > 0
+              ? "opacity-100 visible"
+              : "opacity-0 invisible"
+          }`}
+        >
+          비밀번호는 8자 이상, 영문 대소문자 및 특수기호 1개 이상 포함해야
+          합니다.
+        </p>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-3">
         <MyButton
           disabled={!isEmailValid || !isPasswordValid}
           color={isEmailValid && isPasswordValid ? "abled" : "disabled"}

@@ -14,10 +14,10 @@ const WishInfoMolecule = ({ onItemClick }) => {
         {categories.map((category) => (
           <li
             key={category.name}
-            className={`cursor-pointer p-4 text-width border-b flex items-center justify-center ${
+            className={`cursor-pointer p-4 text-width border-b flex items-center justify-center  ${
               selectedCategory.name === category.name
                 ? "bg-white font-bold text-black"
-                : "bg-gray-300 text-gray-500"
+                : "bg-gray-200 text-gray-500"
             }`}
             onClick={() => setSelectedCategory(category)}
           >
@@ -32,7 +32,7 @@ const WishInfoMolecule = ({ onItemClick }) => {
             <li
               key={item}
               onClick={() => onItemClick(item)}
-              className={`cursor-pointer text-blue-500 hover:underline p-1 py-2 ${
+              className={`cursor-pointer text-blue-500 hover:underline p-1 py-3 ${
                 index === selectedCategory.items.length - 1 ? "" : "border-b"
               }`}
             >

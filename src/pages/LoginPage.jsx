@@ -8,9 +8,9 @@ const LoginPage = () => {
       <HeaderMolecule />
       <div className="flex-grow flex flex-col items-center justify-center">
         <LoginMolecule />
-        <div className="mb-3">or</div>
+        <div className="my-3">or</div>
         <SocialMoleCule />
-        <div>
+        <div className="my-3">
           계정이 없으신가요{" "}
           <a href="/signup" className="text-blue-500 ml-3">
             회원가입

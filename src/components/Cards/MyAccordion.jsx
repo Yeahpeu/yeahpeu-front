@@ -1,11 +1,12 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 const MyAccordion = ({ isOpen, onClick, title, value, percent }) => {
   const contentRef = useRef(null);
 
   return (
-    <div id="accordionExample">
-      <div className="rounded-lg border border-neutral-200 bg-white my-1">
+    <div id="accordionExample" className="py-1">
+      <div className="rounded-lg border border-neutral-200 bg-white my-1 ">
         <h2 className="mb-0" id="headingOne">
           <button
             className={`group relative flex w-full rounded-lg border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition hover:z-[2] focus:z-[3] focus:outline-none ${
@@ -55,9 +56,16 @@ const MyAccordion = ({ isOpen, onClick, title, value, percent }) => {
         >
           <div className="px-5 py-4">
             {value.map((item, idx) => (
-              <div key={idx} className="flex justify-between text-gray-500">
-                <div>{item.subTitle}</div>
-                <div>{item.price} 원</div>
+              <div
+                key={idx}
+                className="flex justify-between text-gray-500 py-1"
+              >
+                <div>
+                  <Link to={`/schedule/todos/detail/sub/${item.subId}`}>
+                    {item.subTitle}
+                  </Link>
+                </div>
+                <div>{(item.price ?? 0).toLocaleString()} 원</div>
               </div>
             ))}
           </div>

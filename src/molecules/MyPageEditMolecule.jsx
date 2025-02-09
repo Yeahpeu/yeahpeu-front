@@ -173,8 +173,19 @@ const MyPageEditMolecule = () => {
           <span className="font-semibold text-black w-1/4 text-left">예산</span>
           <div className="w-1/2">
             <MyInputWhite
-              value={budget}
-              onChange={(e) => setBudget(e.target.value)}
+              type="number"
+              name="budget"
+              value={budget === 0 ? "" : budget}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                if (!isNaN(value) && value >= 0 && value <= 999999999) {
+                  setBudget(value);
+                }
+              }}
+              className="border border-gray-300 rounded-md p-2 w-full"
+              min={0}
+              max={999999999}
+              placeholder="10억 미만 "
             />
           </div>
         </div>
