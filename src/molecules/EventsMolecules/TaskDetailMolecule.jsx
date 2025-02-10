@@ -57,7 +57,7 @@ const ScheduleDetailMolecule = ({ event }) => {
 
   const handleDeleteTask = async (taskId) => {
     try {
-      await deleteTaskMutation.mutateAsync({ eventId, taskId });
+      await deleteTaskMutation.mutate({ eventId, taskId });
       queryClient.invalidateQueries(["tasks", eventId]); // ✅ 삭제 후 최신 데이터 불러오기
     } catch (error) {
       console.error("🚨 Error deleting task:", error);

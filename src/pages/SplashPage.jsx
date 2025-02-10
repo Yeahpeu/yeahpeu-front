@@ -9,7 +9,7 @@ const SplashPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate("/login");
-    }, 2000);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, [navigate]);
