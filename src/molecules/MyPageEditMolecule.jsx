@@ -9,6 +9,8 @@ import {
   useAvatarUpload,
 } from "../api/mypageAPI";
 import imageCompression from "browser-image-compression";
+import MyConfirm from "../components/Modals/MyConfirm";
+import { useState } from "react";
 
 const MyPageEditMolecule = () => {
   const {
@@ -42,6 +44,8 @@ const MyPageEditMolecule = () => {
 
   const navigate = useNavigate();
   const sampleImage = weddingRole === "BRIDE" ? bride : groom;
+
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const formattedWeddingDay = weddingDay
     ? new Date(weddingDay).toISOString().split("T")[0]
@@ -79,7 +83,10 @@ const MyPageEditMolecule = () => {
   return (
     <div className="flex flex-col w-full gap-2">
       <div className="flex items-center mb-2">
-        <button onClick={() => navigate(-1)} className="text-gray-600 p-2">
+        <button
+          onClick={() => setShowConfirm(true)}
+          className="text-gray-600 p-2"
+        >
           &lt;
         </button>
         <h1 className="text-xl font-bold text-left pl-3">내 정보</h1>
@@ -216,6 +223,21 @@ const MyPageEditMolecule = () => {
           </button>
         </div>
       </div>
+
+      <MyConfirm
+        message={
+          <>
+            변경사항이 저장되지 않습니다.
+            <br />
+            뒤로 가시겠습니까?
+          </>
+        }
+        optionLeft="취소"
+        optionRight="확인"
+        visible={showConfirm}
+        onCancel={() => setShowConfirm(false)}
+        onConfirm={() => navigate(-1)}
+      />
     </div>
   );
 };
