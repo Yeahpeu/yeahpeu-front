@@ -2,7 +2,6 @@ import MyScheduleCard from "../components/Cards/MyScheduleCard";
 import { useSchedules } from "../api/scheduleAPI";
 import { useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { completeSchedule } from "../api/homeAPI";
 
 const HomeTodosMolecule = () => {
   const queryClient = useQueryClient();

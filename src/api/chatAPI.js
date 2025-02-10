@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "./axiosInstance";
 import { useChatStore } from "../stores/chatStore";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // 참가한 채팅방 전체조회
 export const useUserRooms = () => {
@@ -88,6 +88,8 @@ export const useCreateRoom = () => {
 
 // 채팅방 떠나기
 export const useLeaveRoom = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (roomId) => {
       const response = await axiosInstance.delete(
@@ -95,7 +97,9 @@ export const useLeaveRoom = () => {
       );
       return response.data;
     },
-    onSuccess: (data) => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userChatRooms"] });
+    },
     onError: (error) => {
       console.error("떠나기 실패:", error);
     },

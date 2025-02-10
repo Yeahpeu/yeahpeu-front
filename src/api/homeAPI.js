@@ -29,10 +29,3 @@ export const useProgressBar = () => {
     },
   });
 };
-
-export const completeSchedule = async (scheduleId) => {
-  const response = await axiosInstance.patch(
-    `/api/v1/wedding/events/${scheduleId}/complete`
-  );
-  return response.data;
-};
