@@ -63,9 +63,12 @@ const ScheduleInputMolecule = () => {
   }, [formData.mainCategoryId]);
 
   const handleSubmit = () => {
-    const { title, date, time, mainCategoryId } = formData;
+    const { title, location, date, time, mainCategoryId } = formData;
 
-    if (!title || !date || !mainCategoryId) {
+    const trimmedTitle = title.trimStart();
+    const trimmedLocation = location.trimStart();
+
+    if (!trimmedTitle || !date || !mainCategoryId) {
       alert("제목, 일자, 메인 카테고리는 필수 입력");
       return;
     }
@@ -73,6 +76,8 @@ const ScheduleInputMolecule = () => {
     const utcDateTime = convertUTC(date, time);
     const newSchedule = {
       ...formData,
+      title: trimmedTitle,
+      location: trimmedLocation,
       date: utcDateTime,
       price: Number(formData.price),
     };

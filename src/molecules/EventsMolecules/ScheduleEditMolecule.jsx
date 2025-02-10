@@ -35,11 +35,14 @@ const ScheduleEditMolecule = () => {
         ? convertKST(event.date)
         : { date: "", time: "" };
 
+      const trimmedTitle = event.title.trimStart();
+      const trimmedLocation = event.location.trimStart();
+
       setFormData({
-        title: event.title || "",
+        title: trimmedTitle || "",
         date: initialDate,
         time: initialTime,
-        location: event.location || "",
+        location: trimmedLocation || "",
         price: event.price || 0,
         mainCategoryId: event.mainCategoryId || "",
         subcategoryId: event.subcategoryId || "",
@@ -61,9 +64,15 @@ const ScheduleEditMolecule = () => {
   const handleSubmit = () => {
     const utcDateTime = convertUTC(formData.date, formData.time);
 
+    const trimmedTitle = formData.title.trimStart();
+    const trimmedLocation = formData.location.trimStart();
+
     const updatedData = {
       ...formData,
+      title: trimmedTitle,
+      location: trimmedLocation,
       date: utcDateTime,
+      price: Number(formData.price),
     };
 
     updateScheduleMutation.mutate(
@@ -85,9 +94,7 @@ const ScheduleEditMolecule = () => {
   if (isLoading) return <div className="text-center">로딩 중...</div>;
   if (error)
     return (
-      <div className="text-center text-red-500">
-        ❌ 오류 발생: {error.message}
-      </div>
+      <div className="text-center text-red-500">오류 발생: {error.message}</div>
     );
 
   return (
