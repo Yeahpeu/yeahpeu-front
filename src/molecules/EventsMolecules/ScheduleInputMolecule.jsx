@@ -45,8 +45,7 @@ const ScheduleInputMolecule = () => {
   const [maxDate] = useState(getFormattedDate(maxDateObj));
 
   useEffect(() => {
-    console.log("customCategories:", customCategories); // 카테고리 전체 출력
-    console.log("현재 선택된 mainCategoryId:", formData.mainCategoryId);
+    if (!customCategories || customCategories.length === 0) return;
 
     if (formData.mainCategoryId) {
       const selectedCategory = customCategories.find(
@@ -61,7 +60,7 @@ const ScheduleInputMolecule = () => {
     } else {
       setSubCategories([]);
     }
-  }, [formData.mainCategoryId, customCategories]);
+  }, [formData.mainCategoryId]);
 
   const handleSubmit = () => {
     const { title, date, time, mainCategoryId } = formData;

@@ -82,15 +82,15 @@ const MyPageEditMolecule = () => {
         <button onClick={() => navigate(-1)} className="text-gray-600 p-2">
           &lt;
         </button>
-        <h1 className="text-xl font-bold text-left">내 정보</h1>
-        <div className="ml-auto mr-1">
+        <h1 className="text-xl font-bold text-left pl-3">내 정보</h1>
+        {/* <div className="ml-auto mr-1">
           <button
             className="text-red-200 font-semibold"
             onClick={() => myPageMutation.mutate(userInfo)}
           >
             완료
           </button>
-        </div>
+        </div> */}
       </div>
 
       <hr className="w-full mb-2" />
@@ -143,21 +143,21 @@ const MyPageEditMolecule = () => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center gap-4 my-2">
-        <div className="flex flex-row items-center gap-4">
+      <div className="flex flex-col justify-center gap-5 my-2">
+        <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">
             고유 번호
           </span>
           <span>{myCode}</span>
         </div>
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">
             이메일
           </span>
           <span>{emailAddress}</span>
         </div>
         <hr className="mt-3 mb-5" />
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">
             배우자 정보
           </span>
@@ -169,7 +169,7 @@ const MyPageEditMolecule = () => {
             )}
           </span>
         </div>
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">예산</span>
           <div className="w-1/2">
             <MyInputWhite
@@ -189,7 +189,7 @@ const MyPageEditMolecule = () => {
             />
           </div>
         </div>
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">
             결혼 예정일
           </span>
@@ -203,11 +203,18 @@ const MyPageEditMolecule = () => {
         </div>
       </div>
 
-      <div className="my-10">
-        <button className="p-5 flex flex-row justify-between rounded-lg w-full text-sm my-14">
-          <div className="font-semibold">로그아웃</div>
-          <div className="text-gray-400">회원 탈퇴</div>
-        </button>
+      <div className="my-8">
+        <div className="p-5 flex flex-row justify-between rounded-lg w-full text-sm my-14">
+          <button className="text-gray-400" onClick={() => {}}>
+            회원 탈퇴
+          </button>
+          <button
+            className="font-semibold text-red-300"
+            onClick={() => myPageMutation.mutate(userInfo)}
+          >
+            수정 완료
+          </button>
+        </div>
       </div>
     </div>
   );

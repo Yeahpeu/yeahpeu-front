@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query"; // ✅ QueryClient 추가
+import { useQueryClient } from "@tanstack/react-query";
 import MyAddTaskButton from "../../components/common/MyAddTaskButton";
 import {
   useCreateTaskMutation,
@@ -15,7 +15,7 @@ const ScheduleDetailMolecule = ({ event }) => {
   const [newTask, setNewTask] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const { id: eventId } = useParams();
-  const queryClient = useQueryClient(); // ✅ QueryClient 추가
+  const queryClient = useQueryClient();
 
   const { data: customCategories = [] } = useCategories();
 
@@ -24,12 +24,19 @@ const ScheduleDetailMolecule = ({ event }) => {
   const deleteTaskMutation = useDeleteTask();
 
   const handleToggleComplete = (taskId) => {
-    const updatedTasks = checklists.map((item) =>
-      item.id === taskId ? { ...item, completed: !item.completed } : item
+    const updatedTask = checklists.find((item) => item.id === taskId);
+
+    if (!updatedTask) return;
+
+    const updatedCompleted = !updatedTask.completed;
+
+    setChecklists((prev) =>
+      prev.map((item) =>
+        item.id === taskId ? { ...item, completed: updatedCompleted } : item
+      )
     );
 
-    setChecklists(updatedTasks);
-    updateTaskMutation.mutate({ eventId, updatedTasks });
+    updateTaskMutation.mutate({ eventId, taskId, completed: updatedCompleted });
   };
 
   const handleAddTask = async () => {
@@ -56,11 +63,16 @@ const ScheduleDetailMolecule = ({ event }) => {
   };
 
   const handleDeleteTask = async (taskId) => {
+    setChecklists((prev) => prev.filter((task) => task.id !== taskId));
+
     try {
       await deleteTaskMutation.mutateAsync({ eventId, taskId });
-      queryClient.invalidateQueries(["tasks", eventId]); // ✅ 삭제 후 최신 데이터 불러오기
+      queryClient.invalidateQueries(["tasks", eventId]);
     } catch (error) {
-      console.error("🚨 Error deleting task:", error);
+      console.error(
+        "🚨 Error deleting task:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -99,11 +111,8 @@ const ScheduleDetailMolecule = ({ event }) => {
             className="border px-2 py-1 rounded w-full"
             autoFocus
           />
-          <button
-            onClick={handleAddTask}
-            className="bg-red-200 text-white px-3 py-1 rounded"
-          >
-            👌
+          <button onClick={handleAddTask} className="px-4 py-1">
+            +
           </button>
         </div>
       )}

@@ -93,16 +93,15 @@ const CoupleInfoPage = () => {
             </button> */}
           </div>
 
-          {showTooltip && (
+          {/* {showTooltip && (
             <div
               ref={tooltipRef}
               className="absolute top-[-110%] left-1/2 -translate-x-1/2 bg-white bg-opacity-90 border border-gray-300 shadow-lg p-3 rounded-md w-auto max-w-xs text-sm text-gray-700"
             >
               📅 날짜 선택 가이드:
-              <p>오늘 이후만 선택할 수 있습니다.</p>
-              <p>최대 3년 이내의 날짜만 선택해 주세요.</p>
+              <p>3개월 이하는 </p> <p>가일정 수립이 어려워요.</p>
             </div>
-          )}
+          )} */}
 
           <input
             type="date"
@@ -119,6 +118,9 @@ const CoupleInfoPage = () => {
               setWeddingDay(date.toISOString());
             }}
           />
+          <p className="text-sm text-gray-300 mt-3">
+            3개월 이하 일정은 가일정 수립이 어려워요.
+          </p>
         </div>
 
         <div>

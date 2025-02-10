@@ -43,15 +43,15 @@ export const useUpdateTaskMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ eventId, updatedTasks }) => {
-      const { data } = await axiosInstance.put(
-        `/api/v1/wedding/events/${eventId}/tasks/{taskId}`,
-        { checklists: updatedTasks }
+    mutationFn: async ({ eventId, taskId, completed }) => {
+      const response = await axiosInstance.patch(
+        `/api/v1/wedding/events/${eventId}/tasks/${taskId}`,
+        { completed }
       );
-      return { data, eventId };
+      return response;
     },
     onSuccess: ({ data, eventId }) => {
-      console.log("체크리스트가 성공적으로 수정되었습니다.");
+      console.log("체크리스트가 성공적으로 완료되었습니다.");
       queryClient.invalidateQueries(["task", eventId]);
     },
     onError: (error) => {

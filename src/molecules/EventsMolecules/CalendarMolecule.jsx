@@ -17,12 +17,9 @@ const CalendarMolecule = () => {
 
   const { data: monthschedule = [] } = useMonthSchedules(startDate, endDate);
 
-  // 중복 데이터 방지 및 초기화 개선
   useEffect(() => {
     if (monthschedule.length > 0) {
-      if (schedules.length === 0) {
-        resetSchedules();
-      }
+      resetSchedules();
 
       monthschedule.forEach((schedule) => {
         const exists = schedules.some((s) => s.id === schedule.id);
