@@ -64,7 +64,8 @@ export const useRoomMessages = (roomId) => {
 // 채팅방 생성 추가
 export const useCreateRoom = () => {
   const navigate = useNavigate();
-  const { roomId, roomTitle, setRoomId, setRoomTitle } = useChatStore();
+  const { roomId, roomTitle, setRoomId, setRoomTitle, setImageUrl } =
+    useChatStore();
 
   return useMutation({
     mutationFn: async (roomInfo) => {
@@ -74,6 +75,7 @@ export const useCreateRoom = () => {
     onSuccess: (data) => {
       setRoomTitle(data.title);
       setRoomId(data.id);
+      setImageUrl(data.imageUrl);
       navigate(`/chat/mychat/rooms/${roomId}`, {
         state: { roomTitle },
       });

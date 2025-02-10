@@ -84,7 +84,7 @@ const SignupMolecule = () => {
           <div>
             <MyButton
               value={isTimerActive ? `재전송 ${countdown}초` : "인증번호 전송"}
-              color={isTimerActive ? "disabled" : "abled"}
+              color={isVerified || isTimerActive ? "disabled" : "abled"}
               disabled={isVerified || isTimerActive}
               onClick={handleVerify}
             />

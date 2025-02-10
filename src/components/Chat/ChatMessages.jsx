@@ -10,7 +10,7 @@ const ChatMessages = ({ messages, myId }) => {
   }, [messages]);
 
   return (
-    <div className="flex flex-col overflow-y-auto mb-4 mt-12">
+    <div className="flex flex-col overflow-y-auto mb-4 mt-4">
       {messages?.map((item) => (
         <div className="pb-3" key={item.id}>
           <MyChatBox

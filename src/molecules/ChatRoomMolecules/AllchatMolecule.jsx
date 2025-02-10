@@ -16,6 +16,7 @@ import { useChatStore } from "../../stores/chatStore";
 import MyCreateChat from "../../components/Modals/MyCreateChat";
 import progressinGIF from "../../assets/progressing.gif";
 import MyEmptyCard from "../../components/Cards/MyEmptyCard";
+import defaultChatImg from "../../assets/couple.png";
 
 const AllchatMolecule = () => {
   const { data: userRooms = [] } = useRooms();
@@ -118,7 +119,7 @@ const AllchatMolecule = () => {
       </div>
       <button
         onClick={handleAddChatRoom}
-        className="bg-red-100 p-2 text-gray-500 font-bold rounded-full flex items-center justify-center fixed bottom-20 right-10"
+        className="bg-red-100 p-2 text-gray-500 font-bold rounded-full flex items-center justify-center fixed bottom-20 right-10 shadow-lg shadow-slate-300"
       >
         <img src={chatImg} className="h-8 w-8" />
       </button>
@@ -134,7 +135,7 @@ const AllchatMolecule = () => {
                   roomTitle={item.title}
                   maxMember={item.reservedMemberCount}
                   currentMember={item.usedMemberCount}
-                  imgSrc="https://edu.ssafy.com/asset/images/header-logo.jpg"
+                  imgSrc={item.imageUrl || defaultChatImg}
                   lastMessageText=""
                   unseenMessageCount={0}
                 />

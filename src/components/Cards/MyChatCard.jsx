@@ -8,7 +8,11 @@ const MyChatCard = ({
 }) => {
   return (
     <div className="flex flex-row shadow-sm shadow-slate-300 border rounded-md gap-5 my-2 p-2">
-      <img className="p-1 w-20 h-20" src={`${imgSrc}`} alt="roomOwnerImg" />
+      <img
+        className="p-1 w-20 h-20 object-cover"
+        src={`${imgSrc}`}
+        alt="roomOwnerImg"
+      />
       <div className="flex flex-col w-full justify-between text-left gap-1">
         <div className="font-bold text-sm break-all">{roomTitle}</div>
         <div className="flex flex-row justify-between">

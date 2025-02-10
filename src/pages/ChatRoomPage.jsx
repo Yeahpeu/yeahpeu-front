@@ -136,6 +136,45 @@ const ChatRoomPage = () => {
     }
   };
 
+  // 날짜 포맷팅 함수 추가
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  // 시간 포맷팅 함수 추가
+  const formatTime = (date) => {
+    return new Date(date).toLocaleTimeString("ko-KR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  };
+
+  // 메시지를 날짜별로 그룹화하는 함수
+  const groupMessagesByDate = (messages) => {
+    const groups = {};
+
+    // 메시지를 timestamp 기준으로 정렬
+    const sortedMessages = [...messages].sort(
+      (a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime()
+    );
+
+    sortedMessages.forEach((message) => {
+      const date = new Date(message.sentAt);
+      const dateKey = formatDate(date);
+      if (!groups[dateKey]) {
+        groups[dateKey] = [];
+      }
+      groups[dateKey].push(message);
+    });
+
+    return groups;
+  };
+
   if (isLoading) {
     return (
       <div>
@@ -145,13 +184,26 @@ const ChatRoomPage = () => {
   }
 
   return (
-    <div className="p-8 pt-10">
+    <div className="flex flex-col h-screen">
       <ChatHeader
         roomTitle={roomTitle}
         onLeave={handleLeaveChat}
         onDelete={handleDeleteChat}
       />
-      <ChatMessages messages={messages} myId={userId} />
+      <div className="flex-1 overflow-y-auto mt-16 px-8 pb-24">
+        {Object.entries(groupMessagesByDate(messages)).map(
+          ([date, dateMessages]) => (
+            <div key={date} className="flex flex-col py-2 gap-2">
+              <div className="flex justify-center">
+                <span className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">
+                  {date}
+                </span>
+              </div>
+              <ChatMessages messages={dateMessages} myId={userId} />
+            </div>
+          )
+        )}
+      </div>
       <ChatInput
         chat={chat}
         setChat={setChat}

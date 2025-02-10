@@ -6,6 +6,7 @@ export const useChatStore = create((set) => ({
   roomTitle: "",
   chat: "",
   userId: "",
+  imageUrl: "",
   chatMessage: {
     message: "",
     sentAt: "",
@@ -22,6 +23,7 @@ export const useChatStore = create((set) => ({
   setRoomTitle: (roomTitle) => set({ roomTitle }),
   setChat: (chat) => set({ chat }),
   setChatUsers: (chatUsers) => set({ chatUsers }),
+  setImageUrl: (imageUrl) => set({ imageUrl }),
   setChatMessage: (message) =>
     set((state) => ({
       chatMessage: {
