@@ -11,10 +11,14 @@ import {
 import MyConfirm from "../../components/Modals/MyConfirm";
 
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useScheduleStore } from "../../stores/scheduleStore";
 
 const ScheduleDetailMolecule = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const queryClient = useQueryClient();
+  const { deleteSchedule } = useScheduleStore();
 
   const { data: customCategories = [] } = useCategories();
 
@@ -49,13 +53,9 @@ const ScheduleDetailMolecule = () => {
   const handleConfirmDelete = () => {
     deleteEvent(id, {
       onSuccess: () => {
-        navigate(-1, { state: { refresh: true } });
-      },
-      onError: (error) => {
-        alert("삭제 중 오류가 발생했습니다.");
+        navigate(-1);
       },
     });
-    setIsConfirmVisible(false);
   };
 
   const handleCancel = () => {

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import bride from "../assets/bride.png";
 import groom from "../assets/groom.png";
 import { useMyPage } from "../api/mypageAPI";
+import { convertToKST } from "../data/util/timeUtils";
 
 const MyPageMolecule = () => {
   const { data, isLoading } = useMyPage();
@@ -9,14 +10,15 @@ const MyPageMolecule = () => {
   const handleMoveToEdit = () => {
     navigate("/mypage/edit");
   };
+
+  const handleLogout = () => {
+    navigate("/mypage/edit");
+  };
+
   const sampleImage = data?.weddingRole === "BRIDE" ? bride : groom;
   console.log(data?.avatarUrl);
   const formatWeddingDate = (data) => {
-    const weddingDay = new Date(data?.weddingInfoResponse.weddingDay);
-    const year = weddingDay.getFullYear();
-    const month = String(weddingDay.getMonth() + 1).padStart(2, "0");
-    const day = String(weddingDay.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    return convertToKST(data?.weddingInfoResponse.weddingDay);
   };
 
   if (isLoading) {
@@ -26,10 +28,10 @@ const MyPageMolecule = () => {
   return (
     <div className="flex flex-col w-full gap-2">
       <div className="flex items-center mb-2">
-        <button onClick={() => navigate(-1)} className="text-gray-600 p-2">
+        <button onClick={() => navigate("/home")} className="text-gray-600 p-2">
           &lt;
         </button>
-        <h1 className="text-xl font-bold text-left">내 정보</h1>
+        <h1 className="text-xl font-bold text-left pl-3">내 정보</h1>
       </div>
       <hr className="w-full mb-2" />
       <div className="flex flex-row items-center gap-10 my-2">
@@ -58,21 +60,21 @@ const MyPageMolecule = () => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center gap-4 my-2">
-        <div className="flex flex-row items-center gap-4">
+      <div className="flex flex-col justify-center gap-5 my-2">
+        <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">
             고유 번호
           </span>
           <span>{data?.myCode}</span>
         </div>
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">
             이메일
           </span>
           <span>{data?.emailAddress}</span>
         </div>
-        <hr className="mt-3 mb-5" />
-        <div className="flex flex-row items-center gap-4">
+        <hr className="my-5" />
+        <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">
             배우자 정보
           </span>
@@ -84,20 +86,32 @@ const MyPageMolecule = () => {
             )}
           </span>
         </div>
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">예산</span>
-          <span>{data?.weddingInfoResponse.budget}</span>
+          <span>
+            {data?.weddingInfoResponse.budget
+              ? data.weddingInfoResponse.budget.toLocaleString()
+              : "0"}{" "}
+            원
+          </span>
         </div>
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">
             결혼 예정일
           </span>
           <span>{formatWeddingDate(data)}</span>
         </div>
       </div>
-      <div className="my-10">
+      <div className="mt-20">
         <button
-          className="flex flex-row justify-between border-y border-gray-300 p-2 w-full text-sm my-20"
+          className="flex flex-row justify-between border-y border-gray-300 p-2 w-full text-sm"
+          onClick={handleLogout}
+        >
+          <div>로그아웃</div>
+          <div> &gt; </div>
+        </button>
+        <button
+          className="flex flex-row justify-between border-b border-gray-300 p-2 w-full text-sm"
           onClick={handleMoveToEdit}
         >
           <div>회원 정보 수정</div>

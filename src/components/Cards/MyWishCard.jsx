@@ -30,9 +30,9 @@ const MyWishCard = ({ item, selected, onWishClick }) => {
         <div className="flex justify-between items-center">
           <p className="text-xs text-gray-500">{item?.mallName}</p>
           <div className="flex items-center gap-2">
-            {/* <button onClick={handleShareClick}>
+            <button onClick={handleShareClick}>
               <img src={shareIcon} className="w-6 h-6" alt="공유하기" />
-            </button> */}
+            </button>
             <MyWishAddButton
               onClick={() => onWishClick(item)}
               isCompleted={selected}

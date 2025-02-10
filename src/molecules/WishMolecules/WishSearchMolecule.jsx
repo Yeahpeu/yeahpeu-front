@@ -3,6 +3,7 @@ import { useSearchQuery } from "../../api/searchAPI";
 import MyWishCard from "../../components/Cards/MyWishCard";
 import MyEmptyCard from "../../components/Cards/MyEmptyCard";
 import MyConfirm from "../../components/Modals/MyConfirm";
+import MyAlert from "../../components/Modals/MyAlert";
 import { useState } from "react";
 import { useAddWish } from "../../api/wishAPI";
 import MyLoading from "../../components/common/MyLoading";
@@ -20,6 +21,8 @@ const WishSearch = () => {
 
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
   const handlePageChange = (newPage) => {
     setSearchParams({ query, page: newPage });
@@ -34,10 +37,12 @@ const WishSearch = () => {
     if (!selectedItem) return;
 
     addWish(selectedItem, {
-      onError: (error) =>
-        alert(
-          `추가 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
-        ),
+      onError: (error) => {
+        const errorMessage =
+          error.response?.data?.message || "알 수 없는 오류가 발생했습니다.";
+        setAlertMessage(errorMessage);
+        setIsAlertVisible(true);
+      },
     });
 
     setIsConfirmVisible(false);
@@ -84,6 +89,15 @@ const WishSearch = () => {
         optionRight="추가"
         visible={isConfirmVisible}
       />
+
+      {isAlertVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <MyAlert
+            message={alertMessage}
+            onConfirm={() => setIsAlertVisible(false)}
+          />
+        </div>
+      )}
     </div>
   );
 };

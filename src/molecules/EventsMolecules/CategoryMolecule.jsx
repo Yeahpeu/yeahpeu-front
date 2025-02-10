@@ -23,10 +23,13 @@ const CategoryMolecule = () => {
           return (
             <div key={subevent.id}>
               <div className="py-2 flex justify-between items-center">
-                <span className="scale-75">
+                <span className="scale-75 mr-2">
                   <MyCompleteButton isCompleted={subevent.completed} />
                 </span>
-                <span>{subevent.title}</span>
+                <span className="flex-grow text-left truncate max-w-[14ch] overflow-hidden whitespace-nowrap">
+                  {subevent.title}
+                </span>
+
                 <span>{kstDate}</span>
               </div>
 

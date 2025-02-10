@@ -6,7 +6,7 @@ const WishInfoMolecule = ({ onItemClick }) => {
   const itemCount = categories.length; // 카테고리 개수 계산
 
   return (
-    <div className="flex w-full h-full border rounded-md overflow-hidden">
+    <div className="flex w-full h-full border shadow-sm rounded-md overflow-hidden">
       <ul
         className="grid w-1/4"
         style={{ gridTemplateRows: `repeat(${itemCount}, 1fr)` }}

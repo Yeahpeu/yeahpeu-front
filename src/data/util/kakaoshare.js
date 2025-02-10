@@ -7,26 +7,15 @@ export const shareKakao = (linkUrl, title, imageUrl) => {
       kakao.init(kakaoKey);
     }
 
-    kakao.Link.sendDefault({
-      objectType: "feed",
-      content: {
+    kakao.Link.sendScrap({
+      requestUrl: linkUrl,
+      templateArgs: {
         title: title,
         description: "아래 링크를 클릭해 상품을 확인하세요!",
         imageUrl: imageUrl,
-        link: {
-          webUrl: "localhost:3000/shop",
-          mobileWebUrl: linkUrl,
-        },
+        webUrl: linkUrl,
+        mobileWebUrl: linkUrl,
       },
-      buttons: [
-        {
-          title: "상품 보러가기",
-          link: {
-            webUrl: linkUrl,
-            mobileWebUrl: linkUrl,
-          },
-        },
-      ],
     });
   }
 };
