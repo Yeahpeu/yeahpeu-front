@@ -21,21 +21,14 @@ export const useLoginMutation = () => {
     },
 
     onSuccess: async () => {
-      console.log("로그인 성공");
       setLoggedIn(true);
       if (document.cookie.includes("authToken")) {
         const onboardingResult = await checkOnboarding();
-        console.log(onboardingResult.data.onboarded);
         if (onboardingResult.data.onboarded === true) {
-          console.log(onboardingResult.data);
-          console.log("홈 페이지로 이동");
           navigate("/home", { replace: true });
         } else {
-          console.log("초대코드 페이지로 이동");
-
           const categoryResult = await getCategory();
           setCategory(categoryResult.data);
-          console.log(categoryResult.data);
           navigate("/invitationCode", { replace: true });
         }
       }

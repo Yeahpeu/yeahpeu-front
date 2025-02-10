@@ -27,7 +27,6 @@ const MychatMolecule = () => {
     setUserId(userProfile.id);
   };
   const handleChatCardClick = (roomId, roomTitle) => {
-    console.log(`채팅방 ID ${roomId} 클릭됨`);
     setRoomTitle(roomTitle);
     setRoomId(roomId);
     console.log(userProfile);

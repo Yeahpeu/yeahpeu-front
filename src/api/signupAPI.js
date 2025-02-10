@@ -15,7 +15,6 @@ export const useVerifyMutation = () => {
       );
       if (response.status === 200) {
         setStatus(true);
-        console.log("이메일 인증 요청 성공");
       } else {
         console.log("이메일 인증 요청 실패");
       }
@@ -34,7 +33,6 @@ export const useConfirmMutation = () => {
       );
       if (response.status === 200) {
         setVerified(true);
-        console.log("이메일 인증 확인 성공");
       } else {
         console.log("이메일 인증 확인 실패");
       }
@@ -53,7 +51,6 @@ export const useSignupMutation = () => {
       );
       if (response.status === 200) {
         navigate("/login", { replace: "true" });
-        console.log("회원가입 성공");
       } else {
         console.log("회원가입 실패");
       }

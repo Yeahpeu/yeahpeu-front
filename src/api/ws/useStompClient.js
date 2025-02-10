@@ -27,11 +27,9 @@ export const useStompClient = (roomId, onMessageReceived) => {
         Authorization: token, // 헤더에 토큰 포함 (서버 요구사항에 맞게 조정)
       },
       () => {
-        //console.log("Connected to WebSocket");
         // 구독 설정
         client.subscribe(`/api/sub/chat/rooms/${roomId}`, (msg) => {
           const parsedMessage = JSON.parse(msg.body);
-          //console.log("Received message:", parsedMessage);
           onMessageReceived(parsedMessage);
         });
       },
@@ -44,9 +42,7 @@ export const useStompClient = (roomId, onMessageReceived) => {
 
     return () => {
       if (client && client.connected) {
-        client.disconnect(() => {
-          console.log("Disconnected");
-        });
+        client.disconnect(() => {});
       }
     };
   }, [roomId, onMessageReceived]);

@@ -7,7 +7,6 @@ const HomeBudgetMolecule = () => {
   const navigate = useNavigate();
   const { totalBudget, usedBudget } = useBudgetStore();
   const { data, isLoading } = useBudgetAPI();
-  console.log(totalBudget, usedBudget);
   const handleClick = () => {
     navigate("/budget");
   };

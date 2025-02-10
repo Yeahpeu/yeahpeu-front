@@ -10,8 +10,6 @@ const BudgetPage = () => {
   const { data, isLoading } = useBudgetQuery();
   const { totalBudget, usedBudget } = useBudgetStore();
 
-  console.log(totalBudget, usedBudget);
-
   const handleAccordionClick = (id) => {
     setOpenAccordion(openAccordion === id ? null : id);
   };

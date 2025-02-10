@@ -6,12 +6,10 @@ export const useSubmitOnboardingMutation = () => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: async (data) => {
-      console.log(data);
       const response = await axiosInstance.post("/api/v1/onboarding", data);
       return response.data;
     },
     onSuccess: () => {
-      console.log("성공");
       navigate("/home", { replace: true });
     },
     onError: (error) => {
@@ -30,9 +28,6 @@ export const useGetCategory = (options = {}) => {
     },
     enabled: false,
     ...options,
-    onSuccess: (data) => {
-      console.log(data);
-    },
   });
 };
 
@@ -52,7 +47,6 @@ export const usePostInvitationCode = () => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: async (data) => {
-      console.log(data);
       const response = await axiosInstance.post("/api/v1/wedding/join", data);
 
       return response.data;

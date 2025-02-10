@@ -21,8 +21,6 @@ export const useSearchQuery = ({ keyword, page }) => {
           }
         );
 
-        console.log("✅ API 응답:", response);
-
         if (response && response.data && Array.isArray(response.data)) {
           return response.data;
         } else {

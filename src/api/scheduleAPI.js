@@ -72,7 +72,6 @@ export const useCreateScheduleMutation = () => {
       return response.data;
     },
     onSuccess: () => {
-      console.log("성공적으로 추가");
       queryClient.invalidateQueries(["schedules"]);
     },
     onError: (error) => {
@@ -99,7 +98,6 @@ export const useUpdateScheduleMutation = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      console.log("성공적으로 수정");
       queryClient.invalidateQueries(["schedule", data.id]);
       queryClient.invalidateQueries(["schedules"]);
     },
@@ -142,13 +140,13 @@ export const completeEvents = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      console.log("성공적으로 완료:", data);
-
       queryClient.invalidateQueries(["schedules"]);
     },
     onError: (error) => {
       console.log(
-        `스케줄 완료 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
+        `스케줄 완료 실패: ${
+          error.response?.data?.message || "알 수 없는 오류"
+        }`
       );
       console.error(error);
     },
@@ -165,9 +163,6 @@ export const useCategories = () => {
       const response = await axiosInstance.get("/api/v1/wedding/categories");
       setCategories(response.data);
       return response.data;
-    },
-    onSuccess: (data) => {
-      console.log("카테고리 저장 완료", data);
     },
     onError: (error) => {
       console.error("카테고리 불러오기 실패:", error);

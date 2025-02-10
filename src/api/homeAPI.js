@@ -11,7 +11,6 @@ export const useBudgetAPI = () => {
       const response = await axiosInstance.get(
         "/api/v1/wedding/budget/summary"
       );
-      console.log("여기까진됨", response.data);
       if (response.data) {
         setTotalBudget(response.data.totalBudget);
         setUsedBudget(response.data.usedBudget);

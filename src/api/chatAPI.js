@@ -95,9 +95,7 @@ export const useLeaveRoom = () => {
       );
       return response.data;
     },
-    onSuccess: (data) => {
-      console.log("채팅방에서 나감:", data);
-    },
+    onSuccess: (data) => {},
     onError: (error) => {
       console.error("떠나기 실패:", error);
     },

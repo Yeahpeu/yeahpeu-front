@@ -1,7 +1,5 @@
 const MyUploadButton = ({ value }) => {
-  const handleUpload = () => {
-    console.log("upload");
-  };
+  const handleUpload = () => {};
   return (
     <form action="">
       <button type="submit">업로드</button>

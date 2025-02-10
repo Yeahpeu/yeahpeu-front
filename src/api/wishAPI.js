@@ -16,7 +16,6 @@ export const useAddWish = () => {
       return response.data;
     },
     onSuccess: () => {
-      console.log("성공적으로 추가");
       queryClient.invalidateQueries(["wishlist"]);
       setErrorMessage(null);
     },

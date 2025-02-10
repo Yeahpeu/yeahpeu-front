@@ -16,7 +16,6 @@ const MyPageMolecule = () => {
   };
 
   const sampleImage = data?.weddingRole === "BRIDE" ? bride : groom;
-  console.log(data?.avatarUrl);
   const formatWeddingDate = (data) => {
     return convertToKST(data?.weddingInfoResponse.weddingDay);
   };

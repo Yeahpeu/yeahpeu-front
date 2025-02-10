@@ -66,7 +66,7 @@ const ScheduleInputMolecule = () => {
     const { title, date, time, mainCategoryId } = formData;
 
     if (!title || !date || !mainCategoryId) {
-      console.log("제목, 일자, 메인 카테고리는 필수 입력");
+      alert("제목, 일자, 메인 카테고리는 필수 입력");
       return;
     }
 
@@ -84,9 +84,6 @@ const ScheduleInputMolecule = () => {
 
     createSchedule(newSchedule, {
       onSuccess: () => {
-        console.log(
-          `일정 추가 성공: ${categoryNames.mainCategoryName} - ${categoryNames.subCategoryName}`
-        );
         queryClient.invalidateQueries(["schedules"]);
         navigate(-1);
       },

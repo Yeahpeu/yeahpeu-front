@@ -28,12 +28,13 @@ export const useCreateTaskMutation = () => {
       return response.data;
     },
     onSuccess: () => {
-      console.log("체크리스트가 성공적으로 추가");
       queryClient.invalidateQueries(["task"]);
     },
     onError: (error) => {
       console.error(
-        `🚨 체크리스트 추가 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
+        `🚨 체크리스트 추가 실패: ${
+          error.response?.data?.message || "알 수 없는 오류"
+        }`
       );
     },
   });
@@ -51,12 +52,13 @@ export const useUpdateTaskMutation = () => {
       return response;
     },
     onSuccess: ({ data, eventId }) => {
-      console.log("체크리스트가 성공적으로 완료되었습니다.");
       queryClient.invalidateQueries(["task", eventId]);
     },
     onError: (error) => {
       console.error(
-        `체크리스트 수정 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
+        `체크리스트 수정 실패: ${
+          error.response?.data?.message || "알 수 없는 오류"
+        }`
       );
     },
   });
