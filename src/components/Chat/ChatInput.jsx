@@ -30,7 +30,6 @@ const ChatInput = ({
   const handleInputChange = (e) => {
     if (!isFileSelected) {
       const newMessage = e.target.value;
-
       const newlineCount = countNewlines(newMessage);
 
       if (newlineCount <= 9 || newMessage.length < chat.length) {
@@ -70,8 +69,7 @@ const ChatInput = ({
       </div>
       <MySendButton
         onClick={handleSend}
-        disabled={isUploading}
-        className={isUploading ? "opacity-50 cursor-not-allowed" : ""}
+        disabled={isUploading || !chat.trim() || chat.length === 0}
       />
       <MyAddFileButton
         onChange={handleFileChange}

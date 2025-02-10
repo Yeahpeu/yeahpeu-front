@@ -66,8 +66,8 @@ const ScheduleDetailMolecule = ({ event }) => {
     setChecklists((prev) => prev.filter((task) => task.id !== taskId));
 
     try {
-      await deleteTaskMutation.mutateAsync({ eventId, taskId });
-      queryClient.invalidateQueries(["tasks", eventId]);
+      await deleteTaskMutation.mutate({ eventId, taskId });
+      queryClient.invalidateQueries(["tasks", eventId]); 
     } catch (error) {
       console.error(
         "🚨 Error deleting task:",

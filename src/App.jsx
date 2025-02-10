@@ -27,7 +27,7 @@ import SubcategoryPage from "./pages/SubcategoryPage";
 import WishPage from "./pages/WishPage";
 import WishMainMolecule from "./molecules/WishMolecules/WishMainMolecule";
 import WishSearchMolecule from "./molecules/WishMolecules/WishSearchMolecule";
-
+import TestPage from "./pages/testPage";
 function App() {
   return (
     <div className="min-h-screen">
@@ -86,6 +86,7 @@ function App() {
               </Route>
               <Route path="/shop/mywish" element={<MyWishPage />} />
             </Route>
+            <Route path="/test" element={<TestPage />} />
           </Routes>
         </BrowserRouter>
       </AnimatePresence>

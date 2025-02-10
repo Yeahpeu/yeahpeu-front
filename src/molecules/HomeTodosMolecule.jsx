@@ -1,8 +1,11 @@
 import MyScheduleCard from "../components/Cards/MyScheduleCard";
 import { useSchedules } from "../api/scheduleAPI";
 import { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { completeSchedule } from "../api/homeAPI";
 
 const HomeTodosMolecule = () => {
+  const queryClient = useQueryClient();
   const { data: schedules, isLoading, error } = useSchedules();
   const [nextSchedule, setNextSchedule] = useState(null);
 
@@ -23,16 +26,17 @@ const HomeTodosMolecule = () => {
     setNextSchedule(upcomingSchedules[0] || null);
   };
 
-  const handleComplete = (completedScheduleId) => {
-    const updatedSchedules = schedules.map((schedule) =>
-      schedule.id === completedScheduleId
-        ? { ...schedule, completed: true }
-        : schedule
-    );
-
-    updateNextSchedule(updatedSchedules);
-    setNextSchedule(null);
-    setTimeout(() => updateNextSchedule(updatedSchedules), 0);
+  const handleComplete = async (completedScheduleId) => {
+    try {
+      await completeSchedule(completedScheduleId);
+      // 스케줄과 진행률 데이터 동시에 리프레시
+      await Promise.all([
+        queryClient.invalidateQueries(["schedules"]),
+        queryClient.invalidateQueries(["progressBar"]),
+      ]);
+    } catch (error) {
+      console.error("일정 완료 처리 실패:", error);
+    }
   };
 
   if (isLoading) {

@@ -5,7 +5,7 @@ import ChatIcon from "../components/Buttons/NavButtons/ChatIcon";
 import ShopIcon from "../components/Buttons/NavButtons/ShopIcon";
 import { useCommonStore } from "../stores/commonStore";
 import { useEffect } from "react";
-
+import MyPageIcon from "../components/Buttons/NavButtons/MyPageIcon";
 const MyNav = () => {
   const { activeIndex, setActiveIndex } = useCommonStore();
   const location = useLocation();
@@ -29,15 +29,15 @@ const MyNav = () => {
 
   const navItems = [
     { id: 0, tab: "홈", label: "home", icon: <HomeIcon /> },
-
+    { id: 1, tab: "채팅", label: "chat/mychat", icon: <ChatIcon /> },
     {
-      id: 1,
+      id: 2,
       tab: "캘린더",
       label: "schedule/calendar",
       icon: <CalendarIcon />,
     },
-    { id: 2, tab: "채팅", label: "chat/allchat", icon: <ChatIcon /> },
     { id: 3, tab: "쇼핑", label: "shop/main", icon: <ShopIcon /> },
+    { id: 4, tab: "프로필", label: "mypage", icon: <MyPageIcon /> },
   ];
 
   return (

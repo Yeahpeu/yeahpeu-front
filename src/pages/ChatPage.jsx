@@ -5,10 +5,10 @@ const ChatPage = () => {
   return (
     <div className="p-8">
       <MyTab
-        leftValue={"모든 채팅"}
-        leftTo={"allchat"}
-        rightValue={"나의 채팅"}
-        rightTo={"mychat"}
+        leftValue={"나의 채팅"}
+        leftTo={"mychat"}
+        rightValue={"모든 채팅"}
+        rightTo={"allchat"}
       />
       <Outlet />
     </div>
