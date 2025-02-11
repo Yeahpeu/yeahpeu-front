@@ -88,15 +88,15 @@ const SignupMolecule = () => {
                 value={
                   isTimerActive ? `재전송 ${countdown}초` : "인증번호 전송"
                 }
-                color={isTimerActive ? "disabled" : "abled"}
-                disabled={isTimerActive}
+                color={isTimerActive || !isEmailValid ? "disabled" : "abled"}
+                disabled={isTimerActive || !isEmailValid}
                 onClick={handleVerify}
               />
-              {!isEmailValid && emailAddress.length > 0 && (
+              {/* {!isEmailValid && emailAddress.length > 0 && (
                 <p className="text-red-500 text-sm">
                   올바른 이메일 형식이 아닙니다.
                 </p>
-              )}
+              )} */}
             </div>
           )}
         </div>
