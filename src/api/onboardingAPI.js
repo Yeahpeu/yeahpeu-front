@@ -19,15 +19,13 @@ export const useSubmitOnboardingMutation = () => {
   });
 };
 
-export const useGetCategory = (options = {}) => {
+export const useGetCategory = () => {
   return useQuery({
     queryKey: ["category"],
     queryFn: async () => {
       const response = await axiosInstance.get("/api/v1/categories");
       return response.data;
     },
-    enabled: false,
-    ...options,
   });
 };
 
