@@ -23,7 +23,7 @@ const CoupleInfoPage = () => {
       setCategory(category);
       console.log(category);
     }
-  });
+  }, [category]);
 
   // 바깥 클릭 시 툴팁 닫기
   useEffect(() => {
