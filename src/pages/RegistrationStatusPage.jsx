@@ -21,9 +21,8 @@ const CoupleInfoPage = () => {
   useEffect(() => {
     if (category) {
       setCategory(category);
-      console.log(category);
     }
-  }, [category]);
+  }, [category, setCategory]);
 
   // 바깥 클릭 시 툴팁 닫기
   useEffect(() => {
