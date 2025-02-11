@@ -139,7 +139,7 @@ const ScheduleEditMolecule = () => {
             name="date"
             value={formData.date}
             onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            className="border border-gray-300 rounded-md p-2 w-full"
+            className="[&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent"
           />
         </div>
 
@@ -150,7 +150,7 @@ const ScheduleEditMolecule = () => {
             name="time"
             value={formData.time}
             onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-            className="border border-gray-300 rounded-md p-2 w-full"
+            className="[&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-calendar-picker-indicator]:dark:bg-transparent"
           />
         </div>
 
