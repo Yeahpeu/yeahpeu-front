@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import MyInputPink from "../components/common/MyInput-pink";
 import MyRole from "../components/Buttons/MyRole";
 import useOnboardingStore from "../stores/onboardingStore";
-
+import { useGetCategory } from "../api/onboardingAPI";
 const CoupleInfoPage = () => {
   const navigate = useNavigate();
   const {
@@ -13,10 +13,17 @@ const CoupleInfoPage = () => {
     setWeddingRole,
     setWeddingDay,
     setBudget,
+    setCategory,
   } = useOnboardingStore();
-
+  const { data: category } = useGetCategory();
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef(null);
+  useEffect(() => {
+    if (category) {
+      setCategory(category);
+      console.log(category);
+    }
+  });
 
   // 바깥 클릭 시 툴팁 닫기
   useEffect(() => {

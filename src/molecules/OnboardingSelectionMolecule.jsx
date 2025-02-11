@@ -14,6 +14,10 @@ const OnboardingSelectionMolecule = () => {
     (cat) => CATEGORY_KEYS[cat.id] === currentStepKey
   );
 
+  const hasSelections = currentCategory?.children.some((option) =>
+    selectedCategoryIds.includes(option.id)
+  );
+
   const handleSelection = (option) => {
     toggleCategoryId(option.id);
   };
@@ -52,23 +56,26 @@ const OnboardingSelectionMolecule = () => {
       </div>
 
       <div className="flex justify-between p-6 mt-auto">
-        <button
-          onClick={() =>
-            useOnboardingStore.getState().setCurrentStep(currentStep - 1)
-          }
-          className={`px-8 py-3 rounded-lg font-medium 
-              ${
-                currentStep === 0
-                  ? "bg-gray-100 text-gray-400"
-                  : "bg-red-50 text-gray-600"
-              }`}
-          disabled={currentStep === 0}
-        >
-          이 전
-        </button>
+        {currentStep !== 0 && (
+          <button
+            onClick={() =>
+              useOnboardingStore.getState().setCurrentStep(currentStep - 1)
+            }
+            className="bg-red-50 text-gray-600 px-8 py-3 rounded-lg font-medium"
+          >
+            이 전
+          </button>
+        )}
         <button
           onClick={handleNext}
-          className="px-8 py-3 bg-red-300 text-white rounded-lg font-medium"
+          disabled={!hasSelections}
+          className={`px-8 py-3 rounded-lg font-medium ${
+            currentStep === 0 ? "ml-auto" : ""
+          } ${
+            hasSelections
+              ? "bg-red-300 text-white"
+              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+          }`}
         >
           {currentStep === STEP_KEYS.length - 1 ? "완 료" : "다 음"}
         </button>
