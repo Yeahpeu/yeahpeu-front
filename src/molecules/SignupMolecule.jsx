@@ -81,19 +81,23 @@ const SignupMolecule = () => {
               onChange={(e) => setEmailAddress(e.target.value)}
             />
           </div>
-          <div>
-            <MyButton
-              value={isTimerActive ? `재전송 ${countdown}초` : "인증번호 전송"}
-              color={isVerified || isTimerActive ? "disabled" : "abled"}
-              disabled={isVerified || isTimerActive}
-              onClick={handleVerify}
-            />
-            {!isEmailValid && emailAddress.length > 0 && (
-              <p className="text-red-500 text-sm">
-                올바른 이메일 형식이 아닙니다.
-              </p>
-            )}
-          </div>
+          {!isVerified && (
+            <div>
+              <MyButton
+                value={
+                  isTimerActive ? `재전송 ${countdown}초` : "인증번호 전송"
+                }
+                color={isTimerActive ? "disabled" : "abled"}
+                disabled={isTimerActive}
+                onClick={handleVerify}
+              />
+              {!isEmailValid && emailAddress.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  올바른 이메일 형식이 아닙니다.
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="flex gap-2">

@@ -1,6 +1,6 @@
 import google from "../assets/google_signup.png";
 import long from "../assets/google_long.png";
-import { useSocialLogin } from "../api/authAPI";
+// import { useSocialLogin } from "../api/authAPI";
 
 const SocialMoleCule = () => {
   const handleSocialLogin = () => {

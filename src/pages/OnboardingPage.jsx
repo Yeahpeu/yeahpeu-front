@@ -12,7 +12,7 @@ const OnboardingPage = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <header className="flex items-center relative">
-        {currentStep > 0 && (
+        {currentStep == 0 && (
           <button onClick={() => navigate(-1)} className="absolute left-4">
             <svg
               className="w-6 h-6 text-gray-600"

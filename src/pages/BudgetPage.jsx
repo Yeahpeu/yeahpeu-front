@@ -28,7 +28,7 @@ const BudgetPage = () => {
         expend={usedBudget}
         balance={totalBudget - usedBudget}
       />
-      <div className="mt-6">
+      <div className="mt-6 mb-16">
         <p className="text-lg font-bold mb-2 text-left ml-2">상세 내역</p>
 
         {data.data?.map((budget) => (
