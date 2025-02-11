@@ -10,6 +10,11 @@ const MyWishCard = ({ item, selected, onWishClick }) => {
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
     script.async = true;
+    script.onload = () => {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        window.Kakao.init(import.meta.env.VITE_SHARE_KAKAO_LINK_KEY);
+      }
+    };
     document.body.appendChild(script);
     return () => document.body.removeChild(script);
   }, []);

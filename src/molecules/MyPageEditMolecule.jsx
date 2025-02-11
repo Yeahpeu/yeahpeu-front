@@ -8,6 +8,7 @@ import {
   useMyPageMutation,
   useAvatarUpload,
 } from "../api/mypageAPI";
+import { usePostInvitationCode } from "../api/onboardingAPI";
 import imageCompression from "browser-image-compression";
 import MyConfirm from "../components/Modals/MyConfirm";
 import { useState } from "react";
@@ -39,13 +40,16 @@ const MyPageEditMolecule = () => {
 
   const myPageMutation = useMyPageMutation();
   const avatarUpload = useAvatarUpload();
-
   const { isLoading } = useMyPage();
-
   const navigate = useNavigate();
   const sampleImage = weddingRole === "BRIDE" ? bride : groom;
 
   const [showConfirm, setShowConfirm] = useState(false);
+
+  const [partnerInput, setPartnerInput] = useState("");
+  const [showPartnerConfirm, setShowPartnerConfirm] = useState(false);
+
+  const postInvitation = usePostInvitationCode();
 
   const formattedWeddingDay = weddingDay
     ? new Date(weddingDay).toISOString().split("T")[0]
@@ -64,7 +68,6 @@ const MyPageEditMolecule = () => {
 
       const compressedFile = await imageCompression(file, options);
 
-      // Blob을 File 객체로 변환
       const convertedFile = new File([compressedFile], file.name, {
         type: file.type,
         lastModified: new Date().getTime(),
@@ -82,6 +85,7 @@ const MyPageEditMolecule = () => {
 
   return (
     <div className="flex flex-col w-full gap-2">
+      {/* 상단 내 정보 헤더 */}
       <div className="flex items-center mb-2">
         <button
           onClick={() => setShowConfirm(true)}
@@ -90,17 +94,10 @@ const MyPageEditMolecule = () => {
           &lt;
         </button>
         <h1 className="text-xl font-bold text-left pl-3">내 정보</h1>
-        {/* <div className="ml-auto mr-1">
-          <button
-            className="text-red-200 font-semibold"
-            onClick={() => myPageMutation.mutate(userInfo)}
-          >
-            완료
-          </button>
-        </div> */}
       </div>
 
       <hr className="w-full mb-2" />
+
       <div className="flex flex-row items-center gap-10 my-2">
         <div className="flex flex-col items-center gap-2">
           <img
@@ -108,7 +105,7 @@ const MyPageEditMolecule = () => {
             alt="프로필 이미지"
             className="w-16 h-16 rounded-full object-cover"
           />
-          <div className="">
+          <div>
             <input
               type="file"
               accept="image/*"
@@ -164,28 +161,43 @@ const MyPageEditMolecule = () => {
           <span>{emailAddress}</span>
         </div>
         <hr className="mt-3 mb-5" />
+
         <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">
             배우자 정보
           </span>
           <span>
             {partnerName === null ? (
-              // <MyInputWhite
-              //   type="text"
-              //   name="partner"
-              //   value={partner}
-              //   onChange={(e) => {
-              //     const value = e.target.value;
-              //   }}
-              //   className="border border-gray-300 rounded-md p-2 w-full"
-              //   placeholder=""
-              // />
-              <div></div>
+              <div className="flex flex-row items-center gap-2">
+                <MyInputWhite
+                  type="text"
+                  name="partner"
+                  value={partnerInput}
+                  onChange={(e) => setPartnerInput(e.target.value)}
+                  placeholder="초대 코드 입력"
+                  className="w-9/12"
+                />
+                <button
+                  onClick={() => {
+                    if (partnerInput.trim() === "") return;
+                    setShowPartnerConfirm(true);
+                  }}
+                  disabled={partnerInput.trim() === ""}
+                  className={`text-blue-500 ${
+                    partnerInput.trim() === ""
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                >
+                  확인
+                </button>
+              </div>
             ) : (
               partnerName
             )}
           </span>
         </div>
+
         <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">예산</span>
           <div className="w-1/2">
@@ -206,6 +218,7 @@ const MyPageEditMolecule = () => {
             />
           </div>
         </div>
+
         <div className="flex flex-row items-center gap-5">
           <span className="font-semibold text-black w-1/4 text-left">
             결혼 예정일
@@ -247,6 +260,23 @@ const MyPageEditMolecule = () => {
         visible={showConfirm}
         onCancel={() => setShowConfirm(false)}
         onConfirm={() => navigate(-1)}
+      />
+
+      <MyConfirm
+        message={
+          <>
+            한 번 등록한 배우자 정보는
+            <br /> 수정이 불가합니다.
+          </>
+        }
+        optionLeft="취소"
+        optionRight="등록"
+        visible={showPartnerConfirm}
+        onCancel={() => setShowPartnerConfirm(false)}
+        onConfirm={() => {
+          postInvitation.mutate({ invitationCode: partnerInput });
+          setShowPartnerConfirm(false);
+        }}
       />
     </div>
   );
