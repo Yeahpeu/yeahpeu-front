@@ -170,16 +170,17 @@ const MyPageEditMolecule = () => {
           </span>
           <span>
             {partnerName === null ? (
-              <MyInputWhite
-                type="text"
-                name="budget"
-                value={budget}
-                onChange={(e) => {
-                  const value = e.target.value;
-                }}
-                className="border border-gray-300 rounded-md p-2 w-full"
-                placeholder="10억 미만 "
-              />
+              // <MyInputWhite
+              //   type="text"
+              //   name="partner"
+              //   value={partner}
+              //   onChange={(e) => {
+              //     const value = e.target.value;
+              //   }}
+              //   className="border border-gray-300 rounded-md p-2 w-full"
+              //   placeholder=""
+              // />
+              <div></div>
             ) : (
               partnerName
             )}
