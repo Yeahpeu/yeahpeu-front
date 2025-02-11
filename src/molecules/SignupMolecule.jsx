@@ -78,6 +78,7 @@ const SignupMolecule = () => {
               placeholder="이메일 주소"
               type="email"
               value={emailAddress}
+              disabled={isVerified}
               onChange={(e) => setEmailAddress(e.target.value)}
             />
           </div>
