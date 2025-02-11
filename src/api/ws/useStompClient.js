@@ -6,7 +6,10 @@ import { over } from "stompjs";
 export const useStompClient = (roomId, onMessageReceived) => {
   const [stompClient, setStompClient] = useState(null);
 
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const BASE_URL = "https://i12a706.p.ssafy.io";
+
+  console.log("BASE_URL:", BASE_URL);
+  console.log("WebSocket URL:", `${BASE_URL}/api/ws`);
 
   useEffect(() => {
     // SockJS 엔드포인트 (서버 URL에 맞게 수정)
