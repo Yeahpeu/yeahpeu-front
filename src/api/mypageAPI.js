@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
 import useMypageStore from "../stores/mypageStore";
 import { useNavigate } from "react-router-dom";
+
 export const useMyPage = () => {
   const {
     setAvatarUrl,
