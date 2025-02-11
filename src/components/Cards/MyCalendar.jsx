@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 import { useMonthSchedules } from "../../api/scheduleAPI";
 
-const MyCalendar = ({ setSelectedDate }) => {
+const MyCalendar = ({ setSelectedDate, selectedDate }) => {
   const [currentMonth, setCurrentMonth] = useState(moment());
   const startDate = currentMonth.startOf("month").format("YYYY-MM-DD");
   const endDate = currentMonth.endOf("month").format("YYYY-MM-DD");
@@ -53,7 +53,7 @@ const MyCalendar = ({ setSelectedDate }) => {
         ))}
       </div>
 
-      <div className="grid grid-cols-7 text-center">
+      <div className="grid grid-cols-7 text-center items-center justify-items-center">
         {days.map((day, index) => {
           const isCurrentMonth = day.month() === currentMonth.month();
           const formattedDate = day.format("YYYY-MM-DD");
@@ -62,11 +62,13 @@ const MyCalendar = ({ setSelectedDate }) => {
           return (
             <div
               key={index}
-              className={`relative p-2 text-gray-800 rounded-lg w-10 h-10 flex items-center justify-center  
+              className={`relative p-2 text-gray-800 rounded-lg w-10 h-10 flex items-center justify-center  text-center 
               ${
                 !isCurrentMonth
                   ? "text-gray-400 opacity-50 pointer-events-none"
-                  : "cursor-pointer active:bg-red-200 hover:bg-red-100"
+                  : selectedDate === formattedDate
+                    ? "bg-red-100"
+                    : ""
               }`}
               onClick={() => isCurrentMonth && setSelectedDate(formattedDate)}
             >

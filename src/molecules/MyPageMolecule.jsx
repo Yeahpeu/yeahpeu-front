@@ -3,6 +3,7 @@ import bride from "../assets/bride.png";
 import groom from "../assets/groom.png";
 import { useMyPage } from "../api/mypageAPI";
 import { convertToKST } from "../data/util/timeUtils";
+import { useLogout } from "../api/logoutAPI";
 
 const MyPageMolecule = () => {
   const { data, isLoading } = useMyPage();
@@ -10,9 +11,19 @@ const MyPageMolecule = () => {
   const handleMoveToEdit = () => {
     navigate("/mypage/edit");
   };
+  const { mutate: logout, isError } = useLogout();
 
   const handleLogout = () => {
-    navigate("/mypage/edit");
+    logout(null, {
+      onSuccess: () => {
+        document.cookie =
+          "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // 쿠키 삭제
+        navigate("/");
+      },
+      onError: () => {
+        alert("로그아웃 실패! 다시 시도해 주세요.");
+      },
+    });
   };
 
   const sampleImage = data?.weddingRole === "BRIDE" ? bride : groom;

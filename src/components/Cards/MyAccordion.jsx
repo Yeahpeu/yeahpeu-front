@@ -5,7 +5,7 @@ const MyAccordion = ({ isOpen, onClick, title, value, percent }) => {
   const contentRef = useRef(null);
 
   return (
-    <div id="accordionExample" className="py-1">
+    <div id="accordionExample" className="pb-1">
       <div className="rounded-lg border border-neutral-200 bg-white my-1 ">
         <h2 className="mb-0" id="headingOne">
           <button

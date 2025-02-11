@@ -38,7 +38,10 @@ const CalendarMolecule = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      <MyCalendar setSelectedDate={setSelectedDate} />
+      <MyCalendar
+        setSelectedDate={setSelectedDate}
+        selectedDate={selectedDate}
+      />
 
       {selectedDate && (
         <div className="mt-8 w-full">
@@ -47,7 +50,11 @@ const CalendarMolecule = () => {
               <MyScheduleCard key={event.id} event={event} />
             ))
           ) : (
-            <p className="text-lg">일정이 없습니다 ( °ᗝ° ).ᐟ </p>
+            <div>
+              {/* {moment(selectedDate).format("D일")}  */}
+              <p>일정이 없습니다.ᐟ</p>
+              <p>새로운 일정을 수립하세요</p>
+            </div>
           )}
         </div>
       )}
