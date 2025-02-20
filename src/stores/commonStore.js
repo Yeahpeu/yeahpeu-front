@@ -21,3 +21,8 @@ export const useTabStore = create((set) => {
     },
   };
 });
+
+export const useConfettiStore = create((set) => ({
+  isConfettiActive: false,
+  setConfettiActive: (active) => set({ isConfettiActive: active }),
+}));

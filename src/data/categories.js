@@ -1,10 +1,11 @@
 export const categories = [
   {
     name: "가전",
+    img: "theme1",
     items: [
+      "냉장고",
       "식기세척기",
       "청소기",
-      "냉장고",
       "밥솥",
       "전자레인지",
       "세탁기",
@@ -23,12 +24,13 @@ export const categories = [
   },
   {
     name: "가구",
+    img: "theme2",
     items: [
+      "소파",
       "화장대",
       "서랍장",
       "침대",
       "옷장",
-      "소파",
       "책상",
       "식탁",
       "거실장",
@@ -40,6 +42,7 @@ export const categories = [
   },
   {
     name: "침구",
+    img: "theme3",
     items: [
       "침구세트",
       "이불",
@@ -53,6 +56,7 @@ export const categories = [
   },
   {
     name: "생활",
+    img: "theme4",
     items: [
       "카페트",
       "방석",
@@ -75,6 +79,7 @@ export const categories = [
   },
   {
     name: "주방",
+    img: "theme5",
     items: [
       "냄비세트",
       "프라이팬",
@@ -95,6 +100,7 @@ export const categories = [
   },
   {
     name: "욕실",
+    img: "theme6",
     items: [
       "샤워기",
       "욕실 매트",

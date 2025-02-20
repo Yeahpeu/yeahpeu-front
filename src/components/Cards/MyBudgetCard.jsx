@@ -2,15 +2,15 @@ const MyBudgetCard = ({ total, expend, onClick }) => {
   const balance = total - expend;
   return (
     <div
-      className="bg-white rounded-lg shadow-lg p-6 w-full border"
+      className="text-sm bg-white rounded-lg shadow-md p-6 w-full"
       onClick={onClick}
     >
-      <div className="flex justify-between font-bold text-lg">
+      <div className="text-gray-700 flex justify-between font-bold">
         <span>총 예산</span>
         <span>{total?.toLocaleString()} 원</span>
       </div>
       <hr className="my-3" />
-      <div className="text-lg space-y-2">
+      <div className=" space-y-2">
         <div className="flex justify-between font-bold text-gray-400">
           <b>지출 금액</b>
           <span>{expend?.toLocaleString()} 원</span>

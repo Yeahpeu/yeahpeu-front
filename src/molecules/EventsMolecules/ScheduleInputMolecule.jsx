@@ -7,18 +7,21 @@ import {
 } from "../../api/scheduleAPI";
 import { convertUTC } from "../../data/util/timeUtils";
 import { findCategoryNames } from "../../data/util/findCategoryNames";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"; // useLocation 추가
+import MyAlert from "../../components/Modals/MyAlert";
+import CuteCalendarPopup from "../../components/common/CuteCalendarPopup";
+import CuteTimeSelect from "../../components/common/CuteTimePopup";
 
+// 오늘 날짜를 KST 기준으로 포맷팅
 const getFormattedDate = (date) => {
   const kstOffset = 9 * 60 * 60 * 1000;
   const kstDate = new Date(date.getTime() + kstOffset);
-
   return kstDate.toISOString().split("T")[0];
 };
 
 const INITIAL_FORM_DATA = {
   title: "",
-  date: getFormattedDate(new Date()), // 오늘 날짜로 초기화
+  date: getFormattedDate(new Date()),
   time: "",
   location: "",
   price: 0,
@@ -26,32 +29,38 @@ const INITIAL_FORM_DATA = {
   subcategoryId: 0,
 };
 
+// 천 단위 구분 쉼표 함수
+const formatNumber = (num) => {
+  if (!num) return "";
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 const ScheduleInputMolecule = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const passedDate = searchParams.get("date");
+  const initialDate = passedDate ? passedDate : getFormattedDate(new Date());
+
   const { mutate: createSchedule } = useCreateScheduleMutation();
   const { data: customCategories = [] } = useCategories();
   const navigate = useNavigate();
-
   const queryClient = useQueryClient();
 
-  const today = new Date();
-  const minDateObj = new Date(today);
-  minDateObj.setFullYear(today.getFullYear() - 1);
-  const maxDateObj = new Date(today);
-  maxDateObj.setFullYear(today.getFullYear() + 3);
-
-  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  // 전달받은 일자를 초기 formData에 반영합니다.
+  const [formData, setFormData] = useState({
+    ...INITIAL_FORM_DATA,
+    date: initialDate,
+  });
   const [subCategories, setSubCategories] = useState([]);
-  const [minDate] = useState(getFormattedDate(minDateObj));
-  const [maxDate] = useState(getFormattedDate(maxDateObj));
+  const [priceInput, setPriceInput] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     if (!customCategories || customCategories.length === 0) return;
-
     if (formData.mainCategoryId) {
       const selectedCategory = customCategories.find(
         (category) => category.id === formData.mainCategoryId
       );
-
       if (selectedCategory && selectedCategory.children) {
         setSubCategories(selectedCategory.children);
       } else {
@@ -60,16 +69,15 @@ const ScheduleInputMolecule = () => {
     } else {
       setSubCategories([]);
     }
-  }, [formData.mainCategoryId]);
+  }, [formData.mainCategoryId, customCategories]);
 
   const handleSubmit = () => {
     const { title, location, date, time, mainCategoryId } = formData;
-
-    const trimmedTitle = title.trimStart();
-    const trimmedLocation = location.trimStart();
+    const trimmedTitle = title.trim();
+    const trimmedLocation = location.trim();
 
     if (!trimmedTitle || !date || !mainCategoryId) {
-      alert("제목, 일자, 메인 카테고리는 필수 입력");
+      setAlertMessage("제목, 일자, 구분은 필수 입력입니다");
       return;
     }
 
@@ -82,10 +90,7 @@ const ScheduleInputMolecule = () => {
       price: Number(formData.price),
     };
 
-    const categoryNames = findCategoryNames(
-      formData.mainCategoryId,
-      formData.subcategoryId
-    );
+    // const categoryNames = findCategoryNames(formData.mainCategoryId, formData.subcategoryId);
 
     createSchedule(newSchedule, {
       onSuccess: () => {
@@ -93,14 +98,22 @@ const ScheduleInputMolecule = () => {
         navigate(-1);
       },
       onError: (error) => {
-        console.log("일정 추가 실패", error);
+        setAlertMessage("일정 추가를 다시 시도해주세요.");
       },
     });
   };
 
   return (
-    <div className="w-full mx-auto bg-white text-left mb-3">
-      <div className="flex items-center justify-between mb-4">
+    <div className="w-full mx-auto text-left mb-3 ">
+      {alertMessage && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <MyAlert
+            message={alertMessage}
+            onConfirm={() => setAlertMessage("")}
+          />
+        </div>
+      )}
+      <div className="flex items-center justify-between px-8 py-4 border-b shadow-sm bg-white rounded-b-lg">
         <button
           onClick={() => navigate(-1)}
           className="text-gray-600 text-base"
@@ -110,17 +123,14 @@ const ScheduleInputMolecule = () => {
         <h1 className="text-xl font-bold">일정 수립하기</h1>
         <button
           onClick={handleSubmit}
-          className="text-red-200 text-sm text-center"
+          className="text-red-200 text-sm text-center font-bold"
         >
           완료
         </button>
       </div>
-
-      <hr className="mt-2 mb-4" />
-
-      <div className="flex flex-col gap-6 ml-8">
-        <div className="flex items-center gap-8">
-          <label className="font-semibold text-black w-16">제 목</label>
+      <div className="flex flex-col gap-7 px-8 py-4 ml-3 mr-3">
+        <div className="flex items-center gap-4">
+          <label className="font-semibold text-gray-700 w-16">제 목</label>
           <MyInputWhite
             type="text"
             name="title"
@@ -135,33 +145,28 @@ const ScheduleInputMolecule = () => {
             maxLength={15}
           />
         </div>
-
-        <div className="flex items-center gap-8">
-          <label className="font-semibold text-black w-16">일 자</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            min={minDate}
-            max={maxDate}
-            className="border border-gray-300 rounded-md p-2 w-full"
+        <div className="flex items-center gap-4">
+          <label className="font-semibold text-gray-700 w-16">일 자</label>
+          <CuteCalendarPopup
+            initialDate={formData.date} // URL의 날짜를 기본값으로 전달
+            onDateSelect={(selectedDate) =>
+              setFormData({ ...formData, date: selectedDate })
+            }
+            containerClass="absolute left-0 mt-2"
           />
         </div>
 
-        <div className="flex items-center gap-8">
-          <label className="font-semibold text-black w-16">시 간</label>
-          <MyInputWhite
-            type="time"
-            name="time"
-            value={formData.time}
-            onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-            className="border border-gray-300 rounded-md p-2 w-full"
+        <div className="flex items-center gap-4">
+          <label className="font-semibold text-gray-700 w-16">시 간</label>
+          <CuteTimeSelect
+            onTimeSelect={(selectedTime) =>
+              setFormData({ ...formData, time: selectedTime })
+            }
+            baseDate={formData.date}
           />
         </div>
-
-        <div className="flex items-center gap-8">
-          <label className="font-semibold text-black w-16">위 치</label>
+        <div className="flex items-center gap-4">
+          <label className="font-semibold text-gray-700 w-16">위 치</label>
           <MyInputWhite
             type="text"
             name="location"
@@ -176,28 +181,39 @@ const ScheduleInputMolecule = () => {
             maxLength={30}
           />
         </div>
-
-        <div className="flex items-center gap-8">
-          <label className="font-semibold text-black w-16">예 산</label>
-          <MyInputWhite
+        <div className="flex items-center gap-4">
+          <label className="font-semibold text-gray-700 w-16">예 산</label>
+          <input
             type="number"
             name="price"
-            value={formData.price === 0 ? "" : formData.price}
+            value={formData.price || ""}
             onChange={(e) => {
-              const value = Number(e.target.value);
-              if (!isNaN(value) && value >= 0 && value <= 999999999) {
-                setFormData({ ...formData, price: value });
+              const inputValue = e.target.value;
+              if (inputValue === "") {
+                setFormData({ ...formData, price: 0 });
+                return;
+              }
+              const numericValue = Number(inputValue);
+              if (
+                !isNaN(numericValue) &&
+                numericValue >= 0 &&
+                numericValue <= 999999999
+              ) {
+                setFormData({ ...formData, price: numericValue });
               }
             }}
-            className="border border-gray-300 rounded-md p-2 w-full"
-            min={0}
+            onKeyDown={(e) => {
+              if (["e", "E", ".", "+", "-"].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
             max={999999999}
             placeholder="10억 미만 설정 가능합니다"
+            className="p-2 w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-200 disabled:opacity-50 disabled:cursor-not-allowed"
           />
         </div>
-
-        <div className="flex items-center gap-8">
-          <label className="font-semibold text-black w-16">구 분</label>
+        <div className="flex items-center gap-4">
+          <label className="font-semibold text-gray-700 w-16">구 분</label>
           <div className="flex gap-2 w-full">
             <select
               name="mainCategoryId"
@@ -218,7 +234,6 @@ const ScheduleInputMolecule = () => {
                 </option>
               ))}
             </select>
-
             <select
               name="subcategoryId"
               value={formData.subcategoryId}

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "./axiosInstance";
-import { useBudgetStore } from "../stores/homeStore";
+import { useBudgetStore } from "../stores/budgetStore";
 
 export const useBudgetQuery = () => {
   const { setTotalBudget, setUsedBudget } = useBudgetStore();

@@ -20,7 +20,7 @@ const HomeProgressMolecule = () => {
   return (
     <div>
       <div className="text-red-300 font-bold">
-        <p>
+        <p className="pb-2">
           {marriagePercent === 100
             ? "모든 결혼 계획이 완료되었어요!"
             : `결혼이 ${marriagePercent}% 진행 중이에요!`}

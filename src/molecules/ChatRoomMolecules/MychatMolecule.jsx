@@ -1,21 +1,26 @@
+import React, { memo } from "react";
 import MyChatCard from "../../components/Cards/MyChatCard";
 import { useNavigate } from "react-router-dom";
 import emptyImg from "../../assets/emptybox.png";
 import { useChatStore } from "../../stores/chatStore.js";
 import { useUserRooms, useProfile } from "../../api/chatAPI";
-import progressinGIF from "../../assets/progressing.gif";
 import MyEmptyCard from "../../components/Cards/MyEmptyCard";
 import defaultChatImg from "../../assets/couple.png";
 import { useState } from "react";
 import chatImg from "../../assets/chat-icon.png";
 import MyCreateChat from "../../components/Modals/MyCreateChat";
+import MyLoading from "../../components/common/MyLoading";
+import MyAiChatCard from "../../components/Cards/MyAiChatCard.jsx";
+import { useAiStore } from "../../stores/aiStore.js";
+
 const MychatMolecule = () => {
   const { data: userRooms = [] } = useUserRooms();
   const { data: userProfile = [], isLoading } = useProfile();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const navigate = useNavigate();
   const { setRoomTitle, setRoomId, setUserId } = useChatStore();
-
+  const AiStore = useAiStore();
+  console.log("userRooms", userRooms);
   const handleAddChatRoom = () => {
     setShowCreateModal(true);
   };
@@ -29,21 +34,34 @@ const MychatMolecule = () => {
   const handleChatCardClick = (roomId, roomTitle) => {
     setRoomTitle(roomTitle);
     setRoomId(roomId);
-    console.log(userProfile);
     setUserId(userProfile.id);
     navigate(`/chat/mychat/rooms/${roomId}`, { state: { roomTitle } });
+  };
+
+  // ai 채팅방으로 이동
+  const handleAiChatCardClick = () => {
+    AiStore.resetChatMessages();
+    AiStore.setChat("");
+
+    navigate(`/chat/mychat/rooms/ai`);
   };
 
   if (isLoading) {
     return (
       <div>
-        <img src={progressinGIF} alt="로딩중....." />
+        <MyLoading />
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="">
+      <div
+        className="bg-red-50  fixed bottom-36 right-5 shadow-lg shadow-slate-300 rounded-full"
+        onClick={() => handleAiChatCardClick()}
+      >
+        <MyAiChatCard />
+      </div>
       {userRooms.items && userRooms.items.length > 0 ? (
         <>
           {userRooms.items.map((item) => (
@@ -51,7 +69,7 @@ const MychatMolecule = () => {
               key={item.id}
               onClick={() => handleChatCardClick(item.id, item.title)}
             >
-              <div className="cursor-pointer active:bg-red-100 hover:bg-red-50">
+              <div className="cursor-pointer active:bg-red-100 hover:bg-red-50 my-2.5">
                 <MyChatCard
                   roomTitle={item.title}
                   currentMember={item.usedMemberCount}
@@ -69,7 +87,7 @@ const MychatMolecule = () => {
           ))}
           <button
             onClick={handleAddChatRoom}
-            className="bg-red-100 p-2 text-gray-500 font-bold rounded-full flex items-center justify-center fixed bottom-20 right-10 shadow-lg shadow-slate-300"
+            className="bg-red-50  p-2 text-gray-500 font-bold rounded-full flex items-center justify-center fixed bottom-20 right-5 shadow-lg shadow-slate-300"
           >
             <img src={chatImg} className="h-8 w-8" alt="채팅방 생성" />
           </button>
@@ -82,7 +100,7 @@ const MychatMolecule = () => {
           </p>
           <button
             onClick={handleAddChatRoom}
-            className="bg-red-100 p-2 text-gray-500 font-bold rounded-full flex items-center justify-center fixed bottom-20 right-10 shadow-lg shadow-slate-300"
+            className="bg-red-100 p-2 text-gray-500 font-bold rounded-full flex items-center justify-center fixed bottom-20 right-5 shadow-lg shadow-slate-300"
           >
             <img src={chatImg} className="h-8 w-8" />
           </button>

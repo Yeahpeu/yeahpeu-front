@@ -3,6 +3,7 @@ import MyCompleteButton from "../common/MyCompleteButton";
 import { useState, useEffect } from "react";
 import { completeEvents, useMonthSchedules } from "../../api/scheduleAPI";
 import { useScheduleStore } from "../../stores/scheduleStore";
+import confetti from "../../assets/js/confetti";
 
 const convertToLocalTime = (utcDateTime) => {
   return new Date(utcDateTime).toLocaleTimeString(undefined, {
@@ -22,11 +23,11 @@ const MyScheduleCard = ({ event }) => {
   }, [event]);
 
   const categoryColors = {
-    1: "bg-[#FF85EB]",
-    2: "bg-[#AB92FF]",
-    3: "bg-[#A6F2FF]",
-    4: "bg-[#FFE748]",
-    5: "bg-[#FF9447]",
+    1: "bg-[#FFC2F0]",
+    2: "bg-[#CABDFF]",
+    3: "bg-[#C7F7FF]",
+    4: "bg-[#FFF7B2]",
+    5: "bg-[#FFD6B2]",
   };
 
   if (!event) return null;
@@ -39,6 +40,7 @@ const MyScheduleCard = ({ event }) => {
   }, [event.completed]);
 
   const handleCompleteClick = () => {
+    if (!completed) confetti();
     toggleComplete(
       { eventId: event.id, completed: !completed },
       {
@@ -59,14 +61,14 @@ const MyScheduleCard = ({ event }) => {
       : event.location || "없음";
 
   const titleName =
-    event.title.length > 10
-      ? `${event.title.slice(0, 10)}...`
+    event.title.length > 15
+      ? `${event.title.slice(0, 15)}...`
       : event.title || "없음";
 
   const formattedTime = event.date ? convertToLocalTime(event.date) : "";
 
   return (
-    <div className="bg-white rounded-lg shadow-md mb-4 p-4 w-full flex items-center justify-between border relative">
+    <div className="text-gray-700 bg-white rounded-lg shadow-md mb-4 p-4 w-full flex items-center justify-between relative ">
       <div className="absolute top-4 right-6">
         <MyCompleteButton
           isCompleted={completed}
@@ -84,8 +86,8 @@ const MyScheduleCard = ({ event }) => {
           onClick={() => navigate(`/schedule/todos/detail/${event.id}`)}
           className="pl-1"
         >
-          <div className="font-bold text-lg flex pb-1">{titleName}</div>
-          <div className="text-gray-500 text-sm flex justify-between w-44">
+          <div className="font-bold text-sm flex pb-2">{titleName}</div>
+          <div className="text-gray-500 text-xs flex justify-between w-40">
             <span>{locationName}</span>
             <span>{formattedTime}</span>
           </div>

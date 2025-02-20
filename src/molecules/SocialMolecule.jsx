@@ -1,11 +1,12 @@
-import google from "../assets/google_signup.png";
 import long from "../assets/google_long.png";
+import { Navigate } from "react-router-dom";
+
 // import { useSocialLogin } from "../api/authAPI";
 
 const SocialMoleCule = () => {
   const handleSocialLogin = () => {
-    window.location.href =
-      import.meta.env.VITE_API_BASE_URL + "oauth2/authorization/google";
+    //window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    window.location.href = "https://yeahpeu.site/oauth2/authorization/google";
   };
   return (
     <div>

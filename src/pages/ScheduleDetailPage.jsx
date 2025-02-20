@@ -2,7 +2,7 @@ import ScheduleDetailMolecule from "../molecules/EventsMolecules/ScheduleDetailM
 
 const ScheduleDetailPage = () => {
   return (
-    <div className="p-8">
+    <div className="">
       <ScheduleDetailMolecule />
     </div>
   );

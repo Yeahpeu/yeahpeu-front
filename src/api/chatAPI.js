@@ -2,25 +2,32 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "./axiosInstance";
 import { useChatStore } from "../stores/chatStore";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { createThrottledFunction } from "../utils/throttleUtils";
 
 // 참가한 채팅방 전체조회
 export const useUserRooms = () => {
+  const fetchRooms = createThrottledFunction(async () => {
+    const response = await axiosInstance.get("/api/v1/user/chat/rooms");
+    return response.data;
+  });
+
   return useQuery({
     queryKey: ["userChatRooms"],
-    queryFn: async () => {
-      const response = await axiosInstance.get("/api/v1/user/chat/rooms");
-      return response.data;
-    },
+    queryFn: fetchRooms,
   });
 };
 
 //채팅방 참여
 export const useJoinRoom = () => {
+  const joinRoom = createThrottledFunction(async (roomId) => {
+    const response = await axiosInstance.post(
+      `/api/v1/chat/rooms/${roomId}/join`
+    );
+    return response.data;
+  });
+
   return useMutation({
-    mutationFn: (roomId) =>
-      axiosInstance
-        .post(`/api/v1/chat/rooms/${roomId}/join`)
-        .then((response) => response.data),
+    mutationFn: joinRoom,
   });
 };
 
@@ -32,6 +39,7 @@ export const useRooms = () => {
       const response = await axiosInstance.get("/api/v1/chat/rooms");
       return response.data;
     },
+    refetchInterval: 5000,
   });
 };
 
@@ -64,8 +72,7 @@ export const useRoomMessages = (roomId) => {
 // 채팅방 생성 추가
 export const useCreateRoom = () => {
   const navigate = useNavigate();
-  const { roomId, roomTitle, setRoomId, setRoomTitle, setImageUrl } =
-    useChatStore();
+  const { setRoomId, setRoomTitle, setImageUrl } = useChatStore();
 
   return useMutation({
     mutationFn: async (roomInfo) => {
@@ -76,8 +83,8 @@ export const useCreateRoom = () => {
       setRoomTitle(data.title);
       setRoomId(data.id);
       setImageUrl(data.imageUrl);
-      navigate(`/chat/mychat/rooms/${roomId}`, {
-        state: { roomTitle },
+      navigate(`/chat/mychat/rooms/${data.id}`, {
+        state: { roomTitle: data.title },
       });
     },
     onError: (error) => {
@@ -123,6 +130,7 @@ export const useSendFile = () => {
           },
         }
       );
+      console.log("response", response.data);
       return response.data;
     },
   });

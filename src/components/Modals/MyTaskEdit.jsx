@@ -16,7 +16,11 @@ const MyTaskEdit = ({ onClose, eventId }) => {
 
   // 새로운 항목 추가
   const handleAddTask = () => {
-    setTasks([...tasks, { name: "", completed: false }]);
+    if (tasks.length > 0 && tasks[tasks.length - 1].name.trim() === "") {
+      setTasks(tasks.slice(0, tasks.length - 1));
+    } else {
+      setTasks([...tasks, { name: "", completed: false }]);
+    }
   };
 
   const handleRemoveTask = (index) => {
@@ -32,11 +36,6 @@ const MyTaskEdit = ({ onClose, eventId }) => {
         onSuccess: () => {
           onClose();
         },
-        onError: (error) => {
-          alert(
-            `추가 실패: ${error.response?.data?.message || "알 수 없는 오류"}`
-          );
-        },
       }
     );
   };
@@ -50,13 +49,15 @@ const MyTaskEdit = ({ onClose, eventId }) => {
           <div key={index} className="flex items-center mb-3">
             <MyInputWhite
               type="text"
-              placeholder="항목 입력"
+              placeholder="확인 목록록 입력"
               value={task.name}
               onChange={(e) => handleChange(index, e.target.value)}
             />
-            <button onClick={handleRemoveTask} className="">
-              {" "}
-              -{" "}
+            <button
+              onClick={() => handleRemoveTask(index)}
+              className="text-red-400"
+            >
+              -
             </button>
           </div>
         ))}

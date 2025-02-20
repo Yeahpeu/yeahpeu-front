@@ -3,23 +3,28 @@ import React, { useEffect, useRef } from "react";
 import MyChatBox from "../Cards/MyChatbox";
 
 const ChatMessages = ({ messages, myId }) => {
-  const messagesEndRef = useRef(null);
+  // const messagesEndRef = useRef(null);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView();
-  }, [messages]);
+  // useEffect(() => {
+  //   messagesEndRef.current?.scrollIntoView({
+  //     block: "end",
+  //   });
+  // }, [messages]);
 
   return (
-    <div className="flex flex-col overflow-y-auto mb-4 mt-4">
-      {messages?.map((item) => (
-        <div className="pb-3" key={item.id}>
+    <div className="flex flex-col">
+      {messages?.map((item, index) => (
+        <div
+          className="pb-3"
+          key={item.id}
+          // ref={index === messages.length - 1 ? messagesEndRef : null}
+        >
           <MyChatBox
             owner={myId === item.sender.id ? "mine" : "others"}
             item={item}
           />
         </div>
       ))}
-      <div ref={messagesEndRef} />
     </div>
   );
 };

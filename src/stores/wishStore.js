@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 export const useWishStore = create((set) => ({
   wishes: [], // 나의 위시
+  selectedCategory: null,
 
   addWish: (newWish) =>
     set((state) => ({
@@ -21,4 +22,7 @@ export const useWishStore = create((set) => ({
     })),
 
   resetWishes: () => set({ wishes: [] }),
+
+  setCategory: (category) => set({ selectedCategory: category }),
+  deleteCategory: () => set({ selectedCategory: null }),
 }));

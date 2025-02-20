@@ -28,9 +28,5 @@ export const useLoginMutation = () => {
         }
       }
     },
-
-    onError: (error) => {
-      alert(error, "로그인 실패");
-    },
   });
 };

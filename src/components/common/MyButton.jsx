@@ -10,7 +10,7 @@ const MyButton = ({ value, color, disabled, onClick }) => {
       disabled={disabled}
       onClick={onClick}
     >
-      {value}
+      <p className="text-sm">{value}</p>
     </button>
   );
 };

@@ -2,7 +2,7 @@ import ScheduleEditMolecule from "../molecules/EventsMolecules/ScheduleEditMolec
 
 const ScheduleEditPage = () => {
   return (
-    <div className="p-8">
+    <div className="">
       <ScheduleEditMolecule />
     </div>
   );

@@ -10,7 +10,7 @@ import {
 import { useCategories } from "../../api/scheduleAPI";
 import MyDeleteTaskButton from "../../components/common/MyDeleteButton";
 
-const ScheduleDetailMolecule = ({ event }) => {
+const TaskDetailMolecule = ({ event }) => {
   const [checklists, setChecklists] = useState(event.checklists);
   const [newTask, setNewTask] = useState("");
   const [isAdding, setIsAdding] = useState(false);
@@ -40,7 +40,12 @@ const ScheduleDetailMolecule = ({ event }) => {
   };
 
   const handleAddTask = async () => {
-    if (newTask.trim() === "") return;
+    if (createTaskMutation.isLoading) return;
+
+    if (newTask.trim() === "") {
+      setIsAdding(false);
+      return;
+    }
 
     try {
       const response = await createTaskMutation.mutateAsync({
@@ -62,57 +67,75 @@ const ScheduleDetailMolecule = ({ event }) => {
     }
   };
 
-  const handleDeleteTask = async (taskId) => {
+  const handleDeleteTask = (taskId) => {
     setChecklists((prev) => prev.filter((task) => task.id !== taskId));
 
-    try {
-      await deleteTaskMutation.mutate({ eventId, taskId });
-      queryClient.invalidateQueries(["tasks", eventId]); 
-    } catch (error) {
-      console.error(
-        "🚨 Error deleting task:",
-        error.response?.data || error.message
-      );
-    }
+    deleteTaskMutation.mutate(
+      { eventId, taskId },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries(["task", eventId]);
+        },
+        onError: (error) => {
+          console.error(
+            "🚨 Error deleting task:",
+            error.response?.data || error.message
+          );
+        },
+      }
+    );
   };
 
   return (
-    <div className="text-left">
+    <div className="text-left mb-20">
       <div className="flex justify-between items-center">
-        <h2 className="font-semibold">확인 목록</h2>
+        <h2 className="font-semibold text-gray-700">확인 목록</h2>
         <MyAddTaskButton onClick={() => setIsAdding(true)} />
       </div>
 
       <hr className="mt-3" />
 
-      <ul className="list-disc pl-5 mt-4">
+      <ul className="list-disc mt-4">
         {checklists.map((item) => (
           <li key={item.id} className="mt-3 flex justify-between mr-2">
             <span
-              className={`cursor-pointer ${
+              className={`cursor-pointer flex-1 break-all break-words whitespace-pre-wrap overflow-hidden text-gray-700 ${
                 item.completed ? "line-through text-gray-500" : ""
               }`}
+              style={{
+                wordBreak: "break-word",
+                overflowWrap: "break-word",
+                hyphens: "auto",
+              }}
               onClick={() => handleToggleComplete(item.id)}
             >
               {item.name}
             </span>
-            <MyDeleteTaskButton onClick={() => handleDeleteTask(item.id)} />
+            <div className="flex-shrink-0">
+              <MyDeleteTaskButton onClick={() => handleDeleteTask(item.id)} />
+            </div>
           </li>
         ))}
       </ul>
 
       {isAdding && (
-        <div className="mt-2 pl-3 flex items-center gap-2">
+        <div className="mt-2 flex items-center gap-2">
           <input
             type="text"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
-            placeholder="새 항목 추가"
+            placeholder="50글자만 입력 가능합니다"
             className="border px-2 py-1 rounded w-full"
             autoFocus
+            maxLength={50}
           />
-          <button onClick={handleAddTask} className="px-4 py-1">
-            +
+          <button
+            onClick={handleAddTask}
+            className="py-1 px-2 font-extrabold text-blue-500 text-xs whitespace-nowrap"
+            style={{ writingMode: "horizontal-tb" }}
+            disabled={createTaskMutation.isLoading}
+          >
+            추가
           </button>
         </div>
       )}
@@ -120,4 +143,4 @@ const ScheduleDetailMolecule = ({ event }) => {
   );
 };
 
-export default ScheduleDetailMolecule;
+export default TaskDetailMolecule;

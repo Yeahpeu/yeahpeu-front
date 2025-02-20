@@ -9,7 +9,7 @@ const MyCompleteButton = ({ isCompleted, onClick }) => {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className={`w-7 h-7 transition ${
-          isCompleted ? "text-green-600" : "text-gray-500"
+          isCompleted ? "text-green-600" : "text-gray-300 opacity-50"
         }`}
         fill="none"
         viewBox="0 0 24 24"

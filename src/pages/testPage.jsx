@@ -1,24 +1,29 @@
-import MyBudgetCard from "../components/Cards/MyBudgetCard";
-import MyChatCard from "../components/Cards/MyChatCard";
-import hamster from "../assets/hamster.png";
-import MyWishCard from "../components/Cards/MyWishCard";
+import EmblaCarousel from "../molecules/WishMolecules/Carousel/EmblaCarousel";
+import ad1 from "../assets/ad/ad1.jpg";
+import ad2 from "../assets/ad/ad2.jpg";
+import ad3 from "../assets/ad/ad3.jpg";
+
+import "../molecules/WishMolecules/Carousel/embla.css";
 
 const TestPage = () => {
+  const ads = [
+    { src: ad1, alt: "광고 1" },
+    { src: ad2, alt: "광고 2" },
+    { src: ad3, alt: "광고 3" },
+  ];
+
+  const options = {
+    loop: true,
+  };
+
   return (
     <div>
       <div>
         <h1>TestPage</h1>
+        <div className="flex mx-auto w-80">
+          <EmblaCarousel slides={ads} options={options} />
+        </div>
       </div>
-
-      <MyBudgetCard total={1000000} expend={500000} />
-      <MyChatCard
-        roomTitle="Test"
-        currentMember={10}
-        maxMember={20}
-        imgSrc={hamster}
-        lastMessageText="Test"
-        disabled={"pointer-events-none"}
-      />
     </div>
   );
 };

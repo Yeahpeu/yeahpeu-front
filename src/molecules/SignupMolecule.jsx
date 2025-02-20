@@ -7,11 +7,14 @@ import {
   useVerifyMutation,
 } from "../api/signupAPI";
 import { useState } from "react";
+import MyAlert from "../components/Modals/MyAlert";
+
+const SIGNUP_DURATION = 180;
 
 const SignupMolecule = () => {
-  const signupMutation = useSignupMutation();
-  const verifyMutation = useVerifyMutation();
-  const confirmMutation = useConfirmMutation();
+  const [showAlert, setShowAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const {
     username,
     emailAddress,
@@ -28,38 +31,70 @@ const SignupMolecule = () => {
     setConfirmPassword,
     setAuthCode,
   } = useSignupStore();
-  const [isTimerActive, setIsTimerActive] = useState(false);
-  const [countdown, setCountdown] = useState(30);
 
-  const handleSignup = () => {
-    const userInfo = { emailAddress, username, password };
-    signupMutation.mutate(userInfo);
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+
+  const verifyMutation = useVerifyMutation(
+    setErrorMessage,
+    setShowAlert,
+    setIsTimerActive,
+    setCountdown
+  );
+  const confirmMutation = useConfirmMutation(setErrorMessage, setShowAlert);
+  const signupMutation = useSignupMutation(setErrorMessage, setShowAlert);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}분 ${secs < 10 ? `0${secs}` : secs}초`;
   };
+
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+    setErrorMessage("");
+    setIsTimerActive(false);
+    setCountdown(0);
+  };
+
   const handleVerify = () => {
     verifyMutation.mutate(emailAddress);
+    const startTime = Date.now();
+
     setIsTimerActive(true);
-    setCountdown(30);
+    setCountdown(SIGNUP_DURATION);
 
     const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          setIsTimerActive(false);
-          return 0;
-        }
-        return prev - 1;
-      });
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const remaining = SIGNUP_DURATION - elapsed;
+      if (remaining <= 0) {
+        clearInterval(timer);
+        setCountdown(0);
+        setIsTimerActive(false);
+      } else {
+        setCountdown(remaining);
+      }
     }, 1000);
-
-    return () => clearInterval(timer);
   };
+
   const handleConfirm = () => {
     const authCodeSet = { emailAddress, authCode };
     confirmMutation.mutate(authCodeSet);
   };
 
+  const handleSignup = () => {
+    const userInfo = { emailAddress, username, password };
+    signupMutation.mutate(userInfo);
+  };
+
   return (
     <div className="flex flex-col gap-3 p-4 rounded-lg w-full max-w-sm mx-auto">
+      {showAlert && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <MyAlert message={errorMessage} onConfirm={handleCloseAlert} />
+        </div>
+      )}
+
       <div className="text-left">
         <p className="mb-1 p-1">이름</p>
         <MyInputPink
@@ -67,6 +102,7 @@ const SignupMolecule = () => {
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          maxLength={5}
         />
       </div>
 
@@ -86,17 +122,14 @@ const SignupMolecule = () => {
             <div>
               <MyButton
                 value={
-                  isTimerActive ? `재전송 ${countdown}초` : "인증번호 전송"
+                  isTimerActive
+                    ? `재전송 ${formatTime(countdown)}`
+                    : "인증번호 전송"
                 }
                 color={isTimerActive || !isEmailValid ? "disabled" : "abled"}
                 disabled={isTimerActive || !isEmailValid}
                 onClick={handleVerify}
               />
-              {/* {!isEmailValid && emailAddress.length > 0 && (
-                <p className="text-red-500 text-sm">
-                  올바른 이메일 형식이 아닙니다.
-                </p>
-              )} */}
             </div>
           )}
         </div>
@@ -123,14 +156,15 @@ const SignupMolecule = () => {
       <div className="text-left">
         <p className="mb-1 p-1">비밀번호</p>
         <MyInputPink
-          placeholder="대소문자 + 특수기호 포함 8글자 이상"
+          placeholder="영문 + 숫자 + 기호 포함 8글자 이상"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          maxLength={50}
         />
         {!isPasswordValid && password.length > 0 && (
           <p className="text-red-500 text-sm">
-            비밀번호는 8자 이상, 영문 대소문자 및 특수기호 포함해야 합니다.
+            8자 이상, 영문, 숫자, 특수기호를 포함하세요.
           </p>
         )}
       </div>
@@ -142,13 +176,14 @@ const SignupMolecule = () => {
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value, password)}
+          maxLength={50}
         />
         {!isPasswordMatch && confirmPassword.length > 0 && (
           <p className="text-red-500 text-sm">비밀번호가 일치하지 않습니다.</p>
         )}
       </div>
 
-      <div className="mt-6">
+      <div className="mt-4">
         <MyButton
           disabled={
             !username || !isVerified || !isPasswordValid || !isPasswordMatch

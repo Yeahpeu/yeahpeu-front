@@ -24,15 +24,15 @@ const TodosMolecule = () => {
   };
 
   return (
-    <div>
+    <div className="">
       {sortedDates.length === 0 ? (
         <div className=" flex items-center justify-center ">
           <MyEmptyCard value={"일정을 추가해서 결혼식을 준비하세요"} />
         </div>
       ) : (
         sortedDates.map((date) => (
-          <div key={date} className="pb-4">
-            <h2 className="text-lg font-bold m-2 text-left">
+          <div key={date} className="pb-1">
+            <h2 className="text-gray-700 text-sm font-bold text-left py-2 px-3 mb-3 bg-gray-100 rounded-md shadow-sm">
               {date} ({getKoreanDay(date)})
             </h2>
 

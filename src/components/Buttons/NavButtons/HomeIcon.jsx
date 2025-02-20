@@ -3,13 +3,19 @@ const HomeIcon = () => {
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 -960 960 960"
-        fill="currentColor"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2.5}
         className="w-6 h-6"
       >
-        <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 9.75L12 3l9 6.75V21a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 21V9.75z"
+        />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 22V12h6v10" />
       </svg>
-      <span className="text-xs">홈</span>
     </>
   );
 };

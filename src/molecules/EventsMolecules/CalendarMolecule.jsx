@@ -8,9 +8,7 @@ import { useMonthSchedules } from "../../api/scheduleAPI";
 
 const CalendarMolecule = () => {
   const { addSchedule, schedules, resetSchedules } = useScheduleStore();
-  const [selectedDate, setSelectedDate] = useState(
-    moment().format("YYYY-MM-DD")
-  );
+  const { selectedDate, setSelectedDate } = useScheduleStore();
   const currentMonth = moment(selectedDate);
   const startDate = currentMonth.startOf("month").format("YYYY-MM-DD");
   const endDate = currentMonth.endOf("month").format("YYYY-MM-DD");
@@ -21,12 +19,11 @@ const CalendarMolecule = () => {
     if (monthschedule.length > 0) {
       resetSchedules();
 
-      monthschedule.forEach((schedule) => {
-        const exists = schedules.some((s) => s.id === schedule.id);
-        if (!exists) {
-          addSchedule(schedule);
-        }
-      });
+      const uniqueSchedules = [
+        ...new Map(monthschedule.map((item) => [item.id, item])).values(),
+      ];
+
+      uniqueSchedules.forEach((schedule) => addSchedule(schedule));
     }
   }, [monthschedule]);
 
@@ -37,7 +34,7 @@ const CalendarMolecule = () => {
     : [];
 
   return (
-    <div className="w-full flex flex-col items-center justify-center">
+    <div className="w-full flex flex-col items-center justify-center ">
       <MyCalendar
         setSelectedDate={setSelectedDate}
         selectedDate={selectedDate}
@@ -50,9 +47,8 @@ const CalendarMolecule = () => {
               <MyScheduleCard key={event.id} event={event} />
             ))
           ) : (
-            <div>
-              {/* {moment(selectedDate).format("D일")}  */}
-              <p>일정이 없습니다.ᐟ</p>
+            <div className="text-base">
+              <p>일정이 없습니다 .ᐟ</p>
               <p>새로운 일정을 수립하세요</p>
             </div>
           )}
@@ -60,7 +56,7 @@ const CalendarMolecule = () => {
       )}
 
       <div className="flex items-center justify-center border w-12 h-12 rounded-full mt-8">
-        <MyAddButton location={"/schedule/todos/input"} />
+        <MyAddButton location={`/schedule/todos/input?date=${selectedDate}`} />
       </div>
     </div>
   );

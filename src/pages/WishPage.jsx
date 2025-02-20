@@ -1,13 +1,26 @@
-import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
 import SearchBoxMolecule from "../molecules/WishMolecules/WishSearchBox";
 
 const WishPage = () => {
-  return (
-    <div className="p-8 w-full h-full overflow-auto">
-      <h2 className="text-xl text-center font-bold mb-4 text-gray-400">
-        혼수 검색하기
-      </h2>
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+
+    const handlePopState = (e) => {
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  return (
+    <div className="px-8 py-4 w-full h-full overflow-auto ">
       <SearchBoxMolecule />
       <Outlet />
     </div>

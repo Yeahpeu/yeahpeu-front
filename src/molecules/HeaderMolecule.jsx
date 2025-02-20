@@ -1,9 +1,9 @@
-import coupleImg from "../assets/couple.png";
+import coupleImg from "../assets/7656349.png";
 
 const HeaderMolecule = () => {
   return (
     <>
-      <div className="flex flex-row items-center justify-center w-full p-5 top-0 left-0 bg-white relative">
+      <div className="flex flex-row items-center justify-center w-full my-4">
         <img src={coupleImg} alt="Yeahpeu Image" className="w-16 h-16" />
       </div>
     </>

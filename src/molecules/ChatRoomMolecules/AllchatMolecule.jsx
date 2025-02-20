@@ -14,9 +14,10 @@ import {
 } from "../../api/chatAPI";
 import { useChatStore } from "../../stores/chatStore";
 import MyCreateChat from "../../components/Modals/MyCreateChat";
-import progressinGIF from "../../assets/progressing.gif";
 import MyEmptyCard from "../../components/Cards/MyEmptyCard";
 import defaultChatImg from "../../assets/couple.png";
+import MyLoading from "../../components/common/MyLoading";
+import MyAlert from "../../components/Modals/MyAlert";
 
 const AllchatMolecule = () => {
   const { data: userRooms = [] } = useRooms();
@@ -26,6 +27,7 @@ const AllchatMolecule = () => {
   // 선택된 채팅방 ID와 모달 표시 여부를 관리
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showUnableModal, setShowUnableModal] = useState(false);
   const { mutate: joinRoom } = useJoinRoom();
 
   const { roomId, roomTitle, setRoomId, setRoomTitle, setUserId } =
@@ -87,6 +89,12 @@ const AllchatMolecule = () => {
     setShowCreateModal(true);
   };
 
+  const handleUnableModal = () => {
+    setAlertMessage("채팅방이 가득 찼습니다");
+  };
+
+  const [alertMessage, setAlertMessage] = useState("");
+
   // 검색어가 변경될 때마다 필터링된 결과를 계산
   const filteredUserRooms = userRooms
     .filter(
@@ -100,13 +108,13 @@ const AllchatMolecule = () => {
   if (isLoading) {
     return (
       <div>
-        <img src={progressinGIF} alt="로딩중....." />
+        <MyLoading />
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="">
       <div className="flex items-center w-full gap-2">
         <div className="flex-grow">
           <MySearchBar
@@ -119,7 +127,7 @@ const AllchatMolecule = () => {
       </div>
       <button
         onClick={handleAddChatRoom}
-        className="bg-red-100 p-2 text-gray-500 font-bold rounded-full flex items-center justify-center fixed bottom-20 right-10 shadow-lg shadow-slate-300"
+        className="bg-red-50 p-2 text-gray-500 font-bold rounded-full flex items-center justify-center fixed bottom-20 right-5 shadow-lg shadow-slate-300"
       >
         <img src={chatImg} className="h-8 w-8" />
       </button>
@@ -128,9 +136,13 @@ const AllchatMolecule = () => {
           filteredUserRooms.map((item) => (
             <div
               key={item.id}
-              onClick={() => handleChatCardClick(item.id, item.title)}
+              onClick={
+                item.usedMemberCount >= item.reservedMemberCount
+                  ? handleUnableModal
+                  : () => handleChatCardClick(item.id, item.title)
+              }
             >
-              <div className="cursor-pointer active:bg-red-100 hover:bg-red-50">
+              <div className="cursor-pointer active:bg-red-100 hover:bg-red-50 my-2.5">
                 <MyChatCard
                   roomTitle={item.title}
                   maxMember={item.reservedMemberCount}
@@ -165,6 +177,15 @@ const AllchatMolecule = () => {
         onConfirm={handleCreateConfirm}
         visible={showCreateModal}
       />
+
+      {alertMessage && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <MyAlert
+            message={alertMessage}
+            onConfirm={() => setAlertMessage("")}
+          />
+        </div>
+      )}
     </div>
   );
 };

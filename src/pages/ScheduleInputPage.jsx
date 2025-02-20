@@ -1,8 +1,8 @@
 import ScheduleInputMolecule from "../molecules/EventsMolecules/ScheduleInputMolecule";
 
 const ScheduleInputPage = () => {
-  return(
-    <div className="p-8">
+  return (
+    <div className="">
       <ScheduleInputMolecule />
     </div>
   );

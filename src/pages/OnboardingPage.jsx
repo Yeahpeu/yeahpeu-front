@@ -10,7 +10,7 @@ const OnboardingPage = () => {
   const currentStepKey = STEP_KEYS[currentStep];
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col px-4 py-4">
       <header className="flex items-center relative">
         {currentStep == 0 && (
           <button onClick={() => navigate(-1)} className="absolute left-4">
@@ -34,14 +34,14 @@ const OnboardingPage = () => {
         </h1>
       </header>
 
-      <div className="px-4 py-2">
+      <div className="px-4 pt-3">
         <OnboardingProgressMolecule
           subject={currentStepKey}
           progressPercent={getCurrentProgress()}
         />
       </div>
 
-      <div className="flex-1 mt-4">
+      <div className="flex-1 ">
         <OnboardingSelectionMolecule />
       </div>
     </div>

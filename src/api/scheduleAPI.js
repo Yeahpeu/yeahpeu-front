@@ -6,7 +6,7 @@ import { useScheduleStore } from "../stores/scheduleStore";
 export const useSchedules = () => {
   const today = new Date();
   const threeYearsLater = new Date();
-  threeYearsLater.setFullYear(today.getFullYear() + 3);
+  threeYearsLater.setFullYear(today.getFullYear() + 50);
 
   const formatDate = (date) => {
     const year = date.getFullYear();
@@ -139,8 +139,9 @@ export const completeEvents = () => {
       );
       return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: (_, { eventId }) => {
       queryClient.invalidateQueries(["schedules"]);
+      queryClient.invalidateQueries(["schedule", eventId]);
     },
     onError: (error) => {
       console.log(

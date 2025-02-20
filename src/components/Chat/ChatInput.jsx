@@ -10,15 +10,41 @@ const ChatInput = ({
   onAddFile,
   setChatMessage,
   isUploading,
+  ACCEPTED_FILE_TYPES,
 }) => {
   const [isFileSelected, setIsFileSelected] = useState(false);
+
+  const truncateFileName = (fileName) => {
+    const extension = fileName.split(".").pop();
+    const nameWithoutExt = fileName.slice(0, fileName.lastIndexOf("."));
+
+    let visibleLength = 0;
+    let truncatedName = "";
+
+    for (let char of nameWithoutExt) {
+      const charLength = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(char) ? 1 : 0.5;
+      if (visibleLength + charLength > 10) break;
+      truncatedName += char;
+      visibleLength += charLength;
+    }
+
+    const finalName =
+      nameWithoutExt.length === truncatedName.length
+        ? truncatedName
+        : truncatedName + "...";
+
+    return `${finalName}.${extension}`;
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       setIsFileSelected(true);
-      setChat(file.name);
-      onAddFile(event);
+      setChat(truncateFileName(file.name));
+      onAddFile(event).catch(() => {
+        setIsFileSelected(false);
+        setChat("");
+      });
       event.target.value = "";
     }
   };
@@ -34,7 +60,11 @@ const ChatInput = ({
 
       if (newlineCount <= 9 || newMessage.length < chat.length) {
         setChat(newMessage);
-        setChatMessage(newMessage);
+        setChatMessage({
+          message: newMessage,
+          attachmentRequests: [{ url: "", contentType: "" }],
+          sentAt: "",
+        });
       }
     }
   };
@@ -46,14 +76,14 @@ const ChatInput = ({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex items-center p-4 gap-2 bg-white">
+    <div className="max-w-[430px] fixed w-full mx-auto bottom-0 left-0 right-0 flex items-center p-2 gap-2 bg-white border-t border-gray-100">
       <div className="relative flex-1">
         <textarea
           maxLength={100}
           placeholder="채팅을 입력하세요"
           value={chat}
           onChange={handleInputChange}
-          className={`w-full h-10 p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-200 overflow-hidden  
+          className={`w-full h-10 p-2 resize-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-200 overflow-hidden  
             ${
               isFileSelected || isUploading
                 ? "bg-gray-100 text-gray-500 cursor-not-allowed pointer-events-none"
@@ -74,6 +104,7 @@ const ChatInput = ({
       <MyAddFileButton
         onChange={handleFileChange}
         disabled={isUploading}
+        accept={ACCEPTED_FILE_TYPES}
         className={isUploading ? "opacity-50 cursor-not-allowed" : ""}
       />
     </div>

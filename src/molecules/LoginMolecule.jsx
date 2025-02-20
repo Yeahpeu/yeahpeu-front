@@ -2,8 +2,11 @@ import { useAuthStore } from "../stores/authStore";
 import MyInputWhite from "../components/common/MyInput-white";
 import MyButton from "../components/common/MyButton";
 import { useLoginMutation } from "../api/authAPI";
+import { useState } from "react";
+import MyAlert from "../components/Modals/MyAlert";
 
 const LoginMolecule = () => {
+  const [alertMessage, setAlertMessage] = useState("");
   const loginMutation = useLoginMutation();
   const {
     email,
@@ -13,14 +16,29 @@ const LoginMolecule = () => {
     setEmail,
     setPassword,
   } = useAuthStore();
+
   const handleLogin = () => {
     const user = { email, password };
-    loginMutation.mutate(user);
+    loginMutation.mutate(user, {
+      onError: (error) => {
+        setAlertMessage(error.response?.data?.message);
+      },
+    });
   };
 
   return (
     <div className="flex flex-col p-4 rounded-lg w-full max-w-sm mx-auto">
-      <div className="text-left">
+      {alertMessage && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <MyAlert
+            message={
+              <div style={{ whiteSpace: "pre-line" }}>{alertMessage}</div>
+            }
+            onConfirm={() => setAlertMessage("")}
+          />
+        </div>
+      )}
+      <div className="text-left mb-2">
         <p className="p-1">이메일</p>
         <MyInputWhite
           placeholder="이메일 주소"
@@ -29,7 +47,7 @@ const LoginMolecule = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <p
-          className={`text-red-500 text-sm ml-2 transition-opacity duration-300 ${
+          className={`text-red-500 text-xs ml-2 transition-opacity duration-300 ${
             !isEmailValid && email.length > 0
               ? "opacity-100 visible"
               : "opacity-0 invisible"
@@ -42,20 +60,20 @@ const LoginMolecule = () => {
       <div className="text-left">
         <p className=" p-1">비밀번호</p>
         <MyInputWhite
-          placeholder="영문 대소문자 + 특수기호 포함 8글자 이상"
+          placeholder="영문 + 숫자 + 특수기호 포함 8글자 이상"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          maxLength={50}
         />
         <p
-          className={`text-red-500 text-sm transition-opacity duration-300 ${
+          className={`text-red-500 text-xs transition-opacity duration-300 ${
             !isPasswordValid && password.length > 0
               ? "opacity-100 visible"
               : "opacity-0 invisible"
           }`}
         >
-          비밀번호는 8자 이상, 영문 대소문자 및 특수기호 1개 이상 포함해야
-          합니다.
+          비밀번호는 8자 이상, 영문, 숫자 및 특수기호 1개 이상 포함해야 합니다.
         </p>
       </div>
 

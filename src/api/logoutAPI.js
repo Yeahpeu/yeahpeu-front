@@ -11,3 +11,14 @@ export const useLogout = () => {
     },
   });
 };
+
+export const useWithdraw = () => {
+  return useMutation({
+    mutationFn: async () => {
+      const response = await axiosInstance.delete("/api/v1/users/me/withdraw", {
+        withCredentials: true,
+      });
+      return response.data;
+    },
+  });
+};

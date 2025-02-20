@@ -10,7 +10,14 @@ const CategoryMolecule = () => {
 
   const { data: customCategories = [] } = useCategories();
 
-  if (!subevents || subevents.length === 0) return <p>데이터 없음</p>;
+  if (!subevents || subevents.length === 0)
+    return (
+      <div className="mt-10">
+        <p>
+          일정을 추가하여 <br /> 결혼 준비를 탄탄하게 만들어요
+        </p>
+      </div>
+    );
 
   return (
     <div>

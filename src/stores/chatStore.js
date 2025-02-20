@@ -5,7 +5,7 @@ export const useChatStore = create((set) => ({
   chatUsers: [],
   roomTitle: "",
   chat: "",
-  userId: "",
+  userId: null,
   imageUrl: "",
   chatMessage: {
     message: "",
@@ -18,19 +18,15 @@ export const useChatStore = create((set) => ({
     ],
   },
 
-  setUserId: (userId) => set({ userId }),
+  setUserId: (id) => set({ userId: id }),
   setRoomId: (roomId) => set({ roomId }),
   setRoomTitle: (roomTitle) => set({ roomTitle }),
   setChat: (chat) => set({ chat }),
   setChatUsers: (chatUsers) => set({ chatUsers }),
   setImageUrl: (imageUrl) => set({ imageUrl }),
   setChatMessage: (message) =>
-    set((state) => ({
-      chatMessage: {
-        ...state.chatMessage,
-        message,
-        sentAt: new Date().toISOString(),
-      },
+    set(() => ({
+      chatMessage: message,
     })),
 
   setAttachment: (url, contentType) =>

@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 const SignupPage = () => {
   return (
     <div className="">
-      <h2 className="text-xl font-bold text-center text-red-200 mt-2 p-8">
+      <h2 className="text-xl font-bold text-center text-red-200 px-8 py-4">
         회원가입
       </h2>
-      <div className="flex flex-col items-center justify-center p-8">
+      <div className="flex flex-col items-center justify-center px-8">
         <SignupMolecule />
       </div>
       <div>

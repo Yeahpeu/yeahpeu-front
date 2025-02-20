@@ -1,15 +1,19 @@
-const MyAddFileButton = ({ onChange }) => {
+import React from "react";
+
+const MyAddFileButton = ({ onChange, disabled, accept }) => {
   return (
     <div className="relative">
       <input
         type="file"
         onChange={onChange}
+        accept={accept}
+        disabled={disabled}
         className="hidden"
-        id="fileInput"
+        id="file-upload"
       />
       <label
-        htmlFor="fileInput"
-        className="cursor-pointer flex items-center justify-center w-8 h-8"
+        htmlFor="file-upload"
+        className={`cursor-pointer ${disabled ? "opacity-50" : ""}`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

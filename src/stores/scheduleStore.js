@@ -1,9 +1,12 @@
+import moment from "moment";
 import { create } from "zustand";
 
-export const useScheduleStore = create((set) => ({
+export const useScheduleStore = create((set, get) => ({
   schedules: [], // 전체 스케줄
   scheduleDetails: {}, // 상세 스케줄
   categories: [],
+  selectedDate: moment().format("YYYY-MM-DD"),
+  setSelectedDate: (date) => set({ selectedDate: date }),
 
   addSchedule: (newSchedule) =>
     set((state) => ({
@@ -17,15 +20,19 @@ export const useScheduleStore = create((set) => ({
       ),
       scheduleDetails: {
         ...state.scheduleDetails,
-        [id]: { ...state.scheduleDetails[id], ...updatedData },
+        [id]: { ...(state.scheduleDetails[id] || {}), ...updatedData },
       },
     })),
 
   deleteSchedule: (id) =>
     set((state) => ({
-      schedules: state.schedules.filter((schedule) => schedule.id !== id),
+      schedules: state.schedules.filter(
+        (schedule) => String(schedule.id) !== String(id)
+      ),
       scheduleDetails: Object.fromEntries(
-        Object.entries(state.scheduleDetails).filter(([key]) => key !== id)
+        Object.entries(state.scheduleDetails).filter(
+          ([key]) => key !== String(id)
+        )
       ),
     })),
 
@@ -39,10 +46,10 @@ export const useScheduleStore = create((set) => ({
 
   resetSchedules: () => set({ schedules: [], scheduleDetails: {} }),
 
-  // 체크 리스트 수정 중
-  addChecklist: (newSchedule) =>
+  // 체크 리스트 관련 함수 (필요 시 schedule 관련 함수와 합칠 수도 있음)
+  addChecklist: (newChecklist) =>
     set((state) => ({
-      schedules: [...state.schedules, newSchedule],
+      schedules: [...state.schedules, newChecklist],
     })),
 
   updateChecklist: (id, updatedData) =>
@@ -52,15 +59,19 @@ export const useScheduleStore = create((set) => ({
       ),
       scheduleDetails: {
         ...state.scheduleDetails,
-        [id]: { ...state.scheduleDetails[id], ...updatedData },
+        [id]: { ...(state.scheduleDetails[id] || {}), ...updatedData },
       },
     })),
 
   deleteChecklist: (id) =>
     set((state) => ({
-      schedules: state.schedules.filter((schedule) => schedule.id !== id),
+      schedules: state.schedules.filter(
+        (schedule) => String(schedule.id) !== String(id)
+      ),
       scheduleDetails: Object.fromEntries(
-        Object.entries(state.scheduleDetails).filter(([key]) => key !== id)
+        Object.entries(state.scheduleDetails).filter(
+          ([key]) => key !== String(id)
+        )
       ),
     })),
 
@@ -71,7 +82,6 @@ export const useScheduleStore = create((set) => ({
       categories,
     })),
 
-  // categories 상태를 초기화 (빈 객체로 리셋)
   resetCategories: () =>
     set(() => ({
       categories: [],

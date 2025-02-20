@@ -22,10 +22,9 @@ export const useAuthStore = create((set) => ({
   setPassword: (password) =>
     set({
       password,
-      //NOTE - 나중에 원래대로 돌려놓기
-      // isPasswordValid: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(
-      //   password
-      // ),
+      isPasswordValid: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(
+        password
+      ),
     }),
   setConfirmPassword: (confirmPassword, password) =>
     set({ confirmPassword, isPasswordMatch: confirmPassword === password }),
@@ -113,7 +112,14 @@ export const useSignupStore = create((set) => {
         ),
       }),
     setUsername: (username) => set({ username }),
-    setPassword: (password) => set({ password }),
+    setPassword: (password) =>
+      set({
+        password,
+        // 영문, 숫자, 특수문자가 포함된 8글자 이상인지 검증
+        isPasswordValid: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(
+          password
+        ),
+      }),
     setConfirmPassword: (confirmPassword, password) =>
       set({ confirmPassword, isPasswordMatch: confirmPassword === password }),
     setVerified: (isVerified) => set({ isVerified }),

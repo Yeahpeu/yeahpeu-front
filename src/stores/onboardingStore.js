@@ -27,7 +27,7 @@ const useOnboardingStore = create((set, get) => ({
     })),
 
   getCurrentProgress: () => {
-    return get().currentStep * 25;
+    return ((get().currentStep + 1) / 5) * 100;
   },
 
   resetSelections: () =>
@@ -37,6 +37,7 @@ const useOnboardingStore = create((set, get) => ({
       weddingDay: "",
       budget: 0,
       selectedCategoryIds: [],
+      category: [],
     }),
 
   getAllSelections: () => {

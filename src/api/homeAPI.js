@@ -1,5 +1,5 @@
 import axiosInstance from "./axiosInstance";
-import { useBudgetStore } from "../stores/homeStore";
+import { useBudgetStore } from "../stores/budgetStore";
 import { useQuery } from "@tanstack/react-query";
 
 export const useBudgetAPI = () => {

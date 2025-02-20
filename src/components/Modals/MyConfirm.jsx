@@ -19,7 +19,12 @@ const MyConfirm = ({
 
       <div className="relative z-50">
         <div className="flex-col justify-center bg-white rounded-lg shadow-lg p-5 px-10 max-w-lg border">
-          <p className="text-center mb-4 mt-4 font-bold text-lg">{message}</p>
+          <p
+            style={{ whiteSpace: "pre-line" }}
+            className="text-center mb-4 mt-4 font-bold text-base"
+          >
+            {message}
+          </p>
           <div className="flex justify-between space-x-8 content-between">
             <MyButton
               value={optionLeft}

@@ -47,7 +47,7 @@ export const useMyPageMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["myPage"]);
-      navigate("/mypage");
+      navigate("/mypage", { replace: true });
     },
   });
 };
